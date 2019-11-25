@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-using Slipways.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using com.b_velop.Slipways.Web.Infrastructure;
+using GraphQL.Client;
+using com.b_velop.Slipways.Web.Services;
+using com.b_velop.Slipways.Web.Data;
 
-namespace Slipways.Web
+namespace com.b_velop.Slipways.Web
 {
     public class Startup
     {
@@ -35,6 +32,7 @@ namespace Slipways.Web
 
             var key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
             var user = Environment.GetEnvironmentVariable("SEND_GRID_USER");
+            var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient(_ => new AuthMessageSenderOptions
@@ -43,7 +41,14 @@ namespace Slipways.Web
                 SendGridUser = user
             });
 
-            services.AddRazorPages();
+            services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
+            services.AddScoped<ISlipwayService, SlipwayService>();
+
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeFolder("/Slipways");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

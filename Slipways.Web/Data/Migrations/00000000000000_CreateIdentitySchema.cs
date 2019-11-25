@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Slipways.Web.Data.Migrations
+namespace com.b_velop.Slipways.Web.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

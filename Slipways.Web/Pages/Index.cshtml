@@ -6,26 +6,32 @@
 
 <div class="text-center">
     <h1 class="display-4">Slip it</h1>
-    <form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Stadt / Ort
+                </th>
+            </tr>
+        </thead>
+        <tbody>
 
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <input class="form-control" placeholder="Name" asp-for="Slipway.Name">
-            </div>
-            <div class="form-group col-md-6">
-                <input class="form-control" placeholder="Stadt / Ort" asp-for="Slipway.City">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <input class="form-control" placeholder="Längengrad" asp-for="Slipway.Longitude">
-            </div>
-            <div class="form-group col-md-6">
-                <input class="form-control" placeholder="Breitengrad" asp-for="Slipway.Latitude">
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Slip it</button>
-    </form>
+            @foreach (var slipway in Model.Slipways)
+            {
+                <tr>
+                    <td>
+                        @slipway.Name
+                    </td>
+                    <td>
+                        @slipway.City
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 @*@section Scripts{

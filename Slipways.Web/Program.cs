@@ -1,13 +1,13 @@
+using com.b_velop.Slipways.Web.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
-using Slipways.Web.Data;
 using System;
 
-namespace Slipways.Web
+namespace com.b_velop.Slipways.Web
 {
     public class Program
     {

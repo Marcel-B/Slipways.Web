@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Slipways.Web.Data
+namespace com.b_velop.Slipways.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
