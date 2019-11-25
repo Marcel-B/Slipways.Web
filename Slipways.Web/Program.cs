@@ -44,8 +44,11 @@ namespace Slipways.Web
                     webBuilder.UseStartup<Startup>();
                 }).ConfigureServices((hostingContet, services) =>
                 {
-                    var pw = Environment.GetEnvironmentVariable("PW");
-                    var str = $"Server=sqlserver,1433;Database=Slipways;User Id=sa;Password={pw}";
+                    var pw = Environment.GetEnvironmentVariable("PASSWORD");
+                    var server = Environment.GetEnvironmentVariable("SERVER");
+                    var user = Environment.GetEnvironmentVariable("USER");
+                    var db = Environment.GetEnvironmentVariable("DATABASE");
+                    var str = $"Server={server},1433;Database={db};User Id={user};Password={pw}";
 #if DEBUG
                     str = "Server=localhost,1433;Database=Slipways;User Id=sa;Password=foo123bar!";
 #endif
