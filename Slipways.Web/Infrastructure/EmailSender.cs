@@ -20,7 +20,10 @@ namespace com.b_velop.Slipways.Web.Infrastructure
             _logger = logger;
         }
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public Task SendEmailAsync(
+            string email,
+            string subject,
+            string message)
             => Execute(Options.SendGridKey, subject, message, email);
 
         public Task Execute(
@@ -29,10 +32,11 @@ namespace com.b_velop.Slipways.Web.Infrastructure
             string message,
             string email)
         {
+            message = message.Replace("http://", "https://");
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("Joe@contoso.com", Options.SendGridUser),
+                From = new EmailAddress("marcel.benders@outlook.de", Options.SendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
@@ -42,7 +46,6 @@ namespace com.b_velop.Slipways.Web.Infrastructure
             // Disable click tracking.
             // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.SetClickTracking(false, false);
-
             return client.SendEmailAsync(msg);
         }
     }
