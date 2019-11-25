@@ -12,12 +12,15 @@ using Slipways.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using com.b_velop.Slipways.Web.Infrastructure;
 
 namespace Slipways.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(
+            IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -29,11 +32,24 @@ namespace Slipways.Web
         {
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            var key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
+            var user = Environment.GetEnvironmentVariable("SEND_GRID_USER");
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient(_ => new AuthMessageSenderOptions
+            {
+                SendGridKey = key,
+                SendGridUser = user
+            });
+
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
