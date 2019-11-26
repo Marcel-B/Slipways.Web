@@ -19,7 +19,14 @@ namespace com.b_velop.Slipways.Web.Services
             _logger = logger;
         }
 
- 
+        private async Task<IEnumerable<T>> GetAsync<T>(
+            string query,
+            string name)
+        {
+            var result = await _client.GetQueryAsync(query);
+            return result.GetDataFieldAs<IEnumerable<T>>(name);
+        }
+
         public async Task<IEnumerable<Slipway>> GetSlipwaysAsync()
         {
             var query = @"query {
@@ -29,15 +36,9 @@ namespace com.b_velop.Slipways.Web.Services
                             name
                             longitude
                             latitude
-                            water {
-                              id
-                              longname
-                              shortname
-                            }
                           }
                         }";
-            var result = await _client.GetQueryAsync(query);
-            return result.GetDataFieldAs<IEnumerable<Slipway>>("slipways");
+            return await GetAsync<Slipway>(query, "slipways");
         }
 
         public async Task<IEnumerable<Water>> GetWatersAsync()
@@ -48,8 +49,7 @@ namespace com.b_velop.Slipways.Web.Services
                                 longname
                               }
                             }";
-            var result = await _client.GetQueryAsync(query);
-            return result.GetDataFieldAs<IEnumerable<Water>>("waters");
+            return await GetAsync<Water>(query, "waters");
         }
     }
 }

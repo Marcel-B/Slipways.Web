@@ -15,5 +15,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
 
         [Display(Name = "Breitengrad")]
         public double? Longitude { get; set; }
+
+        public string Water { get; set; }
     }
 }
