@@ -15,6 +15,9 @@
                 <th>
                     Stadt / Ort
                 </th>
+                <th>
+                    Karte
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -28,12 +31,19 @@
                     <td>
                         @slipway.City
                     </td>
+                    <td>
+                        <a href="https://www.google.com/maps/place/@slipway.Latitude,@slipway.Longitude" target="_blank"><img src="~/img/icons8-map-32.png" /></a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
 
-@*@section Scripts{
-
-    }*@
+@section Scripts{
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+}

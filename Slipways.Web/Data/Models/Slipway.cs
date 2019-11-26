@@ -10,15 +10,19 @@ namespace com.b_velop.Slipways.Web.Data.Models
         [Display(Name = "Stadt / Ort")]
         public string City { get; set; }
 
-        [Display(Name = "Längengrad")]
+        [Range(-90.0, 90.0)]
+        [Display(Name = "Breitengrad")]
         public double? Latitude { get; set; }
 
-        [Display(Name = "Breitengrad")]
+        [Range(-180.0, 180.0)]
+        [Display(Name = "Längengrad")]
         public double? Longitude { get; set; }
 
+        [Range(0, 500)]
         public decimal? Costs { get; set; }
 
-        public int Rating { get; set; }
+        [Range(0, 5)]
+        public int? Rating { get; set; }
 
         public string Water { get; set; }
     }
