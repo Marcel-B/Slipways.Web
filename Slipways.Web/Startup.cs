@@ -68,7 +68,7 @@ namespace com.b_velop.Slipways.Web
                 app.UseHsts();
             }
             UpdateDatabase(app);
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
