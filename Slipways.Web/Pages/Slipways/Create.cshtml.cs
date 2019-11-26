@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Services;
+using GraphQL.Common.Request;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -37,8 +38,17 @@ namespace com.b_velop.Slipways.Web.Pages.Slipways
             var result = await _service.GetWatersAsync();
             Waters = new SelectList(result, "Id", "Longname");
         }
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
+            if (ModelState.IsValid)
+            {
+                var result = await _service.InsertSlipway(Slipway);
+                if (result)
+                {
+                    return RedirectToPage("../Index");
+                }
+            }
+            return Page();
         }
     }
 }

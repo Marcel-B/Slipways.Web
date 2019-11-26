@@ -8,5 +8,6 @@ namespace com.b_velop.Slipways.Web.Services
     {
         Task<IEnumerable<Slipway>> GetSlipwaysAsync();
         Task<IEnumerable<Water>> GetWatersAsync();
+        Task<bool> InsertSlipway(Slipway slipway);
     }
 }

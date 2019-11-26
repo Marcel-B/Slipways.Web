@@ -1,5 +1,6 @@
 ﻿using com.b_velop.Slipways.Web.Data.Models;
 using GraphQL.Client;
+using GraphQL.Common.Request;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -50,6 +51,36 @@ namespace com.b_velop.Slipways.Web.Services
                               }
                             }";
             return await GetAsync<Water>(query, "waters");
+        }
+
+        public async Task<bool> InsertSlipway(
+            Slipway slipway)
+        {
+            var query = @"mutation createSlipway($slipway: SlipwayInput!) {
+                              createSlipway(slipway: $slipway) {
+                                id
+                              }
+                            }";
+            var request = new GraphQLRequest
+            {
+                OperationName = "createSlipway",
+                Query = query,
+                Variables = new
+                {
+                    slipway = new
+                    {
+                        slipway.Name,
+                        slipway.Latitude,
+                        slipway.Longitude,
+                        slipway.Costs,
+                        WaterFk = slipway.Water,
+                        slipway.Rating,
+                        slipway.City
+                    }
+                }
+            };
+            var result = await _client.PostAsync(request);
+            return result.Errors == null;
         }
     }
 }
