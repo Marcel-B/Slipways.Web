@@ -75,7 +75,9 @@ namespace com.b_velop.Slipways.Web.Services
                         slipway.Costs,
                         WaterFk = slipway.Water,
                         slipway.Rating,
-                        slipway.City
+                        slipway.City,
+                        slipway.Street,
+                        slipway.Postalcode
                     }
                 }
             };
