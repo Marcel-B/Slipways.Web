@@ -27,3 +27,20 @@
     </div>
     <button type="submit" class="btn btn-primary">Slip it</button>
 </form>
+
+<table class="table">
+    <thead>
+        <th>
+            Gewässer
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var water in Model.Waters)
+            {
+                <td>@water.Name</td>
+            }
+        </tr>
+
+    </tbody>
+</table>
