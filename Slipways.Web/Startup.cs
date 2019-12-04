@@ -11,6 +11,8 @@ using com.b_velop.Slipways.Web.Infrastructure;
 using GraphQL.Client;
 using com.b_velop.Slipways.Web.Services;
 using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Data.Models;
+using com.b_velop.IdentityProvider;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -35,6 +37,20 @@ namespace com.b_velop.Slipways.Web
             var user = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
 
+            var scope = Environment.GetEnvironmentVariable("SCOPE");
+            var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
+            var secret = Environment.GetEnvironmentVariable("SECRET");
+            var issuer = Environment.GetEnvironmentVariable("ISSUER");
+
+            services.AddTransient(_ => new ApiValues
+            {
+                Scope = scope,
+                ClientId = clientId,
+                Secret = secret,
+                Issuer = issuer
+            });
+
+            services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient(_ => new AuthMessageSenderOptions
             {

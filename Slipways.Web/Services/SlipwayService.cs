@@ -1,4 +1,6 @@
-﻿using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.IdentityProvider;
+using com.b_velop.IdentityProvider.Model;
+using com.b_velop.Slipways.Web.Data.Models;
 using GraphQL.Client;
 using GraphQL.Common.Request;
 using Microsoft.Extensions.Logging;
@@ -9,13 +11,19 @@ namespace com.b_velop.Slipways.Web.Services
 {
     public class SlipwayService : ISlipwayService
     {
+        private readonly InfoItem _infoItem;
+        private readonly IIdentityProviderService _identityProvider;
         private readonly GraphQLClient _client;
         private readonly ILogger<SlipwayService> _logger;
 
         public SlipwayService(
+            IIdentityProviderService identityProvider,
+            ApiValues apiValues,
             GraphQLClient client,
             ILogger<SlipwayService> logger)
         {
+            _infoItem = new InfoItem(apiValues.ClientId, apiValues.Secret, apiValues.Scope, apiValues.Issuer);
+            _identityProvider = identityProvider;
             _client = client;
             _logger = logger;
         }
@@ -24,6 +32,9 @@ namespace com.b_velop.Slipways.Web.Services
             string query,
             string name)
         {
+            var token = await _identityProvider.GetTokenAsync(_infoItem);
+            _client.DefaultRequestHeaders.Clear();
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.AccessToken);
             var result = await _client.GetQueryAsync(query);
             return result.GetDataFieldAs<IEnumerable<T>>(name);
         }
