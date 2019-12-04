@@ -47,11 +47,11 @@ namespace com.b_velop.Slipways.Web
                 {
                     var secretProvider = new SecretProvider();
                     var clientSecret = secretProvider.GetSecret("sqlserver");
-                    var pw = Environment.GetEnvironmentVariable("PASSWORD");
                     var server = Environment.GetEnvironmentVariable("SERVER");
                     var user = Environment.GetEnvironmentVariable("USER");
                     var db = Environment.GetEnvironmentVariable("DATABASE");
-                    var str = $"Server={server},1433;Database={db};User Id={user};Password={pw}";
+
+                    var str = $"Server={server},1433;Database={db};User Id={user};Password={clientSecret}";
 #if DEBUG
                     str = "Server=localhost,1433;Database=Slipways;User Id=sa;Password=foo123bar!";
 #endif
