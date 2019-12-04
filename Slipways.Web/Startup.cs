@@ -11,6 +11,8 @@ using com.b_velop.Slipways.Web.Infrastructure;
 using GraphQL.Client;
 using com.b_velop.Slipways.Web.Services;
 using com.b_velop.Slipways.Web.Data;
+using com.b_velop.IdentityProvider;
+using com.b_velop.IdentityProvider.Model;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -34,6 +36,12 @@ namespace com.b_velop.Slipways.Web
             var key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
             var user = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
+            var authority = Environment.GetEnvironmentVariable("AUTHORITY");
+            var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
+            var clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
+            var scope = Environment.GetEnvironmentVariable("SCOPE");
+
+            services.AddSingleton<InfoItem>(_ => new InfoItem(clientId, clientSecret, scope, authority));
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient(_ => new AuthMessageSenderOptions
@@ -41,9 +49,9 @@ namespace com.b_velop.Slipways.Web
                 SendGridKey = key,
                 SendGridUser = user
             });
-
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
-            services.AddScoped<ISlipwayService, SlipwayService>();
+            services.AddHttpClient<ISlipwayService, SlipwayService>();
+            services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
 
             services.AddRazorPages()
                 .AddRazorPagesOptions(options =>
