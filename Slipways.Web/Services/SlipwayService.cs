@@ -130,18 +130,18 @@ namespace com.b_velop.Slipways.Web.Services
                 }
                 catch (HttpRequestException e)
                 {
-                    _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name}", e);
+                    _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name} {e.StackTrace}", e);
                     return false;
                 }
                 catch (ArgumentNullException e)
                 {
-                    _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name}", e);
+                    _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name} {e.StackTrace}", e);
                     return false;
                 }
             }
             catch (Exception e)
             {
-                _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name}", e);
+                _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name} {e.StackTrace}", e);
                 return false;
             }
         }
