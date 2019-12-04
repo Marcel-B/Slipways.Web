@@ -1,10 +1,7 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Data.Models;
 using GraphQL.Client;
-using GraphQL.Common.Request;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -133,18 +130,18 @@ namespace com.b_velop.Slipways.Web.Services
                 }
                 catch (HttpRequestException e)
                 {
-                    _logger.LogError($"Error occurred while post new Slipway {slipway.Name}", e);
+                    _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name}", e);
                     return false;
                 }
                 catch (ArgumentNullException e)
                 {
-                    _logger.LogError($"Error occurred while post new Slipway {slipway.Name}", e);
+                    _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name}", e);
                     return false;
                 }
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error occurred while post new Slipway {slipway.Name}", e);
+                _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name}", e);
                 return false;
             }
         }
