@@ -14,6 +14,7 @@ using com.b_velop.Slipways.Web.Data;
 using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -60,8 +61,13 @@ namespace com.b_velop.Slipways.Web
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeFolder("/Slipways");
-                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +75,8 @@ namespace com.b_velop.Slipways.Web
             IApplicationBuilder app,
             IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
