@@ -38,7 +38,7 @@ namespace com.b_velop.Slipways.Web
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
             var authority = Environment.GetEnvironmentVariable("AUTHORITY");
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
-            var clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
+            var clientSecret = new SecretProvider().GetSecret("slipways.web");
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 
             services.AddSingleton<InfoItem>(_ => new InfoItem(clientId, clientSecret, scope, authority));
