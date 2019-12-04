@@ -41,7 +41,7 @@ namespace com.b_velop.Slipways.Web
             var clientSecret = new SecretProvider().GetSecret("slipways.web");
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 
-            services.AddSingleton<InfoItem>(_ => new InfoItem(clientId, clientSecret, scope, authority));
+            services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient(_ => new AuthMessageSenderOptions
