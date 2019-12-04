@@ -40,7 +40,7 @@ namespace com.b_velop.Slipways.Web
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways.web");
-            Console.WriteLine(clientSecret);
+            //Console.WriteLine(clientSecret);
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 
             services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
@@ -79,7 +79,8 @@ namespace com.b_velop.Slipways.Web
                 app.UseHsts();
             }
             UpdateDatabase(app);
-            app.UseHttpsRedirection();
+
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -1,4 +1,5 @@
 using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,8 @@ namespace com.b_velop.Slipways.Web
                     webBuilder.UseStartup<Startup>();
                 }).ConfigureServices((hostingContet, services) =>
                 {
+                    var secretProvider = new SecretProvider();
+                    var clientSecret = secretProvider.GetSecret("sqlserver");
                     var pw = Environment.GetEnvironmentVariable("PASSWORD");
                     var server = Environment.GetEnvironmentVariable("SERVER");
                     var user = Environment.GetEnvironmentVariable("USER");
