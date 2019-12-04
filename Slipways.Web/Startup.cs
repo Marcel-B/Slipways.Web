@@ -13,6 +13,7 @@ using com.b_velop.Slipways.Web.Services;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -59,6 +60,7 @@ namespace com.b_velop.Slipways.Web
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeFolder("/Slipways");
+                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 });
         }
 
