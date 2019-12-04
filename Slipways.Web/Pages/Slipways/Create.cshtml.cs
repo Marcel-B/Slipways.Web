@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Pages.Slipways
 {
+    [IgnoreAntiforgeryToken(Order = 2000)]
     public class CreateModel : PageModel
     {
         private ISlipwayService _service;
