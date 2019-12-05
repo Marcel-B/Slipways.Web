@@ -15,14 +15,14 @@ namespace com.b_velop.Slipways.Web
     {
         public static void Main(string[] args)
         {
-            using (var pusher = new MetricPusher(new MetricPusherOptions
+            var pusher = new MetricPusher(new MetricPusherOptions
             {
                 Endpoint = "https://push.qaybe.de/metrics",
                 Job = "SlipwaysWeb",
                 Instance = "SlipwaysWeb"
-            }))
+            });
 
-                pusher.Start();
+            pusher.Start();
 
             var file = "nlog.config";
             var logger = NLogBuilder.ConfigureNLog(file).GetCurrentClassLogger();
