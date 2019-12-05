@@ -32,16 +32,19 @@ namespace com.b_velop.Slipways.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
             var user = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
             var authority = Environment.GetEnvironmentVariable("AUTHORITY");
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
+
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways.web");
+            var key = secretProvider.GetSecret("send_grid_key");
+
 
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 

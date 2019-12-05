@@ -57,6 +57,7 @@ namespace com.b_velop.Slipways.Web
                 {
                     var secretProvider = new SecretProvider();
                     var clientSecret = secretProvider.GetSecret("sqlserver");
+
                     var server = Environment.GetEnvironmentVariable("SERVER");
                     var user = Environment.GetEnvironmentVariable("USER");
                     var db = Environment.GetEnvironmentVariable("DATABASE");
