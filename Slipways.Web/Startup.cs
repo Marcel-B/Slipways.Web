@@ -13,8 +13,8 @@ using com.b_velop.Slipways.Web.Services;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.HttpOverrides;
+using Prometheus;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -42,7 +42,7 @@ namespace com.b_velop.Slipways.Web
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways.web");
-            //Console.WriteLine(clientSecret);
+
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 
             services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
@@ -76,7 +76,16 @@ namespace com.b_velop.Slipways.Web
             IWebHostEnvironment env)
         {
             app.UseForwardedHeaders();
-
+            app.UseHttpMetrics(options =>
+            {
+                options.RequestCount.Enabled = false;
+                options.RequestDuration.Histogram = Metrics.CreateHistogram("slipways_web_http_request_duration_seconds", "Some help text",
+                    new HistogramConfiguration
+                    {
+                        Buckets = Histogram.LinearBuckets(start: 1, width: 1, count: 64),
+                        LabelNames = new[] { "code", "method" }
+                    });
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
