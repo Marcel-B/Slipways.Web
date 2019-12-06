@@ -121,7 +121,7 @@ namespace com.b_velop.Slipways.Web.Services
                 var content = new StringContent(modelJson, Encoding.UTF8, "application/json");
                 try
                 {
-                    var response = await _httpClient.PostAsync("https://slipways.de/api/slipway", content);
+                    var response = await _httpClient.PostAsync("https://data.slipways.de/api/slipway", content);
                     if (!response.IsSuccessStatusCode)
                     {
                         return false;

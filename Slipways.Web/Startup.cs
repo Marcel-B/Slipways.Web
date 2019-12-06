@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Prometheus;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
+using com.b_velop.Slipways.Web.Middlewares;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -56,6 +57,8 @@ namespace com.b_velop.Slipways.Web
             {
                 key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
                 clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
+                appId = Environment.GetEnvironmentVariable("facebook_app_id");
+                appSecret = Environment.GetEnvironmentVariable("facebook_app_secret");
             }
 
             services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
@@ -139,7 +142,7 @@ namespace com.b_velop.Slipways.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseFacebookMiddleware();
             app.UseAuthentication();
             app.UseAuthorization();
 
