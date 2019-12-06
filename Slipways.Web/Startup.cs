@@ -15,6 +15,7 @@ using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
 using Microsoft.AspNetCore.HttpOverrides;
 using Prometheus;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -59,6 +60,10 @@ namespace com.b_velop.Slipways.Web
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddHttpClient<ISlipwayService, SlipwayService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
+
+            services.AddDataProtection()
+               .SetApplicationName("slipways-web")
+               .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/app/keys/"));
 
             services.AddRazorPages()
                 .AddRazorPagesOptions(options =>
