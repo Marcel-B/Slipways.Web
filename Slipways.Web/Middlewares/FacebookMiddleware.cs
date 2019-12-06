@@ -20,7 +20,7 @@ namespace com.b_velop.Slipways.Web.Middlewares
         public Task Invoke(
             HttpContext httpContext)
         {
-            if (httpContext.Request.Host.Value.Contains("connect.facebook"))
+            if (httpContext.Request.Host.Value.Contains("facebook"))
                 httpContext.Request.Scheme = "https";
             return _next(httpContext);
         }
