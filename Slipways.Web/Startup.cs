@@ -47,7 +47,6 @@ namespace com.b_velop.Slipways.Web
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 
-
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways.web");
             var key = secretProvider.GetSecret("send_grid_key");
@@ -57,7 +56,6 @@ namespace com.b_velop.Slipways.Web
                 clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
             }
 
-
             services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
 
             services.AddTransient<IEmailSender, EmailSender>();
@@ -66,9 +64,17 @@ namespace com.b_velop.Slipways.Web
                 SendGridKey = key,
                 SendGridUser = user
             });
+
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddHttpClient<ISlipwayService, SlipwayService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
+
+            services.AddAuthentication()
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = "308155173162904";
+                    facebookOptions.AppSecret = "aeaee4801ff91a5f8bc946fd4d354032";
+                });
 
             services.AddDataProtection()
                .SetApplicationName("slipways-web")
