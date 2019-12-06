@@ -36,7 +36,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             CurrentLogins = await _userManager.GetLoginsAsync(user);
@@ -52,18 +52,18 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID'{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not removed.";
+                StatusMessage = "Das externe Login wurde nicht entfernt.";
                 return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "The external login was removed.";
+            StatusMessage = "Der externe Login wurde entfernt.";
             return RedirectToPage();
         }
 
@@ -83,7 +83,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             var info = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
@@ -95,14 +95,14 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not added. External logins can only be associated with one account.";
+                StatusMessage = "Der externe Login wurde nicht hinzugefügt. Externe Anmeldungen können nur einem Konto zugeordnet werden.";
                 return RedirectToPage();
             }
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            StatusMessage = "Der externe Login wurde hinzugefügt.";
             return RedirectToPage();
         }
     }

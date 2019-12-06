@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +28,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             if (!await _userManager.GetTwoFactorEnabledAsync(user))
@@ -46,7 +44,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
@@ -55,8 +53,8 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
-            StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+            _logger.LogInformation($"User with ID '{_userManager.GetUserId(User)}' has disabled 2fa.");
+            StatusMessage = "2FA wurde deaktiviert. Sie können 2FA wieder aktivieren, wenn Sie eine Authentifikator-App einrichten.";
             return RedirectToPage("./TwoFactorAuthentication");
         }
     }

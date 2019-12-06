@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +20,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        [Display(Name = "Benutzername")]
         public string Username { get; set; }
 
         [TempData]
@@ -55,7 +54,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             await LoadAsync(user);
@@ -67,7 +66,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             if (!ModelState.IsValid)
@@ -88,7 +87,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Ihr Profil wurde aktualisiert.";
             return RedirectToPage();
         }
     }

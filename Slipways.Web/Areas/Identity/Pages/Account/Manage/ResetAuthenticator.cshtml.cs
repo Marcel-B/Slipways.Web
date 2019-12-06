@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -33,7 +30,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID'{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             return Page();
@@ -44,7 +41,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID'{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
@@ -52,7 +49,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
+            StatusMessage = "Ihr Authentifikator-App-Schlüssel wurde zurückgesetzt, Sie müssen Ihre Authentifikator-App mit dem neuen Schlüssel konfigurieren.";
 
             return RedirectToPage("./EnableAuthenticator");
         }

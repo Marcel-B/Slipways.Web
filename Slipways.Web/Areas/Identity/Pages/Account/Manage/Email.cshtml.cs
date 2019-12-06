@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -45,7 +42,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Neue Email")]
             public string NewEmail { get; set; }
         }
 
@@ -67,7 +64,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             await LoadAsync(user);
@@ -79,7 +76,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID '{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             if (!ModelState.IsValid)
@@ -100,14 +97,14 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Bestätigen Sie Ihre E-Mail",
+                    $"Bitte bestätigen Sie Ihr Konto mit <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier klicken</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Bestätigungslink zum Ändern der gesendeten E-Mail. Bitte überprüfen Sie Ihre E-Mail Adresse.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Deine E-Mail ist unverändert.";
             return RedirectToPage();
         }
 
@@ -116,7 +113,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Benutzer kann nicht mit der ID'{_userManager.GetUserId(User)}' geladen werden.");
             }
 
             if (!ModelState.IsValid)
@@ -136,8 +133,8 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Bestätigen Sie Ihre E-Mail",
+                $"Bitte bestätigen Sie Ihr Konto mit <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier klicken</a>.");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

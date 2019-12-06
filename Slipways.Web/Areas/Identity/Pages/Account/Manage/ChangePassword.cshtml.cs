@@ -38,7 +38,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
             [Required]
             [StringLength(100, ErrorMessage = "Das {0} muss mindestens  {2} und höchstens {1} Zeichen lang sein.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Neues Passwort")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
