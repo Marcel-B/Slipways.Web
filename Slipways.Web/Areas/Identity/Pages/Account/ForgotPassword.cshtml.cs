@@ -59,7 +59,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account
                 await _emailSender.SendEmailAsync(
                     Input.Email,
                     "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"Bitte setzen Sie Ihr Passwort zurück, indem Sie <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier klicken</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

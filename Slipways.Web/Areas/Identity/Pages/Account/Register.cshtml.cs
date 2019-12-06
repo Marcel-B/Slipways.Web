@@ -51,7 +51,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Das {0} muss mindestens  {2} und höchstens {1} Zeichen lang sein.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Passwort")]
             public string Password { get; set; }
@@ -88,7 +88,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(Input.Email, "Bestätigen Sie Ihr Konto",
                         $"Bitte bestätigen Sie Ihr Konto, indem Sie <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier klicken.</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

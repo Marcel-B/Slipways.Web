@@ -33,7 +33,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Telefon-Nummer")]
             public string PhoneNumber { get; set; }
         }
 

@@ -22,12 +22,15 @@ namespace com.b_velop.Slipways.Web
     public class Startup
     {
         public Startup(
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Env = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -41,13 +44,18 @@ namespace com.b_velop.Slipways.Web
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
             var authority = Environment.GetEnvironmentVariable("AUTHORITY");
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
+            var scope = Environment.GetEnvironmentVariable("SCOPE");
+
 
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways.web");
             var key = secretProvider.GetSecret("send_grid_key");
+            if (Env.IsDevelopment())
+            {
+                key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
+                clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
+            }
 
-
-            var scope = Environment.GetEnvironmentVariable("SCOPE");
 
             services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
 
