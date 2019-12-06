@@ -16,6 +16,7 @@ using com.b_velop.IdentityProvider.Model;
 using Microsoft.AspNetCore.HttpOverrides;
 using Prometheus;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -79,6 +80,15 @@ namespace com.b_velop.Slipways.Web
                     options.Conventions.AuthorizeFolder("/Slipways");
                 });
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
@@ -114,6 +124,8 @@ namespace com.b_velop.Slipways.Web
                 //app.UseHsts();
             }
             UpdateDatabase(app);
+
+            app.UseCookiePolicy();
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
