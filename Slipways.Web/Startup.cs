@@ -50,6 +50,8 @@ namespace com.b_velop.Slipways.Web
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways.web");
             var key = secretProvider.GetSecret("send_grid_key");
+            var appId = secretProvider.GetSecret("facebook_app_id");
+            var appSecret = secretProvider.GetSecret("facebook_app_secret");
             if (Env.IsDevelopment())
             {
                 key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
@@ -72,8 +74,8 @@ namespace com.b_velop.Slipways.Web
             services.AddAuthentication()
                 .AddFacebook(facebookOptions =>
                 {
-                    facebookOptions.AppId = "308155173162904";
-                    facebookOptions.AppSecret = "aeaee4801ff91a5f8bc946fd4d354032";
+                    facebookOptions.AppId = appId;
+                    facebookOptions.AppSecret = appSecret;
                 });
 
             services.AddDataProtection()
