@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 
 namespace com.b_velop.Slipways.Web.Middlewares
 {
@@ -20,8 +21,22 @@ namespace com.b_velop.Slipways.Web.Middlewares
         public Task Invoke(
             HttpContext httpContext)
         {
+            //var query = httpContext.Request.Query;
+
+            //if (query != null && query.ContainsKey("redirect_uri"))
+            //{
+            //    if (query.TryGetValue("redirect_uri", out var uri))
+            //    {
+            //        var ri = uri.ToString();
+            //        //query["redirect_uri"] = new StringValues(ri.Replace("http", "https"));
+            //    }
+            //}
+
             if (httpContext.Request.Host.Value.Contains("facebook"))
+            {
                 httpContext.Request.Scheme = "https";
+                var path = httpContext.Request.Query;
+            }
             return _next(httpContext);
         }
     }

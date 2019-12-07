@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 Slipways.Web/Properties/launchSettings.json
+Slipways.Web/.DS_Store
+.DS_Store

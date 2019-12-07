@@ -73,6 +73,8 @@ namespace com.b_velop.Slipways.Web.Services
             string name)
         {
             var result = await _client.GetQueryAsync(query);
+            if (result == null)
+                return new List<T>();
             return result.GetDataFieldAs<IEnumerable<T>>(name);
         }
 
