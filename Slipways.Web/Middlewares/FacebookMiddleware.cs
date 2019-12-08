@@ -21,19 +21,10 @@ namespace com.b_velop.Slipways.Web.Middlewares
         public Task Invoke(
             HttpContext httpContext)
         {
-            //var query = httpContext.Request.Query;
-
-            //if (query != null && query.ContainsKey("redirect_uri"))
-            //{
-            //    if (query.TryGetValue("redirect_uri", out var uri))
-            //    {
-            //        var ri = uri.ToString();
-            //        //query["redirect_uri"] = new StringValues(ri.Replace("http", "https"));
-            //    }
-            //}
-
             if (httpContext.Request.Host.Value.Contains("facebook"))
             {
+                var queryString = new QueryString(httpContext.Request.QueryString.Value.Replace("http", "https"));
+                httpContext.Request.QueryString = queryString;
                 httpContext.Request.Scheme = "https";
                 var path = httpContext.Request.Query;
             }
