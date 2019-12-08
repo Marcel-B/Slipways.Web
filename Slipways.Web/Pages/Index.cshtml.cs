@@ -34,14 +34,14 @@ namespace com.b_velop.Slipways.Web.Pages
             Slipways = await _slipwayService.GetSlipwaysAsync();
         }
 
-        public  ActionResult OnPostAsync()
+        public void OnPost()
         {
-            var appId = _secretProvider.GetSecret("facebook_app_id");
-            var redirect = "https://slipways.de/facebook-signin";
-            var clientId = appId;
-            var state = Guid.NewGuid().ToString();
-            var path = $"https://www.facebook.com/v5.0/dialog/oauth?client_id={clientId}&redirect_uri={redirect}&state={state}";
-            return new RedirectResult(path);
+            //var appId = _secretProvider.GetSecret("facebook_app_id");
+            //var redirect = "https://slipways.de/facebook-signin";
+            //var clientId = appId;
+            //var state = Guid.NewGuid().ToString();
+            //var path = $"https://www.facebook.com/v5.0/dialog/oauth?client_id={clientId}&redirect_uri={redirect}&state={state}";
+            //return new RedirectResult(path);
         }
     }
 }

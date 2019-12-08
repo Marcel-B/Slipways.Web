@@ -7,7 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Erstellen Sie ein neues Konto.</h4>
             <hr />
@@ -30,7 +30,7 @@
             <button type="submit" class="btn btn-primary">Registrieren</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-6 col-md-offset-2" hidden="hidden">
         <section>
             <h4>Verwenden Sie einen anderen Dienst, um sich zu registrieren.</h4>
             <hr />

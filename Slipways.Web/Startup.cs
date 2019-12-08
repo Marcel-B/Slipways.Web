@@ -75,16 +75,17 @@ namespace com.b_velop.Slipways.Web
             services.AddHttpClient<ISlipwayService, SlipwayService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
 
-            services.AddAuthentication()
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = appId;
-                    facebookOptions.AppSecret = appSecret;
-                });
+            //services.AddAuthentication()
+            //    .AddFacebook(facebookOptions =>
+            //    {
+            //        facebookOptions.AppId = appId;
+            //        facebookOptions.AppSecret = appSecret;
+            //    });
 
-            services.AddDataProtection()
-               .SetApplicationName("slipways-web")
-               .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/app/keys/"));
+            if (!Env.IsDevelopment())
+                services.AddDataProtection()
+                   .SetApplicationName("slipways-web")
+                   .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/app/keys/"));
 
             services.AddRazorPages()
                 .AddRazorPagesOptions(options =>
