@@ -71,6 +71,7 @@ namespace com.b_velop.Slipways.Web
             });
 
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
+            services.AddScoped<ISecretProvider, SecretProvider>();
             services.AddHttpClient<ISlipwayService, SlipwayService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
 
