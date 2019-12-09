@@ -53,32 +53,22 @@ namespace com.b_velop.Slipways.Web.Pages
         }
 
         public IActionResult OnGetFilter(
-            [FromQuery] string search)
-        {
-            Slipways = new SlipwaysModel();
-            if (_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
-            {
-                if (!string.IsNullOrWhiteSpace(search))
-                {
-                    Slipways.Slipways = new HashSet<Slipway>(slipways.Where(_ => _.Name.Contains(search) || _.City.Contains(search)).Distinct());
-                }
-                else
-                    Slipways.Slipways = slipways;
-            }
-            var partial = Partial("_SlipwayTable", Slipways);
-            return partial;
-        }
-
-        public IActionResult OnGetFree(
+            [FromQuery] string search,
             [FromQuery] bool onlyFree)
         {
             Slipways = new SlipwaysModel();
             if (_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
             {
+                IEnumerable<Slipway> cs;
                 if (onlyFree)
-                    Slipways.Slipways = new HashSet<Slipway>(slipways.Where(_ => _.Costs == 0));
+                    cs = slipways.Where(_ => _.Costs <= 0);
                 else
-                    Slipways.Slipways = slipways;
+                    cs = slipways;
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    cs = cs.Where(_ => _.Name.Contains(search) || _.City.Contains(search)).Distinct();
+                }
+                Slipways.Slipways = new HashSet<Slipway>(cs);
             }
             var partial = Partial("_SlipwayTable", Slipways);
             return partial;
