@@ -69,23 +69,19 @@ namespace com.b_velop.Slipways.Web.Pages
             return partial;
         }
 
-        public void OnPost()
+        public IActionResult OnGetFree(
+            [FromQuery] bool onlyFree)
         {
-            //var appId = _secretProvider.GetSecret("facebook_app_id");
-            //var redirect = "https://slipways.de/facebook-signin";
-            //var clientId = appId;
-            //var state = Guid.NewGuid().ToString();
-            //var path = $"https://www.facebook.com/v5.0/dialog/oauth?client_id={clientId}&redirect_uri={redirect}&state={state}";
-            //return new RedirectResult(path);
-        }
-
-        public void Search(
-            string search)
-        {
+            Slipways = new SlipwaysModel();
             if (_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
             {
-
+                if (onlyFree)
+                    Slipways.Slipways = new HashSet<Slipway>(slipways.Where(_ => _.Costs == 0));
+                else
+                    Slipways.Slipways = slipways;
             }
+            var partial = Partial("_SlipwayTable", Slipways);
+            return partial;
         }
     }
 }

@@ -5,11 +5,11 @@
 }
 
 <div class="text-center">
-    <div class="row">
+    <div class="form-group row">
         <div class="col-md-5">
             <h2 class="display-4">Slipanlagen</h2>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><img src="~/img/search-24.png" alt="search icon" /></span>
@@ -17,8 +17,17 @@
                 <input type="text" id="searchField" class="form-control" placeholder="Suche" aria-label="Suche" aria-describedby="basic-addon1" onkeyup="filterTable()">
             </div>
         </div>
+        <div class="col-md-2">Checkbox</div>
+        <div class="col-sm-10">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck1" onchange="selected()">
+                <label class="form-check-label" for="gridCheck1">
+                    nur kostenlos
+                </label>
+            </div>
+        </div>
     </div>
-    <div id="prt">
+    <div id="slipwayTable">
         <partial name="Shared/_SlipwayTable" for="Slipways" />
     </div>
 
@@ -33,16 +42,28 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
         function filterTable() {
-            let s = document.getElementById("searchField").value
-            console.log("Hello: ", s)
+            let searchField = document.getElementById("searchField").value
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    let i = document.getElementById("prt");
+                    let i = document.getElementById("slipwayTable");
                     i.innerHTML = xhttp.responseText;
                 }
             };
-            xhttp.open("GET", `/?handler=Filter&search=${s}`, true);
+            xhttp.open("GET", `/?handler=Filter&search=${searchField}`, true);
+            xhttp.send();
+        }
+
+        function selected() {
+            let check = document.getElementById("gridCheck1").checked;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let i = document.getElementById("slipwayTable");
+                    i.innerHTML = xhttp.responseText;
+                }
+            };
+            xhttp.open("GET", `/?handler=Free&onlyFree=${check}`, true);
             xhttp.send();
         }
     </script>
