@@ -72,6 +72,14 @@
     function filterTable() {
         let s = document.getElementById("searchField").value
         console.log("Hello: ", s)
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("demo").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/Search", true);
+        xhttp.send();
     }
     </script>
 }
