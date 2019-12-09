@@ -87,6 +87,7 @@ namespace com.b_velop.Slipways.Web.Services
                             name
                             longitude
                             latitude
+                            costs
                           }
                         }";
             return await GetAsync<Slipway>(query, "slipways");

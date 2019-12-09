@@ -5,8 +5,21 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Slip it</h1>
-    <table class="table">
+    <div class="row">
+        <div class="col-md-5">
+            <h2 class="display-4">Slipanlagen</h2>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><img src="~/img/search-24.png" alt="search icon"/></span>
+                </div>
+                <input type="text" id="searchField" class="form-control" placeholder="Suche" aria-label="Suche" aria-describedby="basic-addon1" onkeyup="filterTable()">
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>
@@ -14,6 +27,9 @@
                 </th>
                 <th>
                     Stadt / Ort
+                </th>
+                <th>
+                    Kosten
                 </th>
                 <th>
                     Karte
@@ -32,7 +48,13 @@
                         @slipway.City
                     </td>
                     <td>
-                        <a href="https://www.google.com/maps/place/@slipway.Latitude,@slipway.Longitude" target="_blank"><img src="~/img/icons8-map-32.png" /></a>
+                        @if (slipway.Costs > 0)
+                        {
+                            <img src="~/img/euro-24.png" alt="kostenpflichtig"  data-toggle="tooltip" data-placement="top" title='@slipway.Costs?.ToString("C", CultureInfo.CreateSpecificCulture("de-DE"))' />
+                        }
+                    </td>
+                    <td>
+                        <a href="https://www.google.com/maps/place/@slipway.Latitude,@slipway.Longitude" target="_blank"><img src="~/img/icons8-map-32.png" alt="Karte" /></a>
                     </td>
                 </tr>
             }
@@ -42,6 +64,14 @@
 
 @section Scripts{
     <script>$(function () {
-            $('[data-toggle="popover"]').popover()
-        })</script>
+        $('[data-toggle="popover"]').popover()
+    })
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    function filterTable() {
+        let s = document.getElementById("searchField").value
+        console.log("Hello: ", s)
+    }
+    </script>
 }

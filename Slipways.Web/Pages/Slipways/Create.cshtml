@@ -41,12 +41,11 @@
             <input class="form-control" placeholder="Bewertung (0 - 5)" asp-for="Slipway.Rating">
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group class="dropdown"">
         <label>Water</label>
         <select asp-for="Slipway.Water" class="control-label"
                 asp-items="@Model.Waters">
             <option value="">Gewässer wählen</option>
-
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Slip it</button>
