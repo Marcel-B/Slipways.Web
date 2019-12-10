@@ -85,6 +85,11 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 var result = await _service.InsertSlipway(slipwayDto);
                 if (result != null)
                 {
+                    if(_cache.TryGetValue("Slipways", out HashSet<Data.Models.Slipway> slipways))
+                    {
+                        slipways.Add(Slipway);
+                        _cache.Set("Slipways", slipways);
+                    }
                     return RedirectToPage("../Index");
                 }
             }
