@@ -2,3 +2,71 @@
 @model com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway.CreateModel
 @{
 }
+
+<h1>Hinzufügen</h1>
+
+<form method="post">
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Name" asp-for="Slipway.Name">
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Stadt / Ort" asp-for="Slipway.City">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Straße" asp-for="Slipway.Street">
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Postleitzahl" asp-for="Slipway.Postalcode">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Längengrad" asp-for="Slipway.Longitude">
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Breitengrad" asp-for="Slipway.Latitude">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Preis" asp-for="Slipway.Costs">
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Bewertung (0 - 5)" asp-for="Slipway.Rating">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-check col">
+            <input type="checkbox" class="form-check-input" asp-for="Steg" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Steg</label>
+        </div>
+        <div class="form-check col">
+            <input type="checkbox" class="form-check-input" asp-for="CampingArea" id="exampleCheck2">
+            <label class="form-check-label" for="exampleCheck2" >Campingplatz</label>
+        </div>
+        <div class="form-check col">
+            <input type="checkbox" class="form-check-input" asp-for="ParkingPlace" id="exampleCheck3">
+            <label class="form-check-label" for="exampleCheck3">Parkplatz</label>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group class=" dropdown"">
+            <label>Gewässer</label>
+            <select asp-for="Slipway.Water" class="control-label"
+                    asp-items="@Model.Waters">
+                <option value="">Gewässer wählen</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <button type="submit" class="btn btn-primary">Slip it</button>
+    </div>
+</form>
+

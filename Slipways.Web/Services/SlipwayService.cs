@@ -70,6 +70,7 @@ namespace com.b_velop.Slipways.Web.Services
             _cache.Set("token", token);
             return token.AccessToken;
         }
+
         private async Task<IEnumerable<T>> GetAsync<T>(
             string query,
             string name)
@@ -100,7 +101,7 @@ namespace com.b_velop.Slipways.Web.Services
             return new WaterDto[0];
         }
 
-        public async Task<IEnumerable<Slipway>> GetSlipwaysAsync()
+        public async Task<IEnumerable<SlipwayDto>> GetSlipwaysAsync()
         {
             try
             {
@@ -114,13 +115,13 @@ namespace com.b_velop.Slipways.Web.Services
                             costs
                           }
                         }";
-                return await GetAsync<Slipway>(query, "slipways");
+                return await GetAsync<SlipwayDto>(query, "slipways");
             }
             catch (Exception e)
             {
-                _logger.LogError(2222, $"Error occurred while loading Slipways from GraphQL endpoint", e);
+                _logger.LogError(2222, $"Error occurred while request Slipways from GraphQL endpoint", e);
             }
-            return new Slipway[0];
+            return new SlipwayDto[0];
         }
 
         public async Task<IEnumerable<Water>> GetWatersAsync()
@@ -135,8 +136,28 @@ namespace com.b_velop.Slipways.Web.Services
             return waters.OrderBy(_ => _.Longname);
         }
 
-        public async Task<bool> InsertSlipway(
-            Slipway slipway)
+        public async Task<IEnumerable<ExtraDto>> GetExtrasAsync()
+        {
+            try
+            {
+                var query = @"query {
+                              extras {
+                                id
+                                name
+                              }
+                            }";
+                var extras = await GetAsync<ExtraDto>(query, "extras");
+                return extras.OrderBy(_ => _.Name);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(6666, $"Error occurred while request Extras from GraphQL", e);
+                return new ExtraDto[0];
+            }
+        }
+
+        public async Task<SlipwayDto> InsertSlipway(
+            SlipwayDto slipway)
         {
             try
             {
@@ -151,32 +172,38 @@ namespace com.b_velop.Slipways.Web.Services
                 };
 
                 var modelJson = JsonSerializer.Serialize(slipway, options);
-
                 var content = new StringContent(modelJson, Encoding.UTF8, "application/json");
+
                 try
                 {
                     var response = await _httpClient.PostAsync("https://data.slipways.de/api/slipway", content);
                     if (!response.IsSuccessStatusCode)
                     {
-                        return false;
+                        return null;
                     }
-                    return true;
+                    var result = await content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<SlipwayDto>(result);
+                }
+                catch (JsonException e)
+                {
+                    _logger.LogError(1211, $"Error occurred while deserialize response {slipway.Name} {e.StackTrace}", e);
+                    return null;
                 }
                 catch (HttpRequestException e)
                 {
                     _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name} {e.StackTrace}", e);
-                    return false;
+                    return null;
                 }
                 catch (ArgumentNullException e)
                 {
                     _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name} {e.StackTrace}", e);
-                    return false;
+                    return null;
                 }
             }
             catch (Exception e)
             {
                 _logger.LogError(1211, $"Error occurred while post new Slipway {slipway.Name} {e.StackTrace}", e);
-                return false;
+                return null;
             }
         }
     }

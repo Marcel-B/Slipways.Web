@@ -46,7 +46,10 @@ namespace com.b_velop.Slipways.Web.Pages
             Slipways = new SlipwaysModel();
             if (!_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
             {
-                slipways = new HashSet<Slipway>((await _slipwayService.GetSlipwaysAsync()));
+                var slipwayDtos = await _slipwayService.GetSlipwaysAsync();
+                slipways = new HashSet<Slipway>();
+                foreach (var slipwayDto in slipwayDtos)
+                    slipways.Add(new Slipway(slipwayDto));
                 _cache.Set("Slipways", slipways);
             }
             Slipways.Slipways = slipways;

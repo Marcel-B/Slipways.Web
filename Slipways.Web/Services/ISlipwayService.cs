@@ -7,9 +7,10 @@ namespace com.b_velop.Slipways.Web.Services
 {
     public interface ISlipwayService
     {
-        Task<IEnumerable<Slipway>> GetSlipwaysAsync();
+        Task<IEnumerable<SlipwayDto>> GetSlipwaysAsync();
         Task<IEnumerable<Water>> GetWatersAsync();
-        Task<bool> InsertSlipway(Slipway slipway);
+        Task<IEnumerable<ExtraDto>> GetExtrasAsync();
+        Task<SlipwayDto> InsertSlipway(SlipwayDto slipway);
         Task<IEnumerable<WaterDto>> GetWaterAsync();
     }
 }

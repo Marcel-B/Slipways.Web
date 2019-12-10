@@ -46,21 +46,21 @@ namespace com.b_velop.Slipways.Web.Pages.Slipways
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _service.InsertSlipway(Slipway);
-                if (result)
-                {
-                    return RedirectToPage("../Index");
-                }
-            }
-            if (!_cache.TryGetValue("waters", out IEnumerable<Water> waters))
-            {
-                var result = await _service.GetWatersAsync();
-                _cache.Set("waters", result);
-                waters = result;
-            }
-            Waters = new SelectList(waters, "Id", "Longname");
+            //if (ModelState.IsValid)
+            //{
+            //    var result = await _service.InsertSlipway(Slipway);
+            //    if (result)
+            //    {
+            //        return RedirectToPage("../Index");
+            //    }
+            //}
+            //if (!_cache.TryGetValue("waters", out IEnumerable<Water> waters))
+            //{
+            //    var result = await _service.GetWatersAsync();
+            //    _cache.Set("waters", result);
+            //    waters = result;
+            //}
+            //Waters = new SelectList(waters, "Id", "Longname");
             return Page();
         }
     }
