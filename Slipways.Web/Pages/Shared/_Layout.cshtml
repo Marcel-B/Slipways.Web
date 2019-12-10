@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="~/img/icons8-boat-launch-96.png" alt="logo"/></a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="~/img/icons8-boat-launch-96.png" width="66" height="66" alt="logo" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,14 +21,28 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>*@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Slipways/Create"> Hinzufügen</a>
-                        </li>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>*@
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Datenschutz</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li>
+                                <div class="dropdown show">
+                                    <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Admin
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" asp-area="" asp-page="/Slipways/Create">Hinzufügen</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Water/Index">Gewässer</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Slipway/Index">Slipanlage</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

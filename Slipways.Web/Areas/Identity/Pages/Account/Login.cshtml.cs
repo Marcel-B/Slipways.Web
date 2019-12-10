@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -86,7 +85,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("Benutzer angemeldet.");
+                    _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -95,7 +94,7 @@ namespace com.b_velop.Slipways.Web.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("Benutzerkonto gesperrt.");
+                    _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else

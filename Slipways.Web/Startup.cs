@@ -91,6 +91,11 @@ namespace com.b_velop.Slipways.Web
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeFolder("/Slipways");
+                    if (!Env.IsDevelopment())
+                    {
+                        options.Conventions.AuthorizeAreaFolder("Admin", "/Slipway");
+                        options.Conventions.AuthorizeAreaFolder("Admin", "/Water");
+                    }
                 });
 
             services.Configure<CookiePolicyOptions>(options =>

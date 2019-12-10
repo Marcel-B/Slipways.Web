@@ -66,7 +66,8 @@ namespace com.b_velop.Slipways.Web.Pages
                     cs = slipways;
                 if (!string.IsNullOrWhiteSpace(search))
                 {
-                    cs = cs.Where(_ => _.Name.Contains(search) || _.City.Contains(search)).Distinct();
+                    search = search.ToLower();
+                    cs = cs.Where(_ => _.Name.ToLower().Contains(search) || _.City.ToLower().Contains(search)).Distinct();
                 }
                 Slipways.Slipways = new HashSet<Slipway>(cs);
             }

@@ -1,5 +1,6 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
+using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Data.Models;
 using GraphQL.Client;
 using Microsoft.Extensions.Caching.Memory;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -78,9 +80,31 @@ namespace com.b_velop.Slipways.Web.Services
             return result.GetDataFieldAs<IEnumerable<T>>(name);
         }
 
+        public async Task<IEnumerable<WaterDto>> GetWaterAsync()
+        {
+            try
+            {
+                var query = @"query {
+                          waters {
+                            id
+                            longname
+                            shortname
+                          }
+                        }";
+                return await GetAsync<WaterDto>(query, "waters");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(2222, $"Error occurred while loading Waters from GraphQL endpoint", e);
+            }
+            return new WaterDto[0];
+        }
+
         public async Task<IEnumerable<Slipway>> GetSlipwaysAsync()
         {
-            var query = @"query {
+            try
+            {
+                var query = @"query {
                           slipways {
                             id
                             city
@@ -90,7 +114,13 @@ namespace com.b_velop.Slipways.Web.Services
                             costs
                           }
                         }";
-            return await GetAsync<Slipway>(query, "slipways");
+                return await GetAsync<Slipway>(query, "slipways");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(2222, $"Error occurred while loading Slipways from GraphQL endpoint", e);
+            }
+            return new Slipway[0];
         }
 
         public async Task<IEnumerable<Water>> GetWatersAsync()
@@ -101,7 +131,8 @@ namespace com.b_velop.Slipways.Web.Services
                                 longname
                               }
                             }";
-            return await GetAsync<Water>(query, "waters");
+            var waters = await GetAsync<Water>(query, "waters");
+            return waters.OrderBy(_ => _.Longname);
         }
 
         public async Task<bool> InsertSlipway(

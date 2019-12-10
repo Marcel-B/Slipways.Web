@@ -21,7 +21,7 @@ namespace com.b_velop.Slipways.Web.Services
             var clientId = "abc";
             var state = Guid.NewGuid().ToString();
             var path = $"/v5.0/dialog/oauth?client_id ={clientId}&redirect_uri ={redirect}&state={state}";
-            _client.GetAsync(path);
+            await _client.GetAsync(path);
         }
     }
 }
