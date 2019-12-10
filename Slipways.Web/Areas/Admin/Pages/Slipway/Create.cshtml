@@ -15,6 +15,7 @@
             <input class="form-control" placeholder="Stadt / Ort" asp-for="Slipway.City">
         </div>
     </div>
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <input class="form-control" placeholder="Straße" asp-for="Slipway.Street">
@@ -23,6 +24,7 @@
             <input class="form-control" placeholder="Postleitzahl" asp-for="Slipway.Postalcode">
         </div>
     </div>
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <input class="form-control" placeholder="Längengrad" asp-for="Slipway.Longitude">
@@ -31,6 +33,22 @@
             <input class="form-control" placeholder="Breitengrad" asp-for="Slipway.Latitude">
         </div>
     </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <textarea class="form-control" placeholder="Kommenta" asp-for="Slipway.Comment"></textarea>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Pro" asp-for="Slipway.Pro">
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Kontra" asp-for="Slipway.Contra">
+        </div>
+    </div>
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <input class="form-control" placeholder="Preis" asp-for="Slipway.Costs">
@@ -47,7 +65,7 @@
         </div>
         <div class="form-check col">
             <input type="checkbox" class="form-check-input" asp-for="CampingArea" id="exampleCheck2">
-            <label class="form-check-label" for="exampleCheck2" >Campingplatz</label>
+            <label class="form-check-label" for="exampleCheck2">Campingplatz</label>
         </div>
         <div class="form-check col">
             <input type="checkbox" class="form-check-input" asp-for="ParkingPlace" id="exampleCheck3">

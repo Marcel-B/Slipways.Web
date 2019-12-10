@@ -75,7 +75,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                     Rating = Slipway.Rating.Value,
                     Street = Slipway.Street,
                     Postalcode = Slipway.Postalcode,
-                    Water = Guid.Parse(Slipway.Water),
+                    WaterFk = Guid.Parse(Slipway.Water),
                     Extras = extras
                 };
                 var result = await _service.InsertSlipway(slipwayDto);

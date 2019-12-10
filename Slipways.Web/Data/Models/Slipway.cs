@@ -8,7 +8,6 @@ namespace com.b_velop.Slipways.Web.Data.Models
     {
         public Slipway()
         {
-
         }
 
         public Slipway(
@@ -23,6 +22,9 @@ namespace com.b_velop.Slipways.Web.Data.Models
             Rating = slipway.Rating;
             Street = slipway.Street;
             Postalcode = slipway.Postalcode;
+            Pro = slipway.Pro;
+            Contra = slipway.Contra;
+            Comment = slipway.Comment;
         }
 
         public Guid Id { get; set; }
@@ -57,6 +59,12 @@ namespace com.b_velop.Slipways.Web.Data.Models
         public string Water { get; set; }
 
         public string Street { get; set; }
+
+        public string Comment { get; set; }
+
+        public string Pro { get; set; }
+
+        public string Contra { get; set; }
 
         [StringLength(5)]
         public string Postalcode { get; set; }
