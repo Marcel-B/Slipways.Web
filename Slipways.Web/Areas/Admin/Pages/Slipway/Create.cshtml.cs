@@ -76,6 +76,10 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                     Street = Slipway.Street,
                     Postalcode = Slipway.Postalcode,
                     WaterFk = Guid.Parse(Slipway.Water),
+                    Pro = Slipway.Pro,
+                    Contra = Slipway.Contra,
+                    Comment = Slipway.Comment,
+                    Created = DateTime.Now,
                     Extras = extras
                 };
                 var result = await _service.InsertSlipway(slipwayDto);
