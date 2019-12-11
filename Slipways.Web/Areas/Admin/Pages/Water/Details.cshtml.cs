@@ -1,33 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
+namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {
     public class DetailsModel : PageModel
     {
         private IMemoryCache _cache;
 
         [BindProperty]
-        public Data.Models.Slipway Slipway { get; set; }
+        public Data.Models.Water Water { get; set; }
 
         public DetailsModel(
             IMemoryCache cache)
         {
             _cache = cache;
         }
-        public ActionResult OnGet(
+
+        public void OnGet(
             Guid id)
         {
-            if (!_cache.TryGetValue("Slipways", out HashSet<Data.Models.Slipway> slipways))
-                return RedirectToPage("./Index");
-
-            Slipway = slipways.FirstOrDefault(_ => _.Id == id);
-            return Page();
+            if (_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
+            {
+                Water = waters.FirstOrDefault(_ => _.Id == id);
+            }
         }
     }
 }

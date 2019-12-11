@@ -37,7 +37,7 @@
                     @water.Shortname
                 </td>
                 <td>
-                    <button class="btn btn-success">Details</button>
+                    <a class="btn btn-success" asp-page="./Details" asp-route-id="@water.Id.ToString()">Details</a>
                     <button class="btn btn-primary">Edit</button>
                     <a class="btn btn-danger" asp-page="./Index" asp-route-id="@water.Id.ToString()">Delete</a>
                 </td>

@@ -63,7 +63,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             {
                 waters.RemoveWhere(_ => _.Id == uuid);
                 var water = await _waterService.DeleteWaterAsync(uuid);
-                Message = $"Gewässer '{water.Longname}' gelöscht";
+                Message = $"Gewässer '{water?.Longname}' gelöscht";
                 _cache.Set("waters", waters);
             }
             Waters = waters;

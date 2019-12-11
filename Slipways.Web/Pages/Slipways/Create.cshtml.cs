@@ -38,13 +38,13 @@ namespace com.b_velop.Slipways.Web.Pages.Slipways
         public async Task OnGetAsync()
         {
             Slipway = new Slipway();
-            if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
+            if (!_cache.TryGetValue("waters", out HashSet<Water> waters))
             {
                 var waterDtos = await _graphQLService.GetWatersAsync();
-                waters = new HashSet<Data.Models.Water>();
+                waters = new HashSet<Water>();
                 foreach (var waterDto in waterDtos)
                 {
-                    waters.Add(new Data.Models.Water
+                    waters.Add(new Water
                     {
                         Id = waterDto.Id,
                         Longname = waterDto.Longname,

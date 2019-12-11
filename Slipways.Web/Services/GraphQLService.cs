@@ -86,6 +86,7 @@ namespace com.b_velop.Slipways.Web.Services
                               waters {
                                 id
                                 longname
+                                shortname
                               }
                             }";
             var waters = await GetAsync<WaterDto>(query, "waters");
