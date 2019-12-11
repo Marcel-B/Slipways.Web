@@ -18,6 +18,7 @@ using Prometheus;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using com.b_velop.Slipways.Web.Middlewares;
+using com.b_velop.Slipways.Web.ViewModels;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -72,8 +73,14 @@ namespace com.b_velop.Slipways.Web
 
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddScoped<ISecretProvider, SecretProvider>();
+            services.AddScoped<WaterViewModel>();
             services.AddHttpClient<ISlipwayService, SlipwayService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
+            services.AddScoped<IGraphQLService, GraphQLService>();
+            services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
+            {
+                options.BaseAddress = new Uri("https://data.slipways.de/api/water");
+            });
 
             //services.AddAuthentication()
             //    .AddFacebook(facebookOptions =>

@@ -19,6 +19,7 @@ namespace com.b_velop.Slipways.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly IMemoryCache _cache;
+        private readonly IGraphQLService _graphQLService;
         private readonly ISecretProvider _secretProvider;
         private readonly ISlipwayService _slipwayService;
         private readonly ILogger<IndexModel> _logger;
@@ -30,11 +31,13 @@ namespace com.b_velop.Slipways.Web.Pages
 
         public IndexModel(
             IMemoryCache cache,
+            IGraphQLService graphQLService,
             ISecretProvider secretProvider,
             ISlipwayService slipwayService,
             ILogger<IndexModel> logger)
         {
             _cache = cache;
+            _graphQLService = graphQLService;
             _secretProvider = secretProvider;
             _slipwayService = slipwayService;
             _logger = logger;
@@ -45,7 +48,7 @@ namespace com.b_velop.Slipways.Web.Pages
             Slipways = new SlipwaysModel();
             if (!_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
             {
-                var slipwayDtos = await _slipwayService.GetSlipwaysAsync();
+                var slipwayDtos = await _graphQLService.GetSlipwaysAsync();
                 slipways = new HashSet<Slipway>();
                 foreach (var slipwayDto in slipwayDtos)
                     slipways.Add(new Slipway(slipwayDto));

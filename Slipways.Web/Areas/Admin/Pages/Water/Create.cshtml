@@ -1,0 +1,24 @@
+﻿@page
+@model com.b_velop.Slipways.Web.Areas.Admin.Pages.Water.CreateModel
+@{
+}
+
+<h1>Hinzufügen</h1>
+
+<form method="post">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="ViewModel.Water.Longname">@Html.DisplayFor(model => Model.ViewModel.Water.Longname)</label>
+            <input class="form-control" placeholder="Name" asp-for="ViewModel.Water.Longname">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="ViewModel.Water.Shortname">@Html.DisplayFor(model =>  Model.ViewModel.Water.Shortname)</label>
+            <input class="form-control" placeholder="Kurzbezeichnung" asp-for="ViewModel.Water.Shortname">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <button type="submit" class="btn btn-primary">Slip it</button>
+    </div>
+</form>

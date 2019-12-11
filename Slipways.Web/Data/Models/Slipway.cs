@@ -47,26 +47,33 @@ namespace com.b_velop.Slipways.Web.Data.Models
         [Required]
         public double? Longitude { get; set; }
 
-        [Range(0, 500)]
+        [Range(-1, 500)]
         [Required]
+        [Display(Name = "Preis (unbekannt: -1)")]
         public decimal? Costs { get; set; }
 
         [Range(0, 5)]
         [Required]
+        [Display(Name = "Bewertung")]
         public int? Rating { get; set; }
 
         [Required]
         public string Water { get; set; }
 
+        [Display(Name = "Straße")]
         public string Street { get; set; }
 
+        [Display(Name = "Kommentar")]
         public string Comment { get; set; }
 
+        [Display(Name = "Pro")]
         public string Pro { get; set; }
 
+        [Display(Name = "Kontra")]
         public string Contra { get; set; }
 
         [StringLength(5)]
+        [Display(Name = "PLZ")]
         public string Postalcode { get; set; }
     }
 }

@@ -4,6 +4,12 @@
 }
 <div>
     <div class="row">
+        @if (!String.IsNullOrWhiteSpace(Model.Message))
+        {
+            <div class="alert alert-primary" role="alert">
+                @Model.Message
+            </div>
+        }
     </div>
     <div class="row">
         <div id="slipwayTable">

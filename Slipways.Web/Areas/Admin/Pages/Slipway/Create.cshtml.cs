@@ -14,6 +14,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
     public class CreateModel : PageModel
     {
         private ISlipwayService _service;
+        private IGraphQLService _graphQLService;
         private IMemoryCache _cache;
         private ILogger<CreateModel> _logger;
 
@@ -33,10 +34,12 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 
         public CreateModel(
             ISlipwayService service,
+            IGraphQLService graphQLService,
             IMemoryCache cache,
             ILogger<CreateModel> logger)
         {
             _service = service;
+            _graphQLService = graphQLService;
             _cache = cache;
             _logger = logger;
         }
@@ -44,11 +47,20 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public async Task OnGetAsync()
         {
             Slipway = new Data.Models.Slipway();
-            if (!_cache.TryGetValue("waters", out IEnumerable<Data.Models.Water> waters))
+            if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
             {
-                var result = await _service.GetWatersAsync();
-                _cache.Set("waters", result);
-                waters = result;
+                var waterDtos = await _graphQLService.GetWatersAsync();
+                waters = new HashSet<Data.Models.Water>();
+                foreach (var waterDto in waterDtos)
+                {
+                    waters.Add(new Data.Models.Water
+                    {
+                        Id = waterDto.Id,
+                        Longname = waterDto.Longname,
+                        Shortname = waterDto.Shortname
+                    });
+                }
+                _cache.Set("waters", waters);
             }
             Waters = new SelectList(waters, "Id", "Longname");
         }
@@ -85,19 +97,29 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 var result = await _service.InsertSlipway(slipwayDto);
                 if (result != null)
                 {
-                    if(_cache.TryGetValue("Slipways", out HashSet<Data.Models.Slipway> slipways))
+                    if (_cache.TryGetValue("Slipways", out HashSet<Data.Models.Slipway> slipways))
                     {
+                        Slipway.Id = result.Id;
                         slipways.Add(Slipway);
                         _cache.Set("Slipways", slipways);
                     }
-                    return RedirectToPage("../Index");
+                    return RedirectToPage("./Index");
                 }
             }
-            if (!_cache.TryGetValue("waters", out IEnumerable<Data.Models.Water> waters))
+            if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
             {
-                var result = await _service.GetWatersAsync();
-                _cache.Set("waters", result);
-                waters = result;
+                var waterDtos = await _graphQLService.GetWatersAsync();
+                waters = new HashSet<Data.Models.Water>();
+                foreach (var waterDto in waterDtos)
+                {
+                    waters.Add(new Data.Models.Water
+                    {
+                        Id = waterDto.Id,
+                        Longname = waterDto.Longname,
+                        Shortname = waterDto.Shortname
+                    });
+                }
+                _cache.Set("waters", waters);
             }
             Waters = new SelectList(waters, "Id", "Longname");
             return Page();

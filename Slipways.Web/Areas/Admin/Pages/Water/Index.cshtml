@@ -2,6 +2,14 @@
 @model com.b_velop.Slipways.Web.Areas.Admin.Pages.Water.IndexModel
 @{
 }
+<div class="row">
+    @if (!String.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="alert alert-primary" role="alert">
+            @Model.Message
+        </div>
+    }
+</div>
 
 <table class="table table-hover">
     <thead>
@@ -10,9 +18,11 @@
                 Name
             </th>
             <th>
-                Kurname
+                Kurzname
             </th>
-            <th></th>
+            <th>
+                <a class="btn btn-success" href="/Admin/Water/Create">Neu</a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -29,7 +39,7 @@
                 <td>
                     <button class="btn btn-success">Details</button>
                     <button class="btn btn-primary">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <a class="btn btn-danger" asp-page="./Index" asp-route-id="@water.Id.ToString()">Delete</a>
                 </td>
             </tr>
         }

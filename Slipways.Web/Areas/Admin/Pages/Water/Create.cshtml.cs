@@ -1,49 +1,45 @@
-using com.b_velop.Slipways.Web.Data.Dtos;
-using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
+using com.b_velop.Slipways.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {
-    public class IndexModel : PageModel
+    public class CreateModel : PageModel
     {
-        private IMemoryCache _cache;
-        private IGraphQLService _graphQLService;
-        private IWaterService _waterService;
-
-        [TempData]
-        public string Message { get; set; }
-
         [BindProperty]
-        public HashSet<Data.Models.Water> Waters { get; set; }
+        public WaterViewModel ViewModel { get; set; }
 
-        public IndexModel(
-            IMemoryCache cache,
+        private IGraphQLService _graphQLService;
+        private IMemoryCache _cache;
+        private IWaterService _service;
+
+        public CreateModel(
+            WaterViewModel viewModel,
             IGraphQLService graphQLService,
-            ISecretProvider secretProvider,
-            IWaterService waterService,
-            ILogger<IndexModel> logger)
+            IMemoryCache cache,
+            IWaterService service)
         {
-            _cache = cache;
+            ViewModel = viewModel;
             _graphQLService = graphQLService;
-            _waterService = waterService;
+            _cache = cache;
+            _service = service;
         }
 
-        public async Task OnGetAsync(
-            [FromQuery] string id)
+        public void OnGet()
         {
-            var uuid = Guid.Empty;
-            if (id != null)
-            {
-                uuid = Guid.Parse(id);
-            }
+        }
 
+        public async Task<ActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            var water = await ViewModel.SaveWaterAsync(_service);
             if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
             {
                 var waterDtos = await _graphQLService.GetWatersAsync();
@@ -59,14 +55,17 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
                 }
                 _cache.Set("waters", waters);
             }
-            if (id != null)
+            else
             {
-                waters.RemoveWhere(_ => _.Id == uuid);
-                var water = await _waterService.DeleteWaterAsync(uuid);
-                Message = $"Gewässer '{water.Longname}' gelöscht";
+                waters.Add(new Data.Models.Water
+                {
+                    Id = water.Id,
+                    Longname = water.Longname,
+                    Shortname = water.Shortname
+                });
                 _cache.Set("waters", waters);
             }
-            Waters = waters;
+            return RedirectToPage("./Index");
         }
     }
 }
