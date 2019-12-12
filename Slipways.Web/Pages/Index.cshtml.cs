@@ -1,4 +1,5 @@
-﻿using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,24 +20,24 @@ namespace com.b_velop.Slipways.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly IMemoryCache _cache;
+        private readonly IDataStore _dataStore;
         private readonly IGraphQLService _graphQLService;
         private readonly ISecretProvider _secretProvider;
         private readonly ISlipwayService _slipwayService;
         private readonly ILogger<IndexModel> _logger;
 
-        //[BindProperty]
-        //public HashSet<Slipway> Slipways { get; set; }
-
         public SlipwaysModel Slipways { get; set; }
 
         public IndexModel(
             IMemoryCache cache,
+            IDataStore dataStore,
             IGraphQLService graphQLService,
             ISecretProvider secretProvider,
             ISlipwayService slipwayService,
             ILogger<IndexModel> logger)
         {
             _cache = cache;
+            _dataStore = dataStore;
             _graphQLService = graphQLService;
             _secretProvider = secretProvider;
             _slipwayService = slipwayService;
@@ -46,14 +47,7 @@ namespace com.b_velop.Slipways.Web.Pages
         public async Task OnGetAsync()
         {
             Slipways = new SlipwaysModel();
-            if (!_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
-            {
-                var slipwayDtos = await _graphQLService.GetSlipwaysAsync();
-                slipways = new HashSet<Slipway>();
-                foreach (var slipwayDto in slipwayDtos)
-                    slipways.Add(new Slipway(slipwayDto));
-                _cache.Set("Slipways", slipways);
-            }
+            var slipways = await _dataStore.GetSlipwaysAsync();
             Slipways.Slipways = slipways;
         }
 
@@ -62,7 +56,7 @@ namespace com.b_velop.Slipways.Web.Pages
             [FromQuery] bool onlyFree)
         {
             Slipways = new SlipwaysModel();
-            if (_cache.TryGetValue("Slipways", out HashSet<Slipway> slipways))
+            if (_cache.TryGetValue(Cache.Slipways, out HashSet<Slipway> slipways))
             {
                 IEnumerable<Slipway> cs;
                 if (onlyFree)

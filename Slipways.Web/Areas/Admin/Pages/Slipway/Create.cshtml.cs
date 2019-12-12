@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 {
     public class CreateModel : PageModel
     {
-        private ISlipwayService _service;
-        private IGraphQLService _graphQLService;
-        private IMemoryCache _cache;
+        private IDataStore _dataStore;
         private ILogger<CreateModel> _logger;
 
         [BindProperty]
@@ -33,35 +32,17 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public SelectList Waters { get; set; }
 
         public CreateModel(
-            ISlipwayService service,
-            IGraphQLService graphQLService,
-            IMemoryCache cache,
+            IDataStore dataStore,
             ILogger<CreateModel> logger)
         {
-            _service = service;
-            _graphQLService = graphQLService;
-            _cache = cache;
+            _dataStore = dataStore;
             _logger = logger;
         }
 
         public async Task OnGetAsync()
         {
             Slipway = new Data.Models.Slipway();
-            if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
-            {
-                var waterDtos = await _graphQLService.GetWatersAsync();
-                waters = new HashSet<Data.Models.Water>();
-                foreach (var waterDto in waterDtos)
-                {
-                    waters.Add(new Data.Models.Water
-                    {
-                        Id = waterDto.Id,
-                        Longname = waterDto.Longname,
-                        Shortname = waterDto.Shortname
-                    });
-                }
-                _cache.Set("waters", waters);
-            }
+            var waters = await _dataStore.GetWatersAsync();
             Waters = new SelectList(waters, "Id", "Longname");
         }
 
@@ -76,51 +57,11 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                     extras.Add(Guid.Parse("F5836F04-E23B-475A-A079-1E4F3C9C4D87"));
                 if (Steg)
                     extras.Add(Guid.Parse("06448FD8-DCC1-4579-947A-8A7B18BC1AAB"));
-
-                var slipwayDto = new SlipwayDto
-                {
-                    Name = Slipway.Name,
-                    City = Slipway.City,
-                    Latitude = Slipway.Latitude.Value,
-                    Longitude = Slipway.Longitude.Value,
-                    Costs = Slipway.Costs.Value,
-                    Rating = Slipway.Rating.Value,
-                    Street = Slipway.Street,
-                    Postalcode = Slipway.Postalcode,
-                    WaterFk = Guid.Parse(Slipway.Water),
-                    Pro = Slipway.Pro,
-                    Contra = Slipway.Contra,
-                    Comment = Slipway.Comment,
-                    Created = DateTime.Now,
-                    Extras = extras
-                };
-                var result = await _service.InsertSlipway(slipwayDto);
-                if (result != null)
-                {
-                    if (_cache.TryGetValue("Slipways", out HashSet<Data.Models.Slipway> slipways))
-                    {
-                        Slipway.Id = result.Id;
-                        slipways.Add(Slipway);
-                        _cache.Set("Slipways", slipways);
-                    }
+                var slipways = await _dataStore.AddSlipwayAsync(Slipway, extras);
+                if (slipways != null)
                     return RedirectToPage("./Index");
-                }
             }
-            if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
-            {
-                var waterDtos = await _graphQLService.GetWatersAsync();
-                waters = new HashSet<Data.Models.Water>();
-                foreach (var waterDto in waterDtos)
-                {
-                    waters.Add(new Data.Models.Water
-                    {
-                        Id = waterDto.Id,
-                        Longname = waterDto.Longname,
-                        Shortname = waterDto.Shortname
-                    });
-                }
-                _cache.Set("waters", waters);
-            }
+            var waters = await _dataStore.GetWatersAsync();
             Waters = new SelectList(waters, "Id", "Longname");
             return Page();
         }

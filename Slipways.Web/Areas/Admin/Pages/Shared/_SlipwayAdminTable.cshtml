@@ -34,7 +34,7 @@
                 <td>
                     <a class="btn btn-success" asp-page="./Details" asp-route-id="@slipway.Id.ToString()">Details</a>
                     <button class="btn btn-primary">Edit</button>
-                    <a class="btn btn-danger" asp-page="./Index" asp-route-id="@slipway.Id.ToString()">Delete</a>
+                    <a class="btn btn-danger" asp-page-handler="Delete" asp-route-id="@slipway.Id">Delete</a>
                 </td>
             </tr>
         }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using com.b_velop.Slipways.Web.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
@@ -9,22 +11,20 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 {
     public class DetailsModel : PageModel
     {
-        private IMemoryCache _cache;
+        private IDataStore _dataStore;
 
         [BindProperty]
         public Data.Models.Slipway Slipway { get; set; }
 
         public DetailsModel(
-            IMemoryCache cache)
+            IDataStore dataStore)
         {
-            _cache = cache;
+            _dataStore = dataStore;
         }
-        public ActionResult OnGet(
+        public async Task<IActionResult> OnGet(
             Guid id)
         {
-            if (!_cache.TryGetValue("Slipways", out HashSet<Data.Models.Slipway> slipways))
-                return RedirectToPage("./Index");
-
+            var slipways = await _dataStore.GetSlipwaysAsync();
             Slipway = slipways.FirstOrDefault(_ => _.Id == id);
             return Page();
         }

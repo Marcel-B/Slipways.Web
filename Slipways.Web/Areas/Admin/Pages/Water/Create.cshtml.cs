@@ -1,3 +1,4 @@
+using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Services;
 using com.b_velop.Slipways.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,20 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         [BindProperty]
         public WaterViewModel ViewModel { get; set; }
 
+        private IDataStore _dataStore;
         private IGraphQLService _graphQLService;
         private IMemoryCache _cache;
         private IWaterService _service;
 
         public CreateModel(
             WaterViewModel viewModel,
+            IDataStore dataStore,
             IGraphQLService graphQLService,
             IMemoryCache cache,
             IWaterService service)
         {
             ViewModel = viewModel;
+            _dataStore = dataStore;
             _graphQLService = graphQLService;
             _cache = cache;
             _service = service;
