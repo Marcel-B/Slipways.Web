@@ -35,15 +35,24 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             _waterService = waterService;
         }
 
-        public async Task OnGetAsync(
-            [FromQuery] string id)
+        public async Task OnGetDeleteAsync(
+            Guid id)
         {
-            var uuid = Guid.Empty;
             if (id != null)
             {
-                uuid = Guid.Parse(id);
+                if (_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
+                {
+                    waters.RemoveWhere(_ => _.Id == id);
+                    var water = await _waterService.DeleteWaterAsync(id);
+                    Message = $"Gewässer '{water?.Longname}' gelöscht";
+                    _cache.Set("waters", waters);
+                }
+                Waters = waters;
             }
+        }
 
+        public async Task OnGetAsync()
+        {
             if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
             {
                 var waterDtos = await _graphQLService.GetWatersAsync();
@@ -57,13 +66,6 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
                         Shortname = waterDto.Shortname
                     });
                 }
-                _cache.Set("waters", waters);
-            }
-            if (id != null)
-            {
-                waters.RemoveWhere(_ => _.Id == uuid);
-                var water = await _waterService.DeleteWaterAsync(uuid);
-                Message = $"Gewässer '{water?.Longname}' gelöscht";
                 _cache.Set("waters", waters);
             }
             Waters = waters;

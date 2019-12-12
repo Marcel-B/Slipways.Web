@@ -17,6 +17,7 @@ namespace com.b_velop.Slipways.Web.Services
         Task<WaterDto> InsertAsync(WaterDto water);
         Task<IEnumerable<WaterDto>> SelectAllWatersAsync();
         Task<WaterDto> DeleteWaterAsync(Guid uuid);
+        Task<WaterDto> UpdateWaterAsync(WaterDto waterDto);
     }
 
     public class WaterService : TokenService, IWaterService
@@ -42,10 +43,10 @@ namespace com.b_velop.Slipways.Web.Services
             _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            HttpRequestMessage request = new HttpRequestMessage
+            var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"https://data.slipways.de/api/water?id={id}"),
+                RequestUri = new Uri($"https://data.slipways.de/api/water/{id}"),
             };
 
             var result = await _client.SendAsync(request);
@@ -94,6 +95,30 @@ namespace com.b_velop.Slipways.Web.Services
                 return waterDtos;
             }
             return null;
+        }
+
+        public async Task<WaterDto> UpdateWaterAsync(
+            WaterDto waterDto)
+        {
+            var token = await GetTokenAsync();
+            _client.DefaultRequestHeaders.Clear();
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var jsonContent = JsonSerializer.Serialize(waterDto, _jsonOptions);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri($"https://data.slipways.de/api/water/{waterDto.Id}"),
+                Content = new StringContent(jsonContent, Encoding.UTF8, "application/json")
+            };
+
+            var result = await _client.SendAsync(request);
+
+            if (!result.IsSuccessStatusCode)
+                return null;
+
+            var resultObj = await result.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<WaterDto>(resultObj, _jsonOptions);
         }
     }
 }

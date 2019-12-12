@@ -84,7 +84,7 @@ namespace com.b_velop.Slipways.Web.Services
             HttpRequestMessage request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"https://data.slipways.de/api/slipway?id={id}"),
+                RequestUri = new Uri($"https://data.slipways.de/api/slipway/{id}"),
             };
 
             var result = await _httpClient.SendAsync(request);

@@ -38,8 +38,8 @@
                 </td>
                 <td>
                     <a class="btn btn-success" asp-page="./Details" asp-route-id="@water.Id.ToString()">Details</a>
-                    <button class="btn btn-primary">Edit</button>
-                    <a class="btn btn-danger" asp-page="./Index" asp-route-id="@water.Id.ToString()">Delete</a>
+                    <a class="btn btn-primary" asp-page="./Edit" , asp-route-id="@water.Id">Edit</a>
+                    <a class="btn btn-danger" asp-page-handler="Delete" asp-route-id="@water.Id">Delete</a>
                 </td>
             </tr>
         }
