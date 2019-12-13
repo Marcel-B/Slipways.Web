@@ -32,8 +32,8 @@
                     @slipway.Costs
                 </td>
                 <td>
-                    <a class="btn btn-success" asp-page="./Details" asp-route-id="@slipway.Id.ToString()">Details</a>
-                    <button class="btn btn-primary">Edit</button>
+                    <a class="btn btn-success" asp-page="./Details" asp-route-id="@slipway.Id">Details</a>
+                    <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@slipway.Id">Edit</a>
                     <a class="btn btn-danger" asp-page-handler="Delete" asp-route-id="@slipway.Id">Delete</a>
                 </td>
             </tr>

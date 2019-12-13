@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public void OnGet(
             Guid id)
         {
-            if (_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
+            if (_cache.TryGetValue(Cache.Waters, out HashSet<Data.Models.Water> waters))
             {
                 Water = waters.FirstOrDefault(_ => _.Id == id);
             }
@@ -53,7 +54,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 
             Message = $"Gewässer '{water.Longname}' geändert.";
 
-            if (water != null && _cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
+            if (water != null && _cache.TryGetValue(Cache.Waters, out HashSet<Data.Models.Water> waters))
             {
                 var tmp = waters.RemoveWhere(_ => _.Id == water.Id);
                 waters.Add(new Data.Models.Water
@@ -63,7 +64,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
                     Shortname = water.Shortname
                 });
 
-                _cache.Set("waters", waters);
+                _cache.Set(Cache.Waters, waters);
             }
             return new RedirectToPageResult("./Index");
         }

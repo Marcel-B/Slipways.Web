@@ -21,17 +21,20 @@ namespace com.b_velop.Slipways.Web.Data
         private IMemoryCache _cache;
         private IGraphQLService _graphQLService;
         private ISlipwayService _slipwayService;
+        private IWaterService _waterService;
         private ILogger<DataStore> _logger;
 
         public DataStore(
             IMemoryCache cache,
             IGraphQLService graphQLService,
             ISlipwayService slipwayService,
+            IWaterService waterService,
             ILogger<DataStore> logger)
         {
             _cache = cache;
             _graphQLService = graphQLService;
             _slipwayService = slipwayService;
+            _waterService = waterService;
             _logger = logger;
         }
 
@@ -92,16 +95,50 @@ namespace com.b_velop.Slipways.Web.Data
                 Created = DateTime.Now,
                 Extras = extras
             };
+
             var result = await _slipwayService.InsertSlipway(slipwayDto);
-            if (result != null)
+
+            if (result == null)
+                return null;
+
+            var slipways = await GetSlipwaysAsync();
+            slipway.Id = result.Id;
+            slipways.Add(slipway);
+            _cache.Set(Cache.Slipways, slipways);
+            return slipways;
+        }
+
+        public async Task<HashSet<Water>> AddWaterAsync(
+            Water water)
+        {
+            var waterDto = new WaterDto
             {
-                var slipways = await GetSlipwaysAsync();
-                slipway.Id = result.Id;
-                slipways.Add(slipway);
-                _cache.Set(Cache.Slipways, slipways);
-                return slipways;
+                Longname = water.Longname,
+                Shortname = water.Shortname
+            };
+            var result = await _waterService.InsertAsync(waterDto);
+
+            if (result == null)
+                return null;
+
+            var waters = await GetWatersAsync();
+            water.Id = result.Id;
+            waters.Add(water);
+            _cache.Set(Cache.Waters, waters);
+
+            return waters;
+        }
+
+        public async Task<HashSet<Water>> RemoveWaterAsync(
+            Guid id)
+        {
+            if (_cache.TryGetValue(Cache.Waters, out HashSet<Water> waters))
+            {
+                waters.RemoveWhere(_ => _.Id == id);
+                var water = await _waterService.DeleteWaterAsync(id);
+                _cache.Set(Cache.Waters, waters);
             }
-            return null;
+            return waters;
         }
     }
 }

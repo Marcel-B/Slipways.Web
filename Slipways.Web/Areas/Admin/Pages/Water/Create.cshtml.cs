@@ -15,22 +15,13 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public WaterViewModel ViewModel { get; set; }
 
         private IDataStore _dataStore;
-        private IGraphQLService _graphQLService;
-        private IMemoryCache _cache;
-        private IWaterService _service;
 
         public CreateModel(
             WaterViewModel viewModel,
-            IDataStore dataStore,
-            IGraphQLService graphQLService,
-            IMemoryCache cache,
-            IWaterService service)
+            IDataStore dataStore)
         {
             ViewModel = viewModel;
             _dataStore = dataStore;
-            _graphQLService = graphQLService;
-            _cache = cache;
-            _service = service;
         }
 
         public void OnGet()
@@ -43,32 +34,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             {
                 return Page();
             }
-            var water = await ViewModel.SaveWaterAsync(_service);
-            if (!_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
-            {
-                var waterDtos = await _graphQLService.GetWatersAsync();
-                waters = new HashSet<Data.Models.Water>();
-                foreach (var waterDto in waterDtos)
-                {
-                    waters.Add(new Data.Models.Water
-                    {
-                        Id = waterDto.Id,
-                        Longname = waterDto.Longname,
-                        Shortname = waterDto.Shortname
-                    });
-                }
-                _cache.Set("waters", waters);
-            }
-            else
-            {
-                waters.Add(new Data.Models.Water
-                {
-                    Id = water.Id,
-                    Longname = water.Longname,
-                    Shortname = water.Shortname
-                });
-                _cache.Set("waters", waters);
-            }
+            ViewModel.Waters = await _dataStore.AddWaterAsync(ViewModel.Water);
             return RedirectToPage("./Index");
         }
     }

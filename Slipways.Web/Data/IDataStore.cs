@@ -11,5 +11,7 @@ namespace com.b_velop.Slipways.Web.Data
         Task<HashSet<Slipway>> AddSlipwayAsync(Slipway slipway, IEnumerable<Guid> extras);
         Task<HashSet<Slipway>> RemoveSlipwayAsync(Guid id);
         Task<HashSet<Water>> GetWatersAsync();
+        Task<HashSet<Water>> AddWaterAsync(Water water);
+        Task<HashSet<Water>> RemoveWaterAsync(Guid id);
     }
 }
