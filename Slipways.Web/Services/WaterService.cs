@@ -4,8 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -41,7 +41,7 @@ namespace com.b_velop.Slipways.Web.Services
         {
             var token = await GetTokenAsync();
             _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var request = new HttpRequestMessage
             {
@@ -86,7 +86,7 @@ namespace com.b_velop.Slipways.Web.Services
         {
             var token = await GetTokenAsync();
             _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var responseMessage = await _client.GetAsync("");
             if (responseMessage.IsSuccessStatusCode)
@@ -102,7 +102,7 @@ namespace com.b_velop.Slipways.Web.Services
         {
             var token = await GetTokenAsync();
             _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var jsonContent = JsonSerializer.Serialize(waterDto, _jsonOptions);
             var request = new HttpRequestMessage
