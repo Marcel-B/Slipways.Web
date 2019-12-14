@@ -94,6 +94,7 @@ namespace com.b_velop.Slipways.Web.Services
                 var waterDtos = await JsonSerializer.DeserializeAsync<IEnumerable<WaterDto>>(await responseMessage.Content.ReadAsStreamAsync(), _jsonOptions);
                 return waterDtos;
             }
+            _logger.LogWarning($"Failed to load Water. Status Code: '{(int)responseMessage.StatusCode}: {responseMessage.ReasonPhrase}'");
             return null;
         }
 
@@ -115,8 +116,10 @@ namespace com.b_velop.Slipways.Web.Services
             var result = await _client.SendAsync(request);
 
             if (!result.IsSuccessStatusCode)
+            {
+                _logger.LogWarning($"Failed to load update Water {waterDto.Longname}. Status Code: '{(int)result.StatusCode}: {result.ReasonPhrase}' '{jsonContent}'");
                 return null;
-
+            }
             var resultObj = await result.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<WaterDto>(resultObj, _jsonOptions);
         }

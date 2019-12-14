@@ -39,7 +39,7 @@ namespace com.b_velop.Slipways.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
-
+            services.AddHostedService<CacheLoader>();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
