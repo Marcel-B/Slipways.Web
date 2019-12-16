@@ -20,7 +20,8 @@ namespace com.b_velop.Slipways.Web.Infrastructure
                     return streamReader.ReadToEnd();
                 }
             }
-            return string.Empty;
+            var secret = System.Environment.GetEnvironmentVariable(key);
+            return secret;
         }
     }
 }
