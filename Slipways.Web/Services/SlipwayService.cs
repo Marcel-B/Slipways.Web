@@ -36,8 +36,6 @@ namespace com.b_velop.Slipways.Web.Services
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-
-
                 var modelJson = JsonSerializer.Serialize(slipway, _jsonOptions);
                 var content = new StringContent(modelJson, Encoding.UTF8, "application/json");
 

@@ -50,7 +50,7 @@ namespace com.b_velop.Slipways.Web
             var scope = Environment.GetEnvironmentVariable("SCOPE");
 
             var secretProvider = new SecretProvider();
-            var clientSecret = secretProvider.GetSecret("slipways.web");
+            var clientSecret = secretProvider.GetSecret("slipways_web");
             var key = secretProvider.GetSecret("send_grid_key");
             var appId = secretProvider.GetSecret("facebook_app_id");
             var appSecret = secretProvider.GetSecret("facebook_app_secret");
