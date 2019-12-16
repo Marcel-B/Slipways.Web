@@ -3,47 +3,52 @@
 @{
 }
 <div class="container align-content-center">
-    <div class="card" style="width: 28rem;">
-        <iframe width="500"
-                class="card-img-top"
-                height="500"
-                frameborder="1"
-                style="border:0"
-                src="https://www.google.com/maps/embed/v1/view?key=@Model.ApiKey&center=@Model.Slipway.Latitude,@Model.Slipway.Longitude&zoom=18&maptype=satellite">
-        </iframe>
-        <div class="card-body">
-            <span>
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <iframe width="500"
+                    class="card-img-top"
+                    height="500"
+                    frameborder="1"
+                    style="border:0"
+                    src="https://www.google.com/maps/embed/v1/view?key=@Model.ApiKey&center=@Model.Slipway.Latitude,@Model.Slipway.Longitude&zoom=18&maptype=satellite">
+            </iframe>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Slipway.Name</h5>
+                   <span>
+                    @if (Model.Slipway.Costs > 0)
+                    {
+                        <img src="~/img/euro-24.png" alt="Kostenpflichtig" />
+                    }
+                    else if (Model.Slipway.Costs < 0)
+                    {
+                        <img src="~/img/sad-24.png" alt="Keine Angaben" />
+                    }
+                    else
+                    {
+                        <img src="~/img/happy-24.png" alt="Kostenlos" />
+                    }
+                    @if (Model.Slipway.Extras.Count > 0)
+                    {
+                        @foreach (var extra in Model.Slipway.Extras)
+                        {
+                            <img src="~/img/@extra.Name" />
+                        }
+                    }
+                </span>
+                <p class="card-text">@Model.Slipway.Street - @Model.Slipway.Postalcode @Model.Slipway.City</p>
+                <p class="card-text">Gewässer: @Model.Slipway.Water <a href="https://de.wikipedia.org/wiki/@Model.Slipway.Water" target="_blank"> <img src="~/img/wiki-24.png" alt="Wikipedia" /></a></p>
                 @if (Model.Slipway.Costs > 0)
                 {
-                    <img src="~/img/euro-24.png" alt="Kostenpflichtig" />
+                    <p>Kosten: @Model.Slipway.Costs?.ToString("C", CultureInfo.CreateSpecificCulture("de-DE"))</p>
                 }
-                else if (Model.Slipway.Costs < 0)
-                {
-                    <img src="~/img/sad-24.png" alt="Keine Angaben" />
-                }
-                else
-                {
-                    <img src="~/img/happy-24.png" alt="Kostenlos" />
-                }
-                @if (Model.Slipway.Extras.Count > 0)
-                {
-                    @foreach (var extra in Model.Slipway.Extras)
-                    {
-                        <img src="~/img/@extra.Name" />
-                    }
-                }
-            </span>
-            <h5 class="card-title">@Model.Slipway.Name</h5>
-            <p class="card-text">@Model.Slipway.Street - @Model.Slipway.Postalcode @Model.Slipway.City</p>
-            <p class="card-text">Gewässer: @Model.Slipway.Water <a href="https://de.wikipedia.org/wiki/@Model.Slipway.Water" target="_blank"> <img src="~/img/wiki-24.png" alt="Wikipedia" /></a></p>
-            @if (Model.Slipway.Costs > 0)
-            {
-                <p>Kosten: @Model.Slipway.Costs?.ToString("C", CultureInfo.CreateSpecificCulture("de-DE"))</p>
-            }
-            <span>
-                <a asp-page="/Index" class="btn btn-warning">Zurück</a>
-                <a href="https://www.google.com/maps/place/@Model.Slipway.Latitude,@Model.Slipway.Longitude" class="btn btn-success"><img src="~/img/route-24.png" alt="route" /></a>
-            </span>
+                <span>
+                    <a asp-page="/Index" class="btn btn-warning">Zurück</a>
+                    <a href="https://www.google.com/maps/place/@Model.Slipway.Latitude,@Model.Slipway.Longitude" class="btn btn-success"><img src="~/img/route-24.png" alt="route" /></a>
+                </span>
+            </div>
         </div>
     </div>
 </div>
