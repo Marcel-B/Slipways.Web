@@ -69,9 +69,15 @@ namespace com.b_velop.Slipways.Web.Services
                             longitude
                             latitude
                             costs
+                            street
+                            postalcode
+                            extras { 
+                                id
+                                name
+                            }
                           }
                         }";
-                return await GetAsync<SlipwayDto>(query, "slipways");
+               return await GetAsync<SlipwayDto>(query, "slipways");
             }
             catch (Exception e)
             {

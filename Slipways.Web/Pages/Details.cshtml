@@ -1,0 +1,48 @@
+﻿@page
+@model com.b_velop.Slipways.Web.Pages.DetailsModel
+@{
+}
+<div class="container align-content-center">
+    <div class="card" style="width: 28rem;">
+        <iframe width="500"
+                class="card-img-top"
+                height="500"
+                frameborder="1"
+                style="border:0"
+                src="https://www.google.com/maps/embed/v1/view?key=AIzaSyDKpbVLU48qc6UAvTg8V1yiJTFafG6d9Sg&center=@Model.Slipway.Latitude,@Model.Slipway.Longitude&zoom=18&maptype=satellite">
+        </iframe>
+        <div class="card-body">
+            <span>
+                @if (Model.Slipway.Costs > 0)
+                {
+                    <img src="~/img/euro-24.png" alt="Kostenpflichtig" />
+                }
+                else if (Model.Slipway.Costs < 0)
+                {
+                    <img src="~/img/sad-24.png" alt="Keine Angaben" />
+                }
+                else
+                {
+                    <img src="~/img/happy-24.png" alt="Kostenlos" />
+                }
+                @if (Model.Slipway.Extras.Count > 0)
+                {
+                    @foreach (var extra in Model.Slipway.Extras)
+                    {
+                        <img src="~/img/@extra.Name" />
+                    }
+                }
+            </span>
+            <h5 class="card-title">@Model.Slipway.Name</h5>
+            <p class="card-text">@Model.Slipway.Street - @Model.Slipway.Postalcode @Model.Slipway.City</p>
+            @if (Model.Slipway.Costs > 0)
+            {
+                <p>Kosten: @Model.Slipway.Costs?.ToString("C", CultureInfo.CreateSpecificCulture("de-DE"))</p>
+            }
+            <span>
+                <a asp-page="/Index" class="btn btn-warning">Zurück</a>
+                <a href="https://www.google.com/maps/place/@Model.Slipway.Latitude,@Model.Slipway.Longitude" class="btn btn-success"><img src="~/img/route-24.png" alt="route" /></a>
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 ﻿using com.b_velop.Slipways.Web.Data.Dtos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace com.b_velop.Slipways.Web.Data.Models
@@ -8,10 +9,11 @@ namespace com.b_velop.Slipways.Web.Data.Models
     {
         public Slipway()
         {
+            Extras = new HashSet<Extra>();
         }
 
         public Slipway(
-            SlipwayDto slipway)
+            SlipwayDto slipway) : this()
         {
             Id = slipway.Id;
             City = slipway.City;
@@ -25,6 +27,10 @@ namespace com.b_velop.Slipways.Web.Data.Models
             Pro = slipway.Pro;
             Contra = slipway.Contra;
             Comment = slipway.Comment;
+            foreach (var extra in slipway.Extras)
+            {
+                Extras.Add(new Extra(extra));
+            }
         }
 
         public Guid Id { get; set; }
@@ -75,5 +81,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
         [StringLength(5)]
         [Display(Name = "PLZ")]
         public string Postalcode { get; set; }
+
+        public HashSet<Extra> Extras { get; set; }
     }
 }

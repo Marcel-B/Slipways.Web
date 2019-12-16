@@ -52,6 +52,6 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
         public double Longitude { get; set; }
 
         [JsonPropertyName("extras")]
-        public IEnumerable<Guid> Extras { get; set; }
+        public IEnumerable<ExtraDto> Extras { get; set; }
     }
 }

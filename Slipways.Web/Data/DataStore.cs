@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
@@ -75,8 +76,7 @@ namespace com.b_velop.Slipways.Web.Data
         }
 
         public async Task<HashSet<Slipway>> AddSlipwayAsync(
-            Slipway slipway,
-            IEnumerable<Guid> extras)
+            Slipway slipway)
         {
             var slipwayDto = new SlipwayDto
             {
@@ -93,7 +93,7 @@ namespace com.b_velop.Slipways.Web.Data
                 Contra = slipway.Contra,
                 Comment = slipway.Comment,
                 Created = DateTime.Now,
-                Extras = extras
+                Extras = slipway.Extras.Select(_ => new ExtraDto(_))
             };
 
             var result = await _slipwayService.InsertSlipway(slipwayDto);
