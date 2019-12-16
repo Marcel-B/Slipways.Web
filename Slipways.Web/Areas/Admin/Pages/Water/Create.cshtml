@@ -13,12 +13,13 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label asp-for="Water.Shortname">@Html.DisplayNameFor(model =>  Model.Water.Shortname)</label>
+            <label asp-for="Water.Shortname">@Html.DisplayNameFor(model => Model.Water.Shortname)</label>
             <input class="form-control" placeholder="Kurzbezeichnung" asp-for="Water.Shortname">
         </div>
     </div>
 
-    <div class="form-row">
+    <span>
         <button type="submit" class="btn btn-primary">Speichern</button>
-    </div>
+        <a class="btn btn-warning" asp-page="./Index">Zurück</a>
+    </span>
 </form>

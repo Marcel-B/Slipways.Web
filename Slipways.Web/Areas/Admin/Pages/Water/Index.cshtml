@@ -21,7 +21,7 @@
                 Kurzname
             </th>
             <th>
-                <a class="btn btn-success" href="/Admin/Water/Create">Neu</a>
+                <a class="btn btn-sm btn-success" href="/Admin/Water/Create"><img src="~/img/add-24.png" alt="neu" /></a>
             </th>
         </tr>
     </thead>
@@ -37,9 +37,9 @@
                     @water.Shortname
                 </td>
                 <td>
-                    <a class="btn btn-success" asp-page="./Details" asp-route-id="@water.Id.ToString()">Details</a>
-                    <a class="btn btn-primary" asp-page="./Edit" , asp-route-id="@water.Id">Edit</a>
-                    <a class="btn btn-danger" asp-page-handler="Delete" asp-route-id="@water.Id">Delete</a>
+                    <a class="btn btn-sm btn-success" asp-page="./Details" asp-route-id="@water.Id.ToString()"><img src="~/img/info-24.png" alt="details" /></a>
+                    <a class="btn btn-sm btn-primary" asp-page="./Edit" , asp-route-id="@water.Id"><img src="~/img/edit-24.png" alt="bearbeiten" /></a>
+                    <a class="btn btn-sm btn-danger" asp-page-handler="Delete" asp-route-id="@water.Id"><img src="~/img/delete-24.png" alt="löschen" /></a>
                 </td>
             </tr>
         }
