@@ -11,5 +11,6 @@ namespace com.b_velop.Slipways.Web.Services
         Task<IEnumerable<SlipwayDto>> GetSlipwaysAsync();
         Task<IEnumerable<WaterDto>> GetWaterAsync();
         Task<IEnumerable<WaterDto>> GetWatersAsync();
+        Task<IEnumerable<ServiceDto>> GetServicesAsync();
     }
 }

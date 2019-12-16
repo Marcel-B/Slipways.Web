@@ -1,0 +1,48 @@
+﻿@page
+@model com.b_velop.Slipways.Web.Areas.Admin.Pages.Service.IndexModel
+@{
+}
+
+<h1>Service</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Straße</th>
+            <th>PLZ</th>
+            <th>Ort</th>
+            <th>Website</th>
+            <th>Fon</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model.Services)
+        {
+            <tr>
+                <td>
+                    @service.Name
+                </td>
+                <td>
+                    @service.Street
+                </td>
+                <td>
+                    @service.Postalcode
+                </td>
+                <td>
+                    @service.City
+                </td>
+                <td>
+                    @service.Url
+                </td>
+                <td>
+                    @service.Phone
+                </td>
+                <td>
+                    @service.Email
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

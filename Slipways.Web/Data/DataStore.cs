@@ -5,7 +5,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
@@ -14,6 +13,7 @@ namespace com.b_velop.Slipways.Web.Data
     {
         public const string Waters = "Waters";
         public const string Slipways = "Slipways";
+        public const string Services = "Services";
     }
 
     public class DataStore : IDataStore
@@ -139,6 +139,19 @@ namespace com.b_velop.Slipways.Web.Data
                 _cache.Set(Cache.Waters, waters);
             }
             return waters;
+        }
+
+        public async Task<HashSet<Service>> GetServicesAsync()
+        {
+            if (!_cache.TryGetValue(Cache.Services, out HashSet<Service> services))
+            {
+                var serviceDtos = await _graphQLService.GetServicesAsync();
+                services = new HashSet<Service>();
+                foreach (var serviceDto in serviceDtos)
+                    services.Add(new Service(serviceDto));
+                _cache.Set(Cache.Services, services);
+            }
+            return services;
         }
     }
 }

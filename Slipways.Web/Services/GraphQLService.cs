@@ -113,5 +113,36 @@ namespace com.b_velop.Slipways.Web.Services
             }
         }
 
+        public async Task<IEnumerable<ServiceDto>> GetServicesAsync()
+        {
+            try
+            {
+                var query = @"query {
+                              services {
+                                id
+                                name
+                                city
+                                latitude
+                                longitude
+                                postalcode
+                                phone
+                                email
+                                url
+                                street
+                                manufacturers {
+                                    id
+                                    name
+                                }
+                              }
+                            }";
+                var services = await GetAsync<ServiceDto>(query, "services");
+                return services.OrderBy(_ => _.Name);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(6666, $"Error occurred while request Services from GraphQL", e);
+                return new ServiceDto[0];
+            }
+        }
     }
 }
