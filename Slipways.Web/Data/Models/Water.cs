@@ -1,4 +1,5 @@
 ﻿using com.b_velop.Slipways.Web.Data.Dtos;
+using com.b_velop.Slipways.Web.Infrastructure;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +13,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
             WaterDto w)
         {
             Id = w.Id;
-            Longname = w.Longname;
+            Longname = w.Longname.FirstUpper();
             Shortname = w.Shortname;
         }
 

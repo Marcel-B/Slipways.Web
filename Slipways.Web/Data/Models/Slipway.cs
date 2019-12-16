@@ -1,4 +1,5 @@
 ﻿using com.b_velop.Slipways.Web.Data.Dtos;
+using com.b_velop.Slipways.Web.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,6 +28,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
             Pro = slipway.Pro;
             Contra = slipway.Contra;
             Comment = slipway.Comment;
+            Water = new Water(slipway.Water).Longname.FirstUpper();
             foreach (var extra in slipway.Extras)
             {
                 Extras.Add(new Extra(extra));
@@ -64,6 +66,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
         public int? Rating { get; set; }
 
         [Required]
+        [Display(Name = "Gewässer")]
         public string Water { get; set; }
 
         [Display(Name = "Straße")]

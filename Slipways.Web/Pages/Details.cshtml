@@ -35,6 +35,7 @@
             </span>
             <h5 class="card-title">@Model.Slipway.Name</h5>
             <p class="card-text">@Model.Slipway.Street - @Model.Slipway.Postalcode @Model.Slipway.City</p>
+            <p class="card-text">Gewässer: @Model.Slipway.Water <a href="https://de.wikipedia.org/wiki/@Model.Slipway.Water" target="_blank"> <img src="~/img/wiki-24.png" alt="Wikipedia" /></a></p>
             @if (Model.Slipway.Costs > 0)
             {
                 <p>Kosten: @Model.Slipway.Costs?.ToString("C", CultureInfo.CreateSpecificCulture("de-DE"))</p>

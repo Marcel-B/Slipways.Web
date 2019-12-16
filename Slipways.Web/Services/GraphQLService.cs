@@ -71,6 +71,11 @@ namespace com.b_velop.Slipways.Web.Services
                             costs
                             street
                             postalcode
+                            water {
+                              id
+                              longname
+                              shortname
+                            }
                             extras { 
                                 id
                                 name

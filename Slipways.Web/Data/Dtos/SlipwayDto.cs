@@ -53,5 +53,8 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
 
         [JsonPropertyName("extras")]
         public IEnumerable<ExtraDto> Extras { get; set; }
+
+        [JsonPropertyName("water")]
+        public WaterDto Water { get; set; }
     }
 }
