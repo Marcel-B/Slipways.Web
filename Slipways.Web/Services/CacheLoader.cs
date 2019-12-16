@@ -39,14 +39,21 @@ namespace com.b_velop.Slipways.Web.Services
         {
             using var scope = Services.CreateScope();
             var cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
-            var waterService = scope.ServiceProvider.GetRequiredService<IWaterService>();
-            var watersDtos = await waterService.SelectAllWatersAsync();
+            var graphQLService = scope.ServiceProvider.GetRequiredService<IGraphQLService>();
+            var watersDtos = await graphQLService.GetWatersAsync();
             if (watersDtos == null)
                 return;
             var waters = new HashSet<Water>();
             foreach (var waterDto in watersDtos)
                 waters.Add(new Water(waterDto));
             cache.Set(Cache.Waters, waters);
+            var slipwayDtos = await graphQLService.GetSlipwaysAsync();
+            var slipways = new HashSet<Slipway>();
+            foreach (var slipway in slipwayDtos)
+            {
+                slipways.Add(new Slipway(slipway));
+            }
+            cache.Set(Cache.Slipways, slipways);
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
