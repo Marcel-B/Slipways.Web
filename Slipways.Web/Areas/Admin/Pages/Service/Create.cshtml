@@ -59,5 +59,14 @@
             <a class="btn btn-warning" asp-page="./Index">Zurück</a>
         </span>
     </div>
+
+    <span>
+        @foreach (var manufacturer in Model.Manufacturers.Keys)
+        {
+            <input type="checkbox" class="form-check-input" asp-for="@Model.Manufacturers[manufacturer].Selected" id="@manufacturer">
+            <label class="form-check-label" asp-for="@Model.Manufacturers[manufacturer].Selected">@manufacturer</label>
+            <input type="hidden" asp-for="@Model.Manufacturers[manufacturer].Id" value="@Model.Manufacturers[manufacturer].Id" />
+        }
+</span>
 </form>
 

@@ -15,6 +15,7 @@ namespace com.b_velop.Slipways.Web.Data
         public const string Waters = "Waters";
         public const string Slipways = "Slipways";
         public const string Services = "Services";
+        public const string Manufacturers = "Manufacturers";
     }
 
     public class DataStore : IDataStore
@@ -174,6 +175,19 @@ namespace com.b_velop.Slipways.Web.Data
             _cache.Set(Cache.Services, services);
 
             return service;
+        }
+
+        public async Task<HashSet<Manufacturer>> GetManufacturersAsync()
+        {
+            if (!_cache.TryGetValue(Cache.Manufacturers, out HashSet<Manufacturer> manufacturers))
+            {
+                var manufacturerDtos = await _graphQLService.GetManufacturersAsync();
+                manufacturers = new HashSet<Manufacturer>();
+                foreach (var manufacturerDto in manufacturerDtos)
+                    manufacturers.Add(new Manufacturer(manufacturerDto));
+                _cache.Set(Cache.Manufacturers, manufacturers);
+            }
+            return manufacturers;
         }
     }
 }

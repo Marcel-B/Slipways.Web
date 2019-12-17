@@ -48,7 +48,8 @@ namespace com.b_velop.Slipways.Web.Services
                             shortname
                           }
                         }";
-                return await GetAsync<WaterDto>(query, "waters");
+                var waterDtos = await GetAsync<WaterDto>(query, "waters");
+                return waterDtos.OrderBy(_ => _.Longname);
             }
             catch (Exception e)
             {
@@ -82,7 +83,8 @@ namespace com.b_velop.Slipways.Web.Services
                             }
                           }
                         }";
-               return await GetAsync<SlipwayDto>(query, "slipways");
+                var slipwayDtos =  await GetAsync<SlipwayDto>(query, "slipways");
+                return slipwayDtos.OrderBy(_ => _.Name);
             }
             catch (Exception e)
             {
@@ -153,6 +155,26 @@ namespace com.b_velop.Slipways.Web.Services
             {
                 _logger.LogError(6666, $"Error occurred while request Services from GraphQL", e);
                 return new ServiceDto[0];
+            }
+        }
+
+        public async Task<IEnumerable<ManufacturerDto>> GetManufacturersAsync()
+        {
+            try
+            {
+                var query = @"query {
+                              manufacturers {
+                                id
+                                name
+                              }
+                            }";
+                var manufacturerDtos = await GetAsync<ManufacturerDto>(query, "manufacturers");
+                return manufacturerDtos.OrderBy(_ => _.Name);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(6666, $"Error occurred while request Manufacturers from GraphQL", e);
+                return new ManufacturerDto[0];
             }
         }
     }

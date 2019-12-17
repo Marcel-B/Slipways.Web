@@ -7,9 +7,13 @@ namespace com.b_velop.Slipways.Web.Data.Models
 {
     public class Service
     {
-        public Service() { }
+        public Service()
+        {
+            Manufacturers = new HashSet<Manufacturer>();
+        }
+
         public Service(
-            ServiceDto s)
+            ServiceDto s) : this()
         {
             Id = s.Id;
             Name = s.Name;
