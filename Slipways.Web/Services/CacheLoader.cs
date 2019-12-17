@@ -40,20 +40,33 @@ namespace com.b_velop.Slipways.Web.Services
             using var scope = Services.CreateScope();
             var cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
             var graphQLService = scope.ServiceProvider.GetRequiredService<IGraphQLService>();
+
             var watersDtos = await graphQLService.GetWatersAsync();
-            if (watersDtos == null)
-                return;
-            var waters = new HashSet<Water>();
-            foreach (var waterDto in watersDtos)
-                waters.Add(new Water(waterDto));
-            cache.Set(Cache.Waters, waters);
-            var slipwayDtos = await graphQLService.GetSlipwaysAsync();
-            var slipways = new HashSet<Slipway>();
-            foreach (var slipway in slipwayDtos)
+            if (watersDtos != null)
             {
-                slipways.Add(new Slipway(slipway));
+                var waters = new HashSet<Water>();
+                foreach (var waterDto in watersDtos)
+                    waters.Add(new Water(waterDto));
+                cache.Set(Cache.Waters, waters);
             }
-            cache.Set(Cache.Slipways, slipways);
+
+            var slipwayDtos = await graphQLService.GetSlipwaysAsync();
+            if (slipwayDtos != null)
+            {
+                var slipways = new HashSet<Slipway>();
+                foreach (var slipway in slipwayDtos)
+                    slipways.Add(new Slipway(slipway));
+                cache.Set(Cache.Slipways, slipways);
+            }
+
+            var serviceDtos = await graphQLService.GetServicesAsync();
+            if (serviceDtos != null)
+            {
+                var services = new HashSet<Service>();
+                foreach (var service in serviceDtos)
+                    services.Add(new Service(service));
+                cache.Set(Cache.Services, services);
+            }
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

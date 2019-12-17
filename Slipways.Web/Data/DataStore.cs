@@ -160,20 +160,20 @@ namespace com.b_velop.Slipways.Web.Data
         public async Task<Service> AddServiceAsync(
             Service service)
         {
-            var serviceDto = new ServiceDto
-            {
-            };
+            var serviceDto = new ServiceDto(service);
+
             var result = await _serviceService.InsertAsync(serviceDto);
 
             if (result == null)
                 return null;
 
             var services = await GetServicesAsync();
-            //water.Id = result.Id;
-            //waters.Add(water);
-            //_cache.Set(Cache.Waters, waters);
+            service.Id = result.Id;
 
-            return new Service();
+            services.Add(service);
+            _cache.Set(Cache.Services, services);
+
+            return service;
         }
     }
 }

@@ -16,19 +16,21 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
         {
             Id = s.Id;
             Name = s.Name;
+
             Street = s.Street;
             Postalcode = s.Postalcode;
             City = s.City;
+
             Longitude = s.Longitude;
             Latitude = s.Latitude;
+
             Url = s.Url;
             Phone = s.Phone;
             Email = s.Email;
+
             Manufacturers = new HashSet<ManufacturerDto>();
             foreach (var manufacturer in s.Manufacturers)
-            {
                 Manufacturers.Add(new ManufacturerDto(manufacturer));
-            }
         }
 
         [JsonPropertyName("id")]

@@ -20,12 +20,11 @@ namespace com.b_velop.Slipways.Web.Data.Models
             Latitude = s.Latitude;
             Url = s.Url;
             Phone = s.Phone;
+            Email = s.Email;
             Manufacturers = new HashSet<Manufacturer>();
 
             foreach (var manufacturer in s.Manufacturers)
-            {
                 Manufacturers.Add(new Manufacturer(manufacturer));
-            }
         }
 
         public Guid Id { get; set; }

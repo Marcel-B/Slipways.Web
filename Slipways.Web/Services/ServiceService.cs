@@ -43,6 +43,7 @@ namespace com.b_velop.Slipways.Web.Services
                     var response = await _httpClient.PostAsync("https://data.slipways.de/api/service", content);
                     if (!response.IsSuccessStatusCode)
                     {
+                        _logger.LogWarning(6666, $"Error occurred while submit Service '{modelJson}'");
                         return null;
                     }
                     var result = await response.Content.ReadAsStringAsync();
@@ -50,23 +51,23 @@ namespace com.b_velop.Slipways.Web.Services
                 }
                 catch (JsonException e)
                 {
-                    _logger.LogError(1211, $"Error occurred while deserialize response {serviceDto.Name} {e.StackTrace}", e);
+                    _logger.LogError(6666, $"Error occurred while deserialize response {serviceDto.Name} {e.StackTrace}", e);
                     return null;
                 }
                 catch (HttpRequestException e)
                 {
-                    _logger.LogError(1211, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
+                    _logger.LogError(6666, $"Error occurred while post new Service {modelJson} {e.StackTrace}", e);
                     return null;
                 }
                 catch (ArgumentNullException e)
                 {
-                    _logger.LogError(1211, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
+                    _logger.LogError(6666, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
                     return null;
                 }
             }
             catch (Exception e)
             {
-                _logger.LogError(1211, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
+                _logger.LogError(6666, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
                 return null;
             }
         }
