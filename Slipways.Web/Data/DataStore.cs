@@ -22,6 +22,7 @@ namespace com.b_velop.Slipways.Web.Data
         private IMemoryCache _cache;
         private IGraphQLService _graphQLService;
         private ISlipwayService _slipwayService;
+        private IServiceService _serviceService;
         private IWaterService _waterService;
         private ILogger<DataStore> _logger;
 
@@ -29,12 +30,14 @@ namespace com.b_velop.Slipways.Web.Data
             IMemoryCache cache,
             IGraphQLService graphQLService,
             ISlipwayService slipwayService,
+            IServiceService serviceService,
             IWaterService waterService,
             ILogger<DataStore> logger)
         {
             _cache = cache;
             _graphQLService = graphQLService;
             _slipwayService = slipwayService;
+            _serviceService = serviceService;
             _waterService = waterService;
             _logger = logger;
         }
@@ -152,6 +155,25 @@ namespace com.b_velop.Slipways.Web.Data
                 _cache.Set(Cache.Services, services);
             }
             return services;
+        }
+
+        public async Task<Service> AddServiceAsync(
+            Service service)
+        {
+            var serviceDto = new ServiceDto
+            {
+            };
+            var result = await _serviceService.InsertAsync(serviceDto);
+
+            if (result == null)
+                return null;
+
+            var services = await GetServicesAsync();
+            //water.Id = result.Id;
+            //waters.Add(water);
+            //_cache.Set(Cache.Waters, waters);
+
+            return new Service();
         }
     }
 }

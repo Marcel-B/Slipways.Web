@@ -53,12 +53,15 @@ namespace com.b_velop.Slipways.Web.Data.Models
         [Display(Name = "Breitengrad")]
         public double Latitude { get; set; }
 
+        [DataType(DataType.Url)]
         public string Url { get; set; }
 
         [Display(Name = "Telefon")]
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
 
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public HashSet<Manufacturer> Manufacturers { get; set; }

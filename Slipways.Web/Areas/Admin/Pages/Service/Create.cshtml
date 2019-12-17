@@ -28,6 +28,21 @@
     </div>
 
     <div class="form-row">
+        <div class="form-group col-md-3">
+            <label asp-for="Service.Phone">@Html.DisplayNameFor(model => Model.Service.Phone)</label>
+            <input class="form-control" placeholder="Telefon" asp-for="Service.Phone">
+        </div>
+        <div class="form-group col-md-3">
+            <label asp-for="Service.Email">@Html.DisplayNameFor(model => Model.Service.Email)</label>
+            <input class="form-control" placeholder="Email" asp-for="Service.Email">
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Service.Url">@Html.DisplayNameFor(model => Model.Service.Url)</label>
+            <input class="form-control" placeholder="Hompage" asp-for="Service.Url">
+        </div>
+    </div>
+
+    <div class="form-row">
         <div class="form-group col-md-6">
             <label asp-for="Service.Longitude">@Html.DisplayNameFor(model => Model.Service.Longitude)</label>
             <input class="form-control" placeholder="Längengrad" asp-for="Service.Longitude">
@@ -37,18 +52,6 @@
             <input class="form-control" placeholder="Breitengrad" asp-for="Service.Latitude">
         </div>
     </div>
-
-
-
-    @*<div class="form-row">
-            <div class="form-group class=" dropdown"">
-                <label>Gewässer</label>
-                <select asp-for="Slipway.Water" class="control-label"
-                        asp-items="@Model.Waters">
-                    <option value="">Gewässer wählen</option>
-                </select>
-            </div>
-        </div>*@
 
     <div class="form-row">
         <span>

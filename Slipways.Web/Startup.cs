@@ -78,6 +78,7 @@ namespace com.b_velop.Slipways.Web
 
             services.AddScoped<IGraphQLService, GraphQLService>();
             services.AddHttpClient<ISlipwayService, SlipwayService>();
+            services.AddHttpClient<IServiceService, ServiceService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
