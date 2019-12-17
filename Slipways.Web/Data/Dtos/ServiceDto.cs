@@ -1,9 +1,7 @@
 ﻿using com.b_velop.Slipways.Web.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data.Dtos
 {
@@ -27,8 +25,12 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
             Url = s.Url;
             Phone = s.Phone;
             Email = s.Email;
-
+ 
             Manufacturers = new HashSet<ManufacturerDto>();
+
+            if (s.Manufacturers == null)
+                return;
+
             foreach (var manufacturer in s.Manufacturers)
                 Manufacturers.Add(new ManufacturerDto(manufacturer));
         }

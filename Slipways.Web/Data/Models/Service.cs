@@ -21,6 +21,10 @@ namespace com.b_velop.Slipways.Web.Data.Models
             Url = s.Url;
             Phone = s.Phone;
             Email = s.Email;
+
+            if (s.Manufacturers == null)
+                return;
+
             Manufacturers = new HashSet<Manufacturer>();
 
             foreach (var manufacturer in s.Manufacturers)
