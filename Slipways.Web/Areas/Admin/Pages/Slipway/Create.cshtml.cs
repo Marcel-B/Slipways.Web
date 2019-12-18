@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Data.Models;
-using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
@@ -17,6 +13,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
     {
         private IDataStore _dataStore;
         private ILogger<CreateModel> _logger;
+
+        [TempData]
+        public string Message { get; set; }
 
         [BindProperty]
         public Data.Models.Slipway Slipway { get; set; }
@@ -51,7 +50,6 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         {
             if (ModelState.IsValid)
             {
-                var extras = new List<Guid>();
                 if (ParkingPlace)
                     Slipway.Extras.Add(new Extra(Guid.Parse("8976CEB5-19D6-4F5C-A34D-A43801667B40")));
                 if (CampingArea)
@@ -64,6 +62,8 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             }
             var waters = await _dataStore.GetWatersAsync();
             Waters = new SelectList(waters, "Id", "Longname");
+            Message = "Fehler beim erstellen der Slipanlage";
+
             return Page();
         }
     }

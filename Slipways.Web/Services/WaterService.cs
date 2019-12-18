@@ -15,12 +15,11 @@ namespace com.b_velop.Slipways.Web.Services
     public interface IWaterService
     {
         Task<WaterDto> InsertAsync(WaterDto water);
-        Task<IEnumerable<WaterDto>> SelectAllWatersAsync();
         Task<WaterDto> DeleteWaterAsync(Guid uuid);
         Task<WaterDto> UpdateWaterAsync(WaterDto waterDto);
     }
 
-    public class WaterService : TokenService, IWaterService
+    public class WaterService : TokenService<WaterService>, IWaterService
     {
         private HttpClient _client;
         private ILogger<WaterService> _logger;
@@ -30,7 +29,7 @@ namespace com.b_velop.Slipways.Web.Services
             IIdentityProviderService tokenService,
             IServiceProvider services,
             IMemoryCache cache,
-            ILogger<WaterService> logger) : base(tokenService, services, cache)
+            ILogger<WaterService> logger) : base(tokenService, services, cache, logger)
         {
             _client = client;
             _logger = logger;
@@ -40,6 +39,9 @@ namespace com.b_velop.Slipways.Web.Services
             Guid id)
         {
             var token = await GetTokenAsync();
+            if (token == null)
+                return null;
+
             _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -60,6 +62,9 @@ namespace com.b_velop.Slipways.Web.Services
             WaterDto water)
         {
             var token = await GetTokenAsync();
+            if (token == null)
+                return null;
+
             _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -82,26 +87,13 @@ namespace com.b_velop.Slipways.Web.Services
             return null;
         }
 
-        public async Task<IEnumerable<WaterDto>> SelectAllWatersAsync()
-        {
-            var token = await GetTokenAsync();
-            _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var responseMessage = await _client.GetAsync("");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var waterDtos = await JsonSerializer.DeserializeAsync<IEnumerable<WaterDto>>(await responseMessage.Content.ReadAsStreamAsync(), _jsonOptions);
-                return waterDtos;
-            }
-            _logger.LogWarning($"Failed to load Water. Status Code: '{(int)responseMessage.StatusCode}: {responseMessage.ReasonPhrase}'");
-            return null;
-        }
-
         public async Task<WaterDto> UpdateWaterAsync(
             WaterDto waterDto)
         {
             var token = await GetTokenAsync();
+            if (token == null)
+                return null;
+
             _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

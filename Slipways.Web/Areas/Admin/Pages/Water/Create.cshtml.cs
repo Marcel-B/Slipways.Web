@@ -7,6 +7,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {
     public class CreateModel : PageModel
     {
+        [TempData]
+        public string Message { get; set; }
+
         [BindProperty]
         public Data.Models.Water Water { get; set; }
 
@@ -28,8 +31,13 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             {
                 return Page();
             }
-            _ = await _dataStore.AddWaterAsync(Water);
-            return RedirectToPage("./Index");
+            var reuslt = await _dataStore.AddWaterAsync(Water);
+
+            if (reuslt != null)
+                return RedirectToPage("./Index");
+
+            Message = "Fehler beim erstellen des Gewässers";
+            return Page();
         }
     }
 }

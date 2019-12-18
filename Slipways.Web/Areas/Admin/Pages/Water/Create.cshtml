@@ -5,6 +5,15 @@
 
 <h1>Hinzufügen</h1>
 
+<div class="row">
+    @if (!String.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="alert alert-primary" role="alert">
+            @Model.Message
+        </div>
+    }
+</div>
+
 <form method="post">
     <div class="form-row">
         <div class="form-group col-md-6">

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public class ServiceService : TokenService, IServiceService
+    public class ServiceService : TokenService<ServiceService>, IServiceService
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<ServiceService> _logger;
@@ -20,7 +20,7 @@ namespace com.b_velop.Slipways.Web.Services
             IServiceProvider services,
             IMemoryCache cache,
             IIdentityProviderService tokenService,
-            ILogger<ServiceService> logger) : base(tokenService, services, cache)
+            ILogger<ServiceService> logger) : base(tokenService, services, cache, logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -32,6 +32,10 @@ namespace com.b_velop.Slipways.Web.Services
             try
             {
                 var token = await GetTokenAsync();
+
+                if (token == null)
+                    return null;
+
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

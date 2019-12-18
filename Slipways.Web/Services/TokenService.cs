@@ -2,27 +2,31 @@
 using com.b_velop.IdentityProvider.Model;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public abstract class TokenService
+    public abstract class TokenService<T>
     {
         private IServiceProvider _services;
         private IIdentityProviderService _tokenService;
         private IMemoryCache _cache;
+        private ILogger<T> _logger;
         protected JsonSerializerOptions _jsonOptions;
 
         protected TokenService(
             IIdentityProviderService tokenService,
             IServiceProvider services,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            ILogger<T> logger)
         {
             _tokenService = tokenService;
             _services = services;
             _cache = cache;
+            _logger = logger;
 
             _jsonOptions = new JsonSerializerOptions
             {
@@ -36,6 +40,12 @@ namespace com.b_velop.Slipways.Web.Services
         {
             var infoItem = _services.GetRequiredService<InfoItem>();
             var token = await _tokenService.GetTokenAsync(infoItem);
+            if (token == null)
+            {
+                var info = string.IsNullOrWhiteSpace(infoItem.Secret) ? "No Secret" : "Secret is not null";
+                _logger.LogError(6666, $"Error occurred while request token.\nClientID: '{infoItem.ClientId}'\nScope: '{infoItem.Scope}'\nUrl: '{infoItem.Url}'\nSecret: '{info}'");
+                return null;
+            }
             return token;
         }
         protected async Task<string> GetTokenAsync()
@@ -55,7 +65,9 @@ namespace com.b_velop.Slipways.Web.Services
             token = await RequestTokenAsync();
 
             if (token == null)
+            {
                 return null;
+            }
 
             _cache.Set("last", DateTime.Now.AddSeconds(token.ExpiresIn));
             _cache.Set("token", token);

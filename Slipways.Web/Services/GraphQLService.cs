@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public class GraphQLService : TokenService, IGraphQLService
+    public class GraphQLService : TokenService<GraphQLService>, IGraphQLService
     {
         private ILogger<GraphQLService> _logger;
         private GraphQLClient _client;
@@ -21,7 +21,7 @@ namespace com.b_velop.Slipways.Web.Services
             IIdentityProviderService tokenService,
             IServiceProvider services,
             ILogger<GraphQLService> logger,
-            IMemoryCache cache) : base(tokenService, services, cache)
+            IMemoryCache cache) : base(tokenService, services, cache, logger)
         {
             _logger = logger;
             _client = client;

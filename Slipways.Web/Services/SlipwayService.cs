@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public class SlipwayService : TokenService, ISlipwayService
+    public class SlipwayService : TokenService<SlipwayService>, ISlipwayService
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<SlipwayService> _logger;
@@ -20,19 +20,22 @@ namespace com.b_velop.Slipways.Web.Services
             IServiceProvider services,
             IMemoryCache cache,
             IIdentityProviderService tokenService,
-            ILogger<SlipwayService> logger) : base(tokenService, services, cache)
+            ILogger<SlipwayService> logger) : base(tokenService, services, cache, logger)
         {
             _httpClient = httpClient;
             _logger = logger;
         }
 
-    
+
         public async Task<SlipwayDto> InsertSlipway(
             SlipwayDto slipway)
         {
             try
             {
                 var token = await GetTokenAsync();
+                if (token == null)
+                    return null;
+
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -76,6 +79,9 @@ namespace com.b_velop.Slipways.Web.Services
             Guid id)
         {
             var token = await GetTokenAsync();
+            if (token == null)
+                return null;
+
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

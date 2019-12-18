@@ -22,6 +22,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
         private IDataStore _dataStore;
         private ILogger<CreateModel> _logger;
 
+        [TempData]
+        public string Message { get; set; }
+
         [BindProperty]
         public Data.Models.Service Service { get; set; }
 
@@ -40,7 +43,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
         public async Task OnGetAsync()
         {
             var manufacturers = await _dataStore.GetManufacturersAsync();
-            if(manufacturers != null)
+            if (manufacturers != null)
             {
                 foreach (var manufacturer in manufacturers)
                 {
@@ -61,7 +64,12 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
                         Service.Manufacturers.Add(new Manufacturer { Id = id, Name = key });
                     }
                 }
-                await _dataStore.AddServiceAsync(Service);
+                var result = await _dataStore.AddServiceAsync(Service);
+                if (result == null)
+                {
+                    Message = "Fehler beim erstellen des Service";
+                    return Page();
+                }
                 return new RedirectToPageResult("./");
             }
             return Page();
