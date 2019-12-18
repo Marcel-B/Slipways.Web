@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace com.b_velop.Slipways.Web.Data.Dtos
 {
-    public class ServiceDto
+    public class ServiceDto : IEntity
     {
         public ServiceDto() { }
 

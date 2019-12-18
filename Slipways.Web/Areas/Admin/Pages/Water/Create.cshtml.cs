@@ -13,10 +13,10 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         [BindProperty]
         public Data.Models.Water Water { get; set; }
 
-        private IDataStore _dataStore;
+        private IStoreWrapper _dataStore;
 
         public CreateModel(
-            IDataStore dataStore)
+            IStoreWrapper dataStore)
         {
             _dataStore = dataStore;
         }
@@ -31,7 +31,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             {
                 return Page();
             }
-            var reuslt = await _dataStore.AddWaterAsync(Water);
+            var reuslt = await _dataStore.Waters.AddAsync(Water);
 
             if (reuslt != null)
                 return RedirectToPage("./Index");

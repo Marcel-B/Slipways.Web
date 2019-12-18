@@ -29,6 +29,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Datenschutz</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="https://data.slipways.de/ui/playground">GraphQL API</a>
+                        </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li>
@@ -38,7 +41,6 @@
                                     </a>
 
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" asp-area="" asp-page="/Slipways/Create">Hinzufügen</a>
                                         <a class="dropdown-item" asp-area="Admin" asp-page="/Water/Index">Gewässer</a>
                                         <a class="dropdown-item" asp-area="Admin" asp-page="/Slipway/Index">Slipanlage</a>
                                         <a class="dropdown-item" asp-area="Admin" asp-page="/Service/Index">Service</a>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,7 @@ namespace com.b_velop.Slipways.Web.Pages.Slipways
     [IgnoreAntiforgeryToken(Order = 2000)]
     public class CreateModel : PageModel
     {
-        private ISlipwayService _service;
-        private IGraphQLService _graphQLService;
-        private IMemoryCache _cache;
+        private IStoreWrapper _dataStore;
         private ILogger<CreateModel> _logger;
 
         [BindProperty]
@@ -24,34 +23,26 @@ namespace com.b_velop.Slipways.Web.Pages.Slipways
         public SelectList Waters { get; set; }
 
         public CreateModel(
-            ISlipwayService service,
-            IGraphQLService graphQLService,
-            IMemoryCache cache,
+            IStoreWrapper dataStore,
             ILogger<CreateModel> logger)
         {
-            _service = service;
-            _graphQLService = graphQLService;
-            _cache = cache;
+            _dataStore = dataStore;
             _logger = logger;
         }
 
         public async Task OnGetAsync()
         {
             Slipway = new Slipway();
-            if (!_cache.TryGetValue("waters", out HashSet<Water> waters))
+            var waterDtos = await _dataStore.Waters.GetValuesAsync();
+            var waters = new HashSet<Water>();
+            foreach (var waterDto in waterDtos)
             {
-                var waterDtos = await _graphQLService.GetWatersAsync();
-                waters = new HashSet<Water>();
-                foreach (var waterDto in waterDtos)
+                waters.Add(new Water
                 {
-                    waters.Add(new Water
-                    {
-                        Id = waterDto.Id,
-                        Longname = waterDto.Longname,
-                        Shortname = waterDto.Shortname
-                    });
-                }
-                _cache.Set("waters", waters);
+                    Id = waterDto.Id,
+                    Longname = waterDto.Longname,
+                    Shortname = waterDto.Shortname
+                });
             }
             Waters = new SelectList(waters, "Id", "Longname");
         }

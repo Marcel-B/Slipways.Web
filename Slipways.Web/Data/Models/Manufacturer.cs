@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace com.b_velop.Slipways.Web.Data.Models
 {
-    public class Manufacturer
+    public class Manufacturer : IEntity
     {
         public Manufacturer() { }
 

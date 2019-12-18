@@ -6,11 +6,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace com.b_velop.Slipways.Web.Data.Models
 {
-    public class Slipway
+    public class Slipway : IEntity
     {
         public Slipway()
         {
-            Extras = new HashSet<Extra>();
+            //Extras = new HashSet<Extra>();
         }
 
         public Slipway(

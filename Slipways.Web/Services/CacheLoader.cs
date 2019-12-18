@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Data.Models;
+using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,32 +44,31 @@ namespace com.b_velop.Slipways.Web.Services
             var cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
             var graphQLService = scope.ServiceProvider.GetRequiredService<IGraphQLService>();
 
-            var watersDtos = await graphQLService.GetWatersAsync();
-            if (watersDtos != null)
+            var waters = await graphQLService.GetValuesAsync<IEnumerable<WaterDto>>(Queries.Waters.Item1, Queries.Waters.Item2);
+            if (waters != null)
             {
-                var waters = new HashSet<Water>();
-                foreach (var waterDto in watersDtos)
-                    waters.Add(new Water(waterDto));
-                cache.Set(Cache.Waters, waters);
+                var whs = waters.ToHashSet();
+                cache.Set(Cache.Waters, whs);
             }
 
-            var slipwayDtos = await graphQLService.GetSlipwaysAsync();
-            if (slipwayDtos != null)
+            var slipways = await graphQLService.GetValuesAsync<IEnumerable<SlipwayDto>>(Queries.Slipways.Item1, Queries.Slipways.Item2);
+            if (slipways != null)
             {
-                var slipways = new HashSet<Slipway>();
-                foreach (var slipway in slipwayDtos)
-                    slipways.Add(new Slipway(slipway));
-                cache.Set(Cache.Slipways, slipways);
+                var shs = slipways.ToHashSet();
+                cache.Set(Cache.Slipways, shs);
             }
 
-            var serviceDtos = await graphQLService.GetServicesAsync();
-            if (serviceDtos != null)
+            var services = await graphQLService.GetValuesAsync<IEnumerable<ServiceDto>>(Queries.Services.Item1, Queries.Services.Item2);
+            if (services != null)
             {
-                var services = new HashSet<Service>();
-                foreach (var service in serviceDtos)
-                    services.Add(new Service(service));
-                cache.Set(Cache.Services, services);
+                var sehs = services.ToHashSet();
+                cache.Set(Cache.Services, sehs);
             }
+        }
+
+        private bool WaterDto()
+        {
+            throw new NotImplementedException();
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

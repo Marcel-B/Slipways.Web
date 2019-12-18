@@ -45,27 +45,27 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 
         public async Task<ActionResult> OnPostAsync()
         {
-            var water = await _waterService.UpdateWaterAsync(new WaterDto
-            {
-                Id = Water.Id,
-                Longname = Water.Longname,
-                Shortname = Water.Shortname
-            });
+            //var water = await _waterService.UpdateWaterAsync(new WaterDto
+            //{
+            //    Id = Water.Id,
+            //    Longname = Water.Longname,
+            //    Shortname = Water.Shortname
+            //});
 
-            Message = $"Gewässer '{water.Longname}' geändert.";
+            //Message = $"Gewässer '{water.Longname}' geändert.";
 
-            if (water != null && _cache.TryGetValue(Cache.Waters, out HashSet<Data.Models.Water> waters))
-            {
-                var tmp = waters.RemoveWhere(_ => _.Id == water.Id);
-                waters.Add(new Data.Models.Water
-                {
-                    Id = water.Id,
-                    Longname = water.Longname,
-                    Shortname = water.Shortname
-                });
+            //if (water != null && _cache.TryGetValue(Cache.Waters, out HashSet<Data.Models.Water> waters))
+            //{
+            //    var tmp = waters.RemoveWhere(_ => _.Id == water.Id);
+            //    waters.Add(new Data.Models.Water
+            //    {
+            //        Id = water.Id,
+            //        Longname = water.Longname,
+            //        Shortname = water.Shortname
+            //    });
 
-                _cache.Set(Cache.Waters, waters);
-            }
+            //    _cache.Set(Cache.Waters, waters);
+            //}
             return new RedirectToPageResult("./Index");
         }
     }

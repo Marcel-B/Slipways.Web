@@ -5,16 +5,10 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public interface IDataStore
+    public interface IDataStore<T, DTO> where T : class, IEntity where DTO : class, IEntity
     {
-        Task<HashSet<Slipway>> GetSlipwaysAsync();
-        Task<HashSet<Slipway>> AddSlipwayAsync(Slipway slipway);
-        Task<HashSet<Slipway>> RemoveSlipwayAsync(Guid id);
-        Task<HashSet<Water>> GetWatersAsync();
-        Task<HashSet<Water>> AddWaterAsync(Water water);
-        Task<HashSet<Water>> RemoveWaterAsync(Guid id);
-        Task<HashSet<Service>> GetServicesAsync();
-        Task<Service> AddServiceAsync(Service service);
-        Task<HashSet<Manufacturer>> GetManufacturersAsync();
+        Task<HashSet<T>> GetValuesAsync();
+        Task<HashSet<T>> AddAsync(T item);
+        Task<HashSet<T>> RemoveAsync(Guid id);
     }
 }

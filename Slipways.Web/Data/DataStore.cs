@@ -1,8 +1,6 @@
-﻿using com.b_velop.Slipways.Web.Data.Dtos;
-using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,178 +14,64 @@ namespace com.b_velop.Slipways.Web.Data
         public const string Slipways = "Slipways";
         public const string Services = "Services";
         public const string Manufacturers = "Manufacturers";
+        public const string Extras = "Extras";
     }
 
-    public class DataStore : IDataStore
+    public abstract class DataStore<T, DTO> : IDataStore<T, DTO>
+        where T : class, IEntity
+        where DTO : class, IEntity
     {
         private IMemoryCache _cache;
         private IGraphQLService _graphQLService;
-        private ISlipwayService _slipwayService;
-        private IServiceService _serviceService;
-        private IWaterService _waterService;
-        private ILogger<DataStore> _logger;
+        private ITokenService<DTO> _service;
+
+        protected string Key { get; set; }
+        protected string Query { get; set; }
+        protected string Method { get; set; }
 
         public DataStore(
             IMemoryCache cache,
-            IGraphQLService graphQLService,
-            ISlipwayService slipwayService,
-            IServiceService serviceService,
-            IWaterService waterService,
-            ILogger<DataStore> logger)
+            ITokenService<DTO> service,
+            IGraphQLService graphQLService)
         {
             _cache = cache;
+            _service = service;
             _graphQLService = graphQLService;
-            _slipwayService = slipwayService;
-            _serviceService = serviceService;
-            _waterService = waterService;
-            _logger = logger;
         }
 
-        public async Task<HashSet<Slipway>> GetSlipwaysAsync()
+        public async Task<HashSet<T>> GetValuesAsync()
         {
-            if (!_cache.TryGetValue(Cache.Slipways, out HashSet<Slipway> slipways))
+            if (!_cache.TryGetValue(Key, out HashSet<T> entities))
             {
-                var slipwayDtos = await _graphQLService.GetSlipwaysAsync();
-                slipways = new HashSet<Slipway>();
-                foreach (var slipwayDto in slipwayDtos)
-                    slipways.Add(new Slipway(slipwayDto));
-                _cache.Set(Cache.Slipways, slipways);
+                var values = await _graphQLService.GetValuesAsync<IEnumerable<T>>(Method, Query);
+                _cache.Set(Key, values.ToHashSet());
             }
-            return slipways;
+            return entities;
         }
 
-        public async Task<HashSet<Slipway>> RemoveSlipwayAsync(
+        protected async Task<DTO> InsertAsync(
+            DTO item)
+            => await _service.InsertAsync(item);
+
+        protected async Task<HashSet<T>> AddToCacheAsync(
+            T item)
+        {
+            var values = await GetValuesAsync();
+            values.Add(item);
+            _cache.Set(Key, values);
+            return values;
+        }
+
+        public abstract Task<HashSet<T>> AddAsync(T item);
+
+        public async Task<HashSet<T>> RemoveAsync(
             Guid id)
         {
-            var result = await _slipwayService.DeleteSlipwayAsync(id);
-            var slipways = await GetSlipwaysAsync();
-            slipways.RemoveWhere(_ => _.Id == result.Id);
-            _cache.Set(Cache.Slipways, slipways);
-            return slipways;
-        }
-
-        public async Task<HashSet<Water>> GetWatersAsync()
-        {
-            if (!_cache.TryGetValue(Cache.Waters, out HashSet<Water> waters))
-            {
-                var watersDtos = await _graphQLService.GetWatersAsync();
-                waters = new HashSet<Water>();
-                foreach (var waterDto in watersDtos)
-                    waters.Add(new Water(waterDto));
-                _cache.Set(Cache.Waters, waters);
-            }
-            return waters;
-        }
-
-        public async Task<HashSet<Slipway>> AddSlipwayAsync(
-            Slipway slipway)
-        {
-            var slipwayDto = new SlipwayDto
-            {
-                Name = slipway.Name,
-                City = slipway.City,
-                Latitude = slipway.Latitude.Value,
-                Longitude = slipway.Longitude.Value,
-                Costs = slipway.Costs.Value,
-                Rating = slipway.Rating.Value,
-                Street = slipway.Street,
-                Postalcode = slipway.Postalcode,
-                WaterFk = Guid.Parse(slipway.Water),
-                Pro = slipway.Pro,
-                Contra = slipway.Contra,
-                Comment = slipway.Comment,
-                Created = DateTime.Now,
-                Extras = slipway.Extras.Select(_ => new ExtraDto(_))
-            };
-
-            var result = await _slipwayService.InsertSlipway(slipwayDto);
-
-            if (result == null)
-                return null;
-
-            var slipways = await GetSlipwaysAsync();
-            slipway.Id = result.Id;
-            slipways.Add(slipway);
-            _cache.Set(Cache.Slipways, slipways);
-            return slipways;
-        }
-
-        public async Task<HashSet<Water>> AddWaterAsync(
-            Water water)
-        {
-            var waterDto = new WaterDto
-            {
-                Longname = water.Longname,
-                Shortname = water.Shortname
-            };
-            var result = await _waterService.InsertAsync(waterDto);
-
-            if (result == null)
-                return null;
-
-            var waters = await GetWatersAsync();
-            water.Id = result.Id;
-            waters.Add(water);
-            _cache.Set(Cache.Waters, waters);
-
-            return waters;
-        }
-
-        public async Task<HashSet<Water>> RemoveWaterAsync(
-            Guid id)
-        {
-            if (_cache.TryGetValue(Cache.Waters, out HashSet<Water> waters))
-            {
-                waters.RemoveWhere(_ => _.Id == id);
-                var water = await _waterService.DeleteWaterAsync(id);
-                _cache.Set(Cache.Waters, waters);
-            }
-            return waters;
-        }
-
-        public async Task<HashSet<Service>> GetServicesAsync()
-        {
-            if (!_cache.TryGetValue(Cache.Services, out HashSet<Service> services))
-            {
-                var serviceDtos = await _graphQLService.GetServicesAsync();
-                services = new HashSet<Service>();
-                foreach (var serviceDto in serviceDtos)
-                    services.Add(new Service(serviceDto));
-                _cache.Set(Cache.Services, services);
-            }
-            return services;
-        }
-
-        public async Task<Service> AddServiceAsync(
-            Service service)
-        {
-            var serviceDto = new ServiceDto(service);
-
-            var result = await _serviceService.InsertAsync(serviceDto);
-
-            if (result == null)
-                return null;
-
-            var services = await GetServicesAsync();
-            service.Id = result.Id;
-
-            services.Add(service);
-            _cache.Set(Cache.Services, services);
-
-            return service;
-        }
-
-        public async Task<HashSet<Manufacturer>> GetManufacturersAsync()
-        {
-            if (!_cache.TryGetValue(Cache.Manufacturers, out HashSet<Manufacturer> manufacturers))
-            {
-                var manufacturerDtos = await _graphQLService.GetManufacturersAsync();
-                manufacturers = new HashSet<Manufacturer>();
-                foreach (var manufacturerDto in manufacturerDtos)
-                    manufacturers.Add(new Manufacturer(manufacturerDto));
-                _cache.Set(Cache.Manufacturers, manufacturers);
-            }
-            return manufacturers;
+            var result = await _service.DeleteAsync(id);
+            var entities = await GetValuesAsync();
+            entities.RemoveWhere(_ => _.Id == id);
+            _cache.Set(Key, entities);
+            return entities;
         }
     }
 }

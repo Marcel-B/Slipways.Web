@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace com.b_velop.Slipways.Web.Data.Models
 {
-    public class Water
+    public class Water : IEntity
     {
         public Water() { }
 

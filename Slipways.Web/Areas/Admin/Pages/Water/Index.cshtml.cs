@@ -10,7 +10,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {
     public class IndexModel : PageModel
     {
-        private IDataStore _dataStore;
+        private IStoreWrapper _dataStore;
         private ILogger<IndexModel> _logger;
 
         [TempData]
@@ -20,7 +20,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public HashSet<Data.Models.Water> Waters { get; set; }
 
         public IndexModel(
-            IDataStore dataStore,
+            IStoreWrapper dataStore,
             ILogger<IndexModel> logger)
         {
             _dataStore = dataStore;
@@ -31,12 +31,12 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             Guid id)
         {
             if (id != null)
-                Waters = await _dataStore.RemoveWaterAsync(id);
+                Waters = await _dataStore.Waters.RemoveAsync(id);
         }
 
         public async Task OnGetAsync()
         {
-            Waters = await _dataStore.GetWatersAsync();
+            Waters = await _dataStore.Waters.GetValuesAsync();
         }
     }
 }

@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public interface IServiceService
+    public interface IServiceService : ITokenService<ServiceDto>
     {
-        Task<ServiceDto> InsertAsync(ServiceDto serviceDto);
     }
 }

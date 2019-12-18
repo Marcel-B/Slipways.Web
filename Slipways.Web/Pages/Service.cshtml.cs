@@ -4,20 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web
 {
     public class ServiceModel : PageModel
     {
-        private IDataStore _dataStore;
+        private IStoreWrapper _dataStore;
         private ILogger<ServiceModel> _logger;
 
         [BindProperty]
         public HashSet<Service> Services { get; set; }
 
         public ServiceModel(
-            IDataStore dataStore,
+            IStoreWrapper dataStore,
             ILogger<ServiceModel> logger)
         {
             _dataStore = dataStore;
@@ -26,7 +27,8 @@ namespace com.b_velop.Slipways.Web
 
         public async Task OnGetAsync()
         {
-            Services = await _dataStore.GetServicesAsync();
+            var services = await _dataStore.Services.GetValuesAsync();
+            Services = services.OrderBy(_ => _.Name).ToHashSet();
         }
     }
 }

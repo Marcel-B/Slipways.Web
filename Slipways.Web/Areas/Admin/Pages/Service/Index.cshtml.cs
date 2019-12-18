@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -10,18 +8,20 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
 {
     public class IndexModel : PageModel
     {
-        private IDataStore _dataStore;
+        private IStoreWrapper _dataStore;
+
         [BindProperty]
         public HashSet<Data.Models.Service> Services { get; set; }
+
         public IndexModel(
-            IDataStore dataStore)
+            IStoreWrapper dataStore)
         {
             _dataStore = dataStore;
         }
 
         public async Task OnGetAsync()
         {
-            Services = await _dataStore.GetServicesAsync();
+            Services = await _dataStore.Services.GetValuesAsync();
         }
     }
 }

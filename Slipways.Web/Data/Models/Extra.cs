@@ -3,7 +3,7 @@ using System;
 
 namespace com.b_velop.Slipways.Web.Data.Models
 {
-    public class Extra
+    public class Extra : IEntity
     {
         public Extra()
         {

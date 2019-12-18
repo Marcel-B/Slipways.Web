@@ -16,13 +16,13 @@ namespace com.b_velop.Slipways.Web.Pages
 
     public class IndexModel : PageModel
     {
-        private readonly IDataStore _dataStore;
+        private readonly IStoreWrapper _dataStore;
         private readonly ILogger<IndexModel> _logger;
 
         public SlipwaysModel Slipways { get; set; }
 
         public IndexModel(
-            IDataStore dataStore,
+            IStoreWrapper dataStore,
             ILogger<IndexModel> logger)
         {
             _dataStore = dataStore;
@@ -32,8 +32,8 @@ namespace com.b_velop.Slipways.Web.Pages
         public async Task OnGetAsync()
         {
             Slipways = new SlipwaysModel();
-            var slipways = await _dataStore.GetSlipwaysAsync();
-            Slipways.Slipways = slipways;
+            var slipways = await _dataStore.Slipways.GetValuesAsync();
+            Slipways.Slipways = slipways.OrderBy(_ => _.Name).ToHashSet();
         }
 
         public async Task<IActionResult> OnGetFilter(
@@ -41,7 +41,7 @@ namespace com.b_velop.Slipways.Web.Pages
             [FromQuery] bool onlyFree)
         {
             Slipways = new SlipwaysModel();
-            var slipways = await _dataStore.GetSlipwaysAsync();
+            var slipways = await _dataStore.Slipways.GetValuesAsync();
             IEnumerable<Slipway> cs;
             if (onlyFree)
                 cs = slipways.Where(_ => _.Costs <= 0);
@@ -52,6 +52,7 @@ namespace com.b_velop.Slipways.Web.Pages
                 search = search.ToLower();
                 cs = cs.Where(_ => _.Name.ToLower().Contains(search) || _.City.ToLower().Contains(search) || _.Water.ToLower().Contains(search)).Distinct();
             }
+            cs = cs.OrderBy(_ => _.Name);
             Slipways.Slipways = new HashSet<Slipway>(cs);
             var partial = Partial("_SlipwayTable", Slipways);
             return partial;

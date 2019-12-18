@@ -11,7 +11,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 {
     public class CreateModel : PageModel
     {
-        private IDataStore _dataStore;
+        private IStoreWrapper _dataStore;
         private ILogger<CreateModel> _logger;
 
         [TempData]
@@ -32,7 +32,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public SelectList Waters { get; set; }
 
         public CreateModel(
-            IDataStore dataStore,
+            IStoreWrapper dataStore,
             ILogger<CreateModel> logger)
         {
             _dataStore = dataStore;
@@ -42,7 +42,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public async Task OnGetAsync()
         {
             Slipway = new Data.Models.Slipway();
-            var waters = await _dataStore.GetWatersAsync();
+            var waters = await _dataStore.Waters.GetValuesAsync();
             Waters = new SelectList(waters, "Id", "Longname");
         }
 
@@ -56,11 +56,11 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                     Slipway.Extras.Add(new Extra(Guid.Parse("F5836F04-E23B-475A-A079-1E4F3C9C4D87")));
                 if (Steg)
                     Slipway.Extras.Add(new Extra(Guid.Parse("06448FD8-DCC1-4579-947A-8A7B18BC1AAB")));
-                var slipways = await _dataStore.AddSlipwayAsync(Slipway);
+                var slipways = await _dataStore.Slipways.AddAsync(Slipway);
                 if (slipways != null)
                     return RedirectToPage("./Index");
             }
-            var waters = await _dataStore.GetWatersAsync();
+            var waters = await _dataStore.Waters.GetValuesAsync();
             Waters = new SelectList(waters, "Id", "Longname");
             Message = "Fehler beim erstellen der Slipanlage";
 

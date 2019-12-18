@@ -3,7 +3,7 @@ using System;
 
 namespace com.b_velop.Slipways.Web.Data.Dtos
 {
-    public class ExtraDto
+    public class ExtraDto : IEntity
     {
         public ExtraDto()
         {

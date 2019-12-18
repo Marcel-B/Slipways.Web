@@ -73,16 +73,36 @@ namespace com.b_velop.Slipways.Web
 
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddScoped<ISecretProvider, SecretProvider>();
-            services.AddScoped<IDataStore, DataStore>();
+
+            services.AddScoped<IStoreWrapper, StoreWrapper>();
+            services.AddScoped<ISlipwayStore, SlipwayStore>();
+            services.AddScoped<IExtraStore, ExtraStore>();
+            services.AddScoped<IManufacturerStore, ManufacturerStore>();
+            services.AddScoped<IWaterStore, WaterStore>();
+            services.AddScoped<IServiceStore, ServiceStore>();
+
+
             services.AddScoped<WaterViewModel>();
 
             services.AddScoped<IGraphQLService, GraphQLService>();
+
             services.AddHttpClient<ISlipwayService, SlipwayService>();
             services.AddHttpClient<IServiceService, ServiceService>();
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
+
+            services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>
+            {
+                options.BaseAddress = new Uri("https://data.slipways.de/api/extra");
+            });
+
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
                 options.BaseAddress = new Uri("https://data.slipways.de/api/water");
+            });
+
+            services.AddHttpClient<IManufacturerService, ManufacturerService>("manufacturerClient", options =>
+            {
+                options.BaseAddress = new Uri("https://data.slipways.de/api/manufacturer");
             });
 
             //services.AddAuthentication()

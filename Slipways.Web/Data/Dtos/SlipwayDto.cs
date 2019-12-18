@@ -1,11 +1,41 @@
-﻿using System;
+﻿using com.b_velop.Slipways.Web.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace com.b_velop.Slipways.Web.Data.Dtos
 {
-    public class SlipwayDto
+    public class SlipwayDto : IEntity
     {
+        public SlipwayDto()
+        {
+            //Extras = new List<ExtraDto>();
+        }
+
+        public SlipwayDto(
+            Slipway s) : this()
+        {
+            Id = s.Id;
+            City = s.City;
+            Comment = s.Comment;
+            Contra = s.Contra;
+            Costs = s.Costs.Value;
+
+            if (s.Extras != null)
+                foreach (var extra in s.Extras)
+                    ((List<ExtraDto>)Extras).Add(new ExtraDto(extra));
+
+
+            Latitude = s.Latitude.Value;
+            Longitude = s.Longitude.Value;
+            Name = s.Name;
+            Postalcode = s.Postalcode;
+            Pro = s.Pro;
+            Rating = s.Rating.Value;
+            Street = s.Street;
+            // Water
+        }
+
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
 

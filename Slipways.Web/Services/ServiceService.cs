@@ -4,76 +4,18 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public class ServiceService : TokenService<ServiceService>, IServiceService
+    public class ServiceService : TokenService<ServiceDto>, IServiceService
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger<ServiceService> _logger;
-
         public ServiceService(
             HttpClient httpClient,
             IServiceProvider services,
             IMemoryCache cache,
             IIdentityProviderService tokenService,
-            ILogger<ServiceService> logger) : base(tokenService, services, cache, logger)
+            ILogger<ServiceDto> logger) : base(httpClient, tokenService, services, cache, logger)
         {
-            _httpClient = httpClient;
-            _logger = logger;
-        }
-
-        public async Task<ServiceDto> InsertAsync(
-            ServiceDto serviceDto)
-        {
-            try
-            {
-                var token = await GetTokenAsync();
-
-                if (token == null)
-                    return null;
-
-                _httpClient.DefaultRequestHeaders.Clear();
-                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-                var modelJson = JsonSerializer.Serialize(serviceDto, _jsonOptions);
-                var content = new StringContent(modelJson, Encoding.UTF8, "application/json");
-
-                try
-                {
-                    var response = await _httpClient.PostAsync("https://data.slipways.de/api/service", content);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        _logger.LogWarning(6666, $"Error occurred while submit Service '{modelJson}'");
-                        return null;
-                    }
-                    var result = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<ServiceDto>(result, _jsonOptions);
-                }
-                catch (JsonException e)
-                {
-                    _logger.LogError(6666, $"Error occurred while deserialize response {serviceDto.Name} {e.StackTrace}", e);
-                    return null;
-                }
-                catch (HttpRequestException e)
-                {
-                    _logger.LogError(6666, $"Error occurred while post new Service {modelJson} {e.StackTrace}", e);
-                    return null;
-                }
-                catch (ArgumentNullException e)
-                {
-                    _logger.LogError(6666, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
-                    return null;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(6666, $"Error occurred while post new Service {serviceDto.Name} {e.StackTrace}", e);
-                return null;
-            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace com.b_velop.Slipways.Web.Data.Dtos
 {
-    public class ManufacturerDto
+    public class ManufacturerDto : IEntity
     {
         public ManufacturerDto() { }
 

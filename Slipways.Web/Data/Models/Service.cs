@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace com.b_velop.Slipways.Web.Data.Models
 {
-    public class Service
+    public class Service : IEntity
     {
         public Service()
         {

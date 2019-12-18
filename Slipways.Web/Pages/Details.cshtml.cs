@@ -13,7 +13,7 @@ namespace com.b_velop.Slipways.Web.Pages
 {
     public class DetailsModel : PageModel
     {
-        private IDataStore _dataStore;
+        private IStoreWrapper _dataStore;
         private ISecretProvider _secret;
         private ILogger<DetailsModel> _logger;
 
@@ -27,7 +27,7 @@ namespace com.b_velop.Slipways.Web.Pages
         public string ApiKey { get; set; }
 
         public DetailsModel(
-            IDataStore dataStore,
+            IStoreWrapper dataStore,
             ISecretProvider secret,
             ILogger<DetailsModel> logger)
         {
@@ -39,7 +39,7 @@ namespace com.b_velop.Slipways.Web.Pages
             Guid id)
         {
             ApiKey = _secret.GetSecret("google_maps_secret");
-            var slipways = await _dataStore.GetSlipwaysAsync();
+            var slipways = await _dataStore.Slipways.GetValuesAsync();
             Slipway = slipways.FirstOrDefault(_ => _.Id == id);
         }
     }
