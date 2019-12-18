@@ -14,6 +14,8 @@ namespace com.b_velop.Slipways.Web.Infrastructure
 
         public static string FirstUpper(this string input)
         {
+            if (input == null)
+                return input;
             input = input.ToLower();
             var strs = input.Split(' ');
             var result = string.Empty;

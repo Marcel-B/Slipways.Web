@@ -54,31 +54,51 @@ namespace com.b_velop.Slipways.Web.Data
             DTO item)
             => await _service.InsertAsync(item);
 
-        protected async Task<HashSet<T>> AddToCacheAsync(
+        public async Task<HashSet<T>> AddAsync(
             T item)
         {
+            var dto = ToDto(item);
+            var result = await _service.InsertAsync(dto);
+
+            if (result == null)
+                return null;
+
+            item.Id = result.Id;
             var values = await GetValuesAsync();
             values.Add(item);
             _cache.Set(Key, values);
             return values;
         }
 
-        public abstract Task<HashSet<T>> AddAsync(T item);
+        public abstract DTO ToDto(T item);
+        public abstract T ToClass(DTO item);
 
         public async Task<HashSet<T>> RemoveAsync(
             Guid id)
         {
             var result = await _service.DeleteAsync(id);
+            if (result == null)
+                return null;
             var entities = await GetValuesAsync();
             entities.RemoveWhere(_ => _.Id == id);
             _cache.Set(Key, entities);
             return entities;
         }
 
-        public Task<HashSet<T>> UpdateAsync(
+        public async Task<HashSet<T>> UpdateAsync(
             T item, Guid id)
         {
-            return null;
+            var dto = ToDto(item);
+
+            var result = await _service.UpdateAsync(id, dto);
+            if (result == null)
+                return null;
+
+            var entities = await GetValuesAsync();
+            entities.RemoveWhere(_ => _.Id == id);
+            entities.Add(item);
+            _cache.Set(Key, entities);
+            return entities;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace com.b_velop.Slipways.Web.Services
     {
         Task<DTO> InsertAsync(DTO item);
         Task<DTO> DeleteAsync(Guid id);
+        Task<DTO> UpdateAsync(Guid id, DTO item);
     }
 
     public abstract class TokenService<DTO> : ITokenService<DTO> where DTO : class, IEntity
@@ -169,6 +170,57 @@ namespace com.b_velop.Slipways.Web.Services
                 var responseContent = await response.Content.ReadAsStreamAsync();
                 var obj = await JsonSerializer.DeserializeAsync<DTO>(responseContent);
                 return obj;
+            }
+            catch (ArgumentNullException e)
+            {
+
+            }
+            catch (InvalidOperationException e)
+            {
+
+            }
+            catch (UriFormatException e)
+            {
+
+            }
+            catch (HttpRequestException e)
+            {
+
+            }
+            catch (JsonException e)
+            {
+
+            }
+            catch (Exception e)
+            {
+
+            }
+            return null;
+        }
+
+        public async Task<DTO> UpdateAsync(
+            Guid id,
+            DTO item)
+        {
+            if (!await SetHeader())
+                return default;
+
+            try
+            {
+                var json = JsonSerializer.Serialize(item, _jsonOptions);
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = new Uri($"https://data.slipways.de/api/{ApiPath}/{id}"),
+                    Content = new StringContent(json, Encoding.UTF8, ApplicationJson),
+                };
+
+                var result = await _client.SendAsync(request);
+
+                if (!result.IsSuccessStatusCode)
+                    return null;
+
+                return await JsonSerializer.DeserializeAsync<DTO>(await result.Content.ReadAsStreamAsync(), _jsonOptions);
             }
             catch (ArgumentNullException e)
             {

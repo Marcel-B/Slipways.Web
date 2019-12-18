@@ -6,6 +6,15 @@
 
 <h1>Bearbeiten</h1>
 
+<div class="row">
+    @if (!String.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="alert alert-primary" role="alert">
+            @Model.Message
+        </div>
+    }
+</div>
+
 <form method="post">
 
     <div class="form-row">
@@ -44,7 +53,7 @@
     <div class="form-row">
         <div class="form-group col-md-12">
             <label asp-for="Slipway.Comment">@Html.DisplayNameFor(model => Model.Slipway.Comment)</label>
-            <textarea class="form-control" placeholder="Kommenta" asp-for="Slipway.Comment"></textarea>
+            <textarea class="form-control" placeholder="Kommentar" asp-for="Slipway.Comment"></textarea>
         </div>
     </div>
 
@@ -85,18 +94,19 @@
             </div>
         </div>*@
 
-    @*<div class="form-row">
-            <div class="form-group class=" dropdown"">
-                <label>Gewässer</label>
-                <select asp-for="Slipway.Water" class="control-label"
-                        asp-items="@Model.Waters">
-                    <option value="">Gewässer wählen</option>
-                </select>
-            </div>
-        </div>*@
+    <div class="form-row">
+        <div class="form-group dropdown">
+            <label>Gewässer</label>
+            <input type="hidden" asp-for="@Model.SelectedWaterId" />
+
+            <select asp-for="@Model.WaterId" class="control-label" asp-items="@Model.Waters">
+                <option value="@Model.Slipway.Water.Id">@Model.Slipway.Water.Longname</option>
+            </select>
+        </div>
+    </div>
 
     <div class="form-row">
-        <button type="submit" class="btn btn-primary">Slip it</button>
+        <button type="submit" class="btn btn-primary">Speichern</button>
     </div>
 </form>
 

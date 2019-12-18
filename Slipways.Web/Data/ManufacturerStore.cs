@@ -4,12 +4,11 @@ using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
     public interface IManufacturerStore : IDataStore<Manufacturer, ManufacturerDto> { }
+
     public class ManufacturerStore : DataStore<Manufacturer, ManufacturerDto>, IManufacturerStore
     {
         private ILogger<ManufacturerStore> _logger;
@@ -26,17 +25,16 @@ namespace com.b_velop.Slipways.Web.Data
             Query = Queries.Manufacturers.Item2;
         }
 
-        public override async Task<HashSet<Manufacturer>> AddAsync(
+        public override Manufacturer ToClass(
+            ManufacturerDto item)
+        {
+            return new Manufacturer(item);
+        }
+
+        public override ManufacturerDto ToDto(
             Manufacturer item)
         {
-            var result = await InsertAsync(new ManufacturerDto(item));
-
-            if (result == null)
-                return null;
-
-            item.Id = result.Id;
-            var cache = await AddToCacheAsync(item);
-            return cache;
+            return new ManufacturerDto(item);
         }
     }
 }

@@ -94,9 +94,9 @@
     </div>
 
     <div class="form-row">
-        <div class="form-group class=" dropdown"">
+        <div class="form-group dropdown">
             <label>Gewässer</label>
-            <select asp-for="Slipway.Water" class="control-label"
+            <select asp-for="@Model.WaterId" class="control-label"
                     asp-items="@Model.Waters">
                 <option value="">Gewässer wählen</option>
             </select>

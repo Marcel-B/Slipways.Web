@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Data.Models;
@@ -29,6 +30,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         [BindProperty]
         public bool CampingArea { get; set; }
 
+        [BindProperty]
+        public Guid WaterId { get; set; }
+
         public SelectList Waters { get; set; }
 
         public CreateModel(
@@ -48,6 +52,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var waters = await _dataStore.Waters.GetValuesAsync();
             if (ModelState.IsValid)
             {
                 if (ParkingPlace)
@@ -57,6 +62,8 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 if (Steg)
                     Slipway.Extras.Add(new Extra(Guid.Parse("06448FD8-DCC1-4579-947A-8A7B18BC1AAB")));
 
+                var water = waters.First(_ => _.Id == WaterId);
+                Slipway.Water = water;
                 var slipways = await _dataStore.Slipways.AddAsync(Slipway);
                 if (slipways != null)
                     return RedirectToPage("./Index");
@@ -68,7 +75,6 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 Message = "Eingabe ungütlig";
             }
 
-            var waters = await _dataStore.Waters.GetValuesAsync();
             Waters = new SelectList(waters, "Id", "Longname");
 
             return Page();

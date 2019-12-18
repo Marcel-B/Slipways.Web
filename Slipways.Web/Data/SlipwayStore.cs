@@ -3,12 +3,11 @@ using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
     public interface ISlipwayStore : IDataStore<Slipway, SlipwayDto> { }
+
     public class SlipwayStore : DataStore<Slipway, SlipwayDto>, ISlipwayStore
     {
         public SlipwayStore(
@@ -21,17 +20,16 @@ namespace com.b_velop.Slipways.Web.Data
             Query = Queries.Slipways.Item2;
         }
 
-        public override async Task<HashSet<Slipway>> AddAsync(
+        public override Slipway ToClass(
+            SlipwayDto item)
+        {
+            return new Slipway(item);
+        }
+
+        public override SlipwayDto ToDto(
             Slipway item)
         {
-            var result = await InsertAsync(new SlipwayDto(item));
-
-            if (result == null)
-                return null;
-
-            item.Id = result.Id;
-            var cache = await AddToCacheAsync(item);
-            return cache;
+            return new SlipwayDto(item);
         }
     }
 }

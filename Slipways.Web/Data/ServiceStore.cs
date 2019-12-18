@@ -4,8 +4,6 @@ using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
@@ -23,17 +21,16 @@ namespace com.b_velop.Slipways.Web.Data
             Method = Queries.Services.Item1;
         }
 
-        public override async Task<HashSet<Service>> AddAsync(
+        public override Service ToClass(
+            ServiceDto item)
+        {
+            return new Service(item);
+        }
+
+        public override ServiceDto ToDto(
             Service item)
         {
-            var result = await InsertAsync(new ServiceDto(item));
-
-            if (result == null)
-                return null;
-
-            item.Id = result.Id;
-            var cache = await AddToCacheAsync(item);
-            return cache;
+            return new ServiceDto(item);
         }
     }
 }

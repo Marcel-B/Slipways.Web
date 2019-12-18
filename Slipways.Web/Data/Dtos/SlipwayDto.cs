@@ -9,7 +9,7 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
     {
         public SlipwayDto()
         {
-            //Extras = new List<ExtraDto>();
+            Extras = new List<ExtraDto>();
         }
 
         public SlipwayDto(
@@ -31,9 +31,9 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
             Name = s.Name;
             Postalcode = s.Postalcode;
             Pro = s.Pro;
-            Rating = s.Rating.Value;
+            Rating = s.Rating ?? 0;
             Street = s.Street;
-            // Water
+            Water = new WaterDto(s.Water);
         }
 
         [JsonPropertyName("id")]

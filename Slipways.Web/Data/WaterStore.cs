@@ -3,14 +3,11 @@ using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
     public interface IWaterStore : IDataStore<Water, WaterDto> { }
+
     public class WaterStore : DataStore<Water, WaterDto>, IWaterStore
     {
         public WaterStore(
@@ -23,18 +20,16 @@ namespace com.b_velop.Slipways.Web.Data
             Query = Queries.Waters.Item2;
         }
 
-        public override async Task<HashSet<Water>> AddAsync(
+        public override Water ToClass(
+            WaterDto item)
+        {
+            return new Water(item);
+        }
+
+        public override WaterDto ToDto(
             Water item)
         {
-            var result = await InsertAsync(new WaterDto(item));
-
-            if (result == null)
-                return null;
-
-            item.Id = result.Id;
-            var cache = await AddToCacheAsync(item);
-
-            return cache;
+            return new WaterDto(item);
         }
     }
 }

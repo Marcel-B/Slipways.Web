@@ -3,9 +3,6 @@ using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
@@ -23,17 +20,16 @@ namespace com.b_velop.Slipways.Web.Data
             Method = Queries.Extras.Item1;
         }
 
-        public override async Task<HashSet<Extra>> AddAsync(
+        public override Extra ToClass(
+            ExtraDto item)
+        {
+            return new Extra(item);
+        }
+
+        public override ExtraDto ToDto(
             Extra item)
         {
-            var result = await InsertAsync(new ExtraDto(item));
-
-            if (result == null)
-                return null;
-
-            item.Id = result.Id;
-            var cache = await AddToCacheAsync(item);
-            return cache;
+            return new ExtraDto(item);
         }
     }
 }
