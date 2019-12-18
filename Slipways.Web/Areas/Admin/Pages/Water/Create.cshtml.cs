@@ -29,6 +29,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         {
             if (!ModelState.IsValid)
             {
+                Message = "Eingabe ung¨¹ltig";
                 return Page();
             }
             var reuslt = await _dataStore.Waters.AddAsync(Water);
@@ -36,7 +37,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
             if (reuslt != null)
                 return RedirectToPage("./Index");
 
-            Message = "Fehler beim erstellen des Gewässers";
+            Message = "Fehler beim erstellen des Gew?ssers";
             return Page();
         }
     }

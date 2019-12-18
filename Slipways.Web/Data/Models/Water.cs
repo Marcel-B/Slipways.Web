@@ -19,9 +19,11 @@ namespace com.b_velop.Slipways.Web.Data.Models
 
         public Guid Id { get; set; }
 
+        private string _longname;
+
         [Display(Name = "Name")]
         [Required]
-        public string Longname { get; set; }
+        public string Longname { get => _longname.FirstUpper();  set => _longname = value; }
 
         [Display(Name = "Kurzbezeichnung")]
         [Required]

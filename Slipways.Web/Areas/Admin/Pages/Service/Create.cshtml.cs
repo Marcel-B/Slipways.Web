@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Web.Data.Dtos;
 using com.b_velop.Slipways.Web.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -53,24 +52,26 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (ModelState.IsValid)
-            //{
-            //    foreach (var key in Manufacturers.Keys)
-            //    {
-            //        if (Manufacturers[key].Selected)
-            //        {
-            //            var id = Manufacturers[key].Id;
-            //            Service.Manufacturers.Add(new Manufacturer { Id = id, Name = key });
-            //        }
-            //    }
-            //    var result = await _dataStore.Manufacturers.AddAsync(Service);
-            //    if (result == null)
-            //    {
-            //        Message = "Fehler beim erstellen des Service";
-            //        return Page();
-            //    }
-            //    return new RedirectToPageResult("./");
-            //}
+            if (ModelState.IsValid)
+            {
+                foreach (var key in Manufacturers.Keys)
+                {
+                    if (Manufacturers[key].Selected)
+                    {
+                        var id = Manufacturers[key].Id;
+                        Service.Manufacturers.Add(new Manufacturer { Id = id, Name = key });
+                    }
+                }
+                var result = await _dataStore.Services.AddAsync(Service);
+                if (result == null)
+                {
+                    Message = "Fehler beim erstellen des Services";
+                    return Page();
+                }
+                return new RedirectToPageResult("./");
+            }
+
+            Message = "Eingabe ungültig";
             return Page();
         }
     }

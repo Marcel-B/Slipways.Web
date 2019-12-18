@@ -17,6 +17,7 @@ namespace com.b_velop.Slipways.Web.Services
             IMemoryCache cache, 
             ILogger<ExtraDto> logger) : base(client, tokenService, services, cache, logger)
         {
+            ApiPath = "extra";
         }
     }
 }

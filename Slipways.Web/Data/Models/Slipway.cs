@@ -28,7 +28,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
             Pro = slipway.Pro;
             Contra = slipway.Contra;
             Comment = slipway.Comment;
-            Water = new Water(slipway.Water).Longname.FirstUpper();
+            Water = new Water(slipway.Water);
             foreach (var extra in slipway.Extras)
             {
                 Extras.Add(new Extra(extra));
@@ -67,7 +67,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
 
         [Required]
         [Display(Name = "Gewässer")]
-        public string Water { get; set; }
+        public Water Water { get; set; }
 
         [Display(Name = "Straße")]
         public string Street { get; set; }

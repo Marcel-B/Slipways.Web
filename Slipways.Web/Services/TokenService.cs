@@ -27,6 +27,7 @@ namespace com.b_velop.Slipways.Web.Services
         protected JsonSerializerOptions _jsonOptions;
         protected HttpClient _client { get; set; }
         protected const string ApplicationJson = "application/json";
+        protected string ApiPath { get; set; }
 
         protected TokenService(
             HttpClient client,
@@ -101,50 +102,99 @@ namespace com.b_velop.Slipways.Web.Services
         public async Task<DTO> DeleteAsync(
             Guid id)
         {
-            if (await SetHeader())
+            if (!await SetHeader())
                 return default;
 
-            var path = typeof(DTO).GetType().Name switch
+            try
             {
-                "SlipwayDto" => "slipway",
-                "ExtraDto" => "extra",
-                _ => ""
-            };
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri($"https://data.slipways.de/api/{ApiPath}/{id}"),
+                };
 
-            var request = new HttpRequestMessage
+                var result = await _client.SendAsync(request);
+
+                if (!result.IsSuccessStatusCode)
+                    return null;
+
+                return await JsonSerializer.DeserializeAsync<DTO>(await result.Content.ReadAsStreamAsync(), _jsonOptions);
+            }
+            catch (ArgumentNullException e)
             {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri($"https://data.slipways.de/api/{path}/{id}"),
-            };
 
-            var result = await _client.SendAsync(request);
+            }
+            catch (InvalidOperationException e)
+            {
 
-            if (!result.IsSuccessStatusCode)
-                return null;
+            }
+            catch (UriFormatException e)
+            {
 
-            return await JsonSerializer.DeserializeAsync<DTO>(await result.Content.ReadAsStreamAsync(), _jsonOptions);
+            }
+            catch (HttpRequestException e)
+            {
+
+            }
+            catch (JsonException e)
+            {
+
+            }
+            catch (Exception e)
+            {
+
+            }
+            return null;
         }
 
         public async Task<DTO> InsertAsync(
             DTO item)
         {
-            if (await SetHeader())
+            if (!await SetHeader())
                 return default;
 
-            var json = JsonSerializer.Serialize(item, _jsonOptions);
-
-            var content = new StringContent(json, Encoding.UTF8, ApplicationJson);
-
-            var response = await _client.PostAsync("", content);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                return default;
-            }
+                var json = JsonSerializer.Serialize(item, _jsonOptions);
 
-            var responseContent = await response.Content.ReadAsStreamAsync();
-            var obj = await JsonSerializer.DeserializeAsync<DTO>(responseContent);
-            return obj;
+                var content = new StringContent(json, Encoding.UTF8, ApplicationJson);
+
+                var response = await _client.PostAsync("", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return default;
+                }
+
+                var responseContent = await response.Content.ReadAsStreamAsync();
+                var obj = await JsonSerializer.DeserializeAsync<DTO>(responseContent);
+                return obj;
+            }
+            catch (ArgumentNullException e)
+            {
+
+            }
+            catch (InvalidOperationException e)
+            {
+
+            }
+            catch (UriFormatException e)
+            {
+
+            }
+            catch (HttpRequestException e)
+            {
+
+            }
+            catch (JsonException e)
+            {
+
+            }
+            catch (Exception e)
+            {
+
+            }
+            return null;
         }
     }
 }

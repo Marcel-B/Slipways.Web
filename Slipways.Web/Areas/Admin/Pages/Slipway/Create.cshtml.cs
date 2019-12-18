@@ -56,13 +56,20 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                     Slipway.Extras.Add(new Extra(Guid.Parse("F5836F04-E23B-475A-A079-1E4F3C9C4D87")));
                 if (Steg)
                     Slipway.Extras.Add(new Extra(Guid.Parse("06448FD8-DCC1-4579-947A-8A7B18BC1AAB")));
+
                 var slipways = await _dataStore.Slipways.AddAsync(Slipway);
                 if (slipways != null)
                     return RedirectToPage("./Index");
+
+                Message = "Fehler beim erstellen der Slipanlage";
             }
+            else
+            {
+                Message = "Eingabe ungütlig";
+            }
+
             var waters = await _dataStore.Waters.GetValuesAsync();
             Waters = new SelectList(waters, "Id", "Longname");
-            Message = "Fehler beim erstellen der Slipanlage";
 
             return Page();
         }

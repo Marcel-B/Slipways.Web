@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using com.b_velop.Slipways.Web.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
@@ -9,24 +11,22 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {
     public class DetailsModel : PageModel
     {
-        private IMemoryCache _cache;
+        private IStoreWrapper _dataStore;
 
         [BindProperty]
         public Data.Models.Water Water { get; set; }
 
         public DetailsModel(
-            IMemoryCache cache)
+            IStoreWrapper dataStore)
         {
-            _cache = cache;
+            _dataStore = dataStore;
         }
 
-        public void OnGet(
+        public async Task OnGet(
             Guid id)
         {
-            if (_cache.TryGetValue("waters", out HashSet<Data.Models.Water> waters))
-            {
-                Water = waters.FirstOrDefault(_ => _.Id == id);
-            }
+            var waters = await _dataStore.Waters.GetValuesAsync();
+            Water = waters.FirstOrDefault(_ => _.Id == id);
         }
     }
 }

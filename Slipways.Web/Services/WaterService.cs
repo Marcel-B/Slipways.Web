@@ -24,6 +24,7 @@ namespace com.b_velop.Slipways.Web.Services
             IMemoryCache cache,
             ILogger<WaterDto> logger) : base(client, tokenService, services, cache, logger)
         {
+            ApiPath = "water";
         }
 
         public async Task<WaterDto> UpdateWaterAsync(

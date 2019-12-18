@@ -20,6 +20,7 @@ namespace com.b_velop.Slipways.Web.Services
             IMemoryCache cache,
             ILogger<ManufacturerDto> logger) : base(client, tokenService, services, cache, logger)
         {
+            ApiPath = "manufacturer";
         }
     }
 }

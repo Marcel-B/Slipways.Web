@@ -16,6 +16,7 @@ namespace com.b_velop.Slipways.Web.Services
             IIdentityProviderService tokenService,
             ILogger<ServiceDto> logger) : base(httpClient, tokenService, services, cache, logger)
         {
+            ApiPath = "service";
         }
     }
 }

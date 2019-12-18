@@ -14,8 +14,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {
     public class EditModel : PageModel
     {
-        private IMemoryCache _cache;
-        private IWaterService _waterService;
+        private IStoreWrapper _dataStore;
         private ILogger<EditModel> _logger;
 
         [TempData]
@@ -25,22 +24,18 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public Data.Models.Water Water { get; set; }
 
         public EditModel(
-            IMemoryCache cache,
-            IWaterService waterService,
+            IStoreWrapper dataStore,
             ILogger<EditModel> logger)
         {
-            _cache = cache;
-            _waterService = waterService;
+            _dataStore = dataStore;
             _logger = logger;
         }
 
-        public void OnGet(
+        public async Task OnGetAsync(
             Guid id)
         {
-            if (_cache.TryGetValue(Cache.Waters, out HashSet<Data.Models.Water> waters))
-            {
-                Water = waters.FirstOrDefault(_ => _.Id == id);
-            }
+            var waters = await _dataStore.Waters.GetValuesAsync();
+            Water = waters.FirstOrDefault(_ => _.Id == id);
         }
 
         public async Task<ActionResult> OnPostAsync()

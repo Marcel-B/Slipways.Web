@@ -30,7 +30,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public async Task OnGetDeleteAsync(
             Guid id)
         {
-            if (id != null)
+            if (id != Guid.Empty)
                 Waters = await _dataStore.Waters.RemoveAsync(id);
         }
 

@@ -9,6 +9,7 @@ namespace com.b_velop.Slipways.Web.Data
     {
         Task<HashSet<T>> GetValuesAsync();
         Task<HashSet<T>> AddAsync(T item);
+        Task<HashSet<T>> UpdateAsync(T item, Guid id);
         Task<HashSet<T>> RemoveAsync(Guid id);
     }
 }

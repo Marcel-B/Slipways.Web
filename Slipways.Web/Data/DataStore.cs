@@ -44,7 +44,8 @@ namespace com.b_velop.Slipways.Web.Data
             if (!_cache.TryGetValue(Key, out HashSet<T> entities))
             {
                 var values = await _graphQLService.GetValuesAsync<IEnumerable<T>>(Method, Query);
-                _cache.Set(Key, values.ToHashSet());
+                entities = values.ToHashSet();
+                _cache.Set(Key, entities);
             }
             return entities;
         }
@@ -72,6 +73,12 @@ namespace com.b_velop.Slipways.Web.Data
             entities.RemoveWhere(_ => _.Id == id);
             _cache.Set(Key, entities);
             return entities;
+        }
+
+        public Task<HashSet<T>> UpdateAsync(
+            T item, Guid id)
+        {
+            return null;
         }
     }
 }
