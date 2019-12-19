@@ -34,6 +34,7 @@ namespace com.b_velop.Slipways.Web.Data.Dtos
             Rating = s.Rating ?? 0;
             Street = s.Street;
             Water = new WaterDto(s.Water);
+            WaterFk = s.Water.Id;
         }
 
         [JsonPropertyName("id")]

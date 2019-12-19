@@ -86,8 +86,14 @@ namespace com.b_velop.Slipways.Web
 
             services.AddScoped<IGraphQLService, GraphQLService>();
 
-            services.AddHttpClient<ISlipwayService, SlipwayService>();
-            services.AddHttpClient<IServiceService, ServiceService>();
+            services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
+            {
+                options.BaseAddress = new Uri("https://data.slipways.de/api/slipway");
+            });
+            services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
+            {
+                options.BaseAddress = new Uri("https://data.slipways.de/api/service");
+            });
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
 
             services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>

@@ -53,6 +53,8 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public async Task<IActionResult> OnPostAsync()
         {
             var waters = await _dataStore.Waters.GetValuesAsync();
+            var water = waters.First(_ => _.Id == WaterId);
+            Slipway.Water = water;
             if (ModelState.IsValid)
             {
                 if (ParkingPlace)
@@ -62,8 +64,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 if (Steg)
                     Slipway.Extras.Add(new Extra(Guid.Parse("06448FD8-DCC1-4579-947A-8A7B18BC1AAB")));
 
-                var water = waters.First(_ => _.Id == WaterId);
-                Slipway.Water = water;
+           
                 var slipways = await _dataStore.Slipways.AddAsync(Slipway);
                 if (slipways != null)
                     return RedirectToPage("./Index");
@@ -72,7 +73,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             }
             else
             {
-                Message = "Eingabe ungütlig";
+                Message = "Eingabe ungültig";
             }
 
             Waters = new SelectList(waters, "Id", "Longname");

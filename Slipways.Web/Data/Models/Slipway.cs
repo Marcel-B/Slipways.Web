@@ -65,7 +65,7 @@ namespace com.b_velop.Slipways.Web.Data.Models
         [Display(Name = "Bewertung")]
         public int? Rating { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Gewässer")]
         public Water Water { get; set; }
 
