@@ -64,7 +64,7 @@ namespace com.b_velop.Slipways.Web
                     var secretProvider = new SecretProvider();
                     var pw = string.Empty;
 
-                    if (hostingContet.HostingEnvironment.IsStaging())
+                    if (!hostingContet.HostingEnvironment.IsProduction())
                         pw = secretProvider.GetSecret("dev_slipway_db");
                     else if (hostingContet.HostingEnvironment.IsProduction())
                         pw = secretProvider.GetSecret("sqlserver");
@@ -78,7 +78,7 @@ namespace com.b_velop.Slipways.Web
 
                     var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
 #if DEBUG
-                    str = "Server=localhost,1433;Database=Slipways;User Id=sa;Password={pw}";
+                    str = "Server=localhost,1433;Database=Slipways;User Id=sa;Password=foo123bar!";
 #endif
                     services.AddDbContext<ApplicationDbContext>(_ => _.UseSqlServer(str));
                 })
