@@ -38,31 +38,38 @@ namespace com.b_velop.Slipways.Web.Services
             return Task.CompletedTask;
         }
 
-        private async void DoWork(object state)
+        private async void DoWork(
+            object state)
         {
-            using var scope = Services.CreateScope();
-            var cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
-            var graphQLService = scope.ServiceProvider.GetRequiredService<IGraphQLService>();
-
-            var waters = await graphQLService.GetValuesAsync<IEnumerable<WaterDto>>(Queries.Waters.Item1, Queries.Waters.Item2);
-            if (waters != null)
+            try
             {
-                var whs = waters.ToHashSet();
-                cache.Set(Cache.Waters, whs);
-            }
+                using var scope = Services.CreateScope();
+                var cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
+                var graphQLService = scope.ServiceProvider.GetRequiredService<IGraphQLService>();
 
-            var slipways = await graphQLService.GetValuesAsync<IEnumerable<SlipwayDto>>(Queries.Slipways.Item1, Queries.Slipways.Item2);
-            if (slipways != null)
-            {
-                var shs = slipways.ToHashSet();
-                cache.Set(Cache.Slipways, shs);
-            }
+                var waters = await graphQLService.GetValuesAsync<IEnumerable<WaterDto>>(Queries.Waters.Item1, Queries.Waters.Item2);
+                if (waters != null)
+                {
+                    var whs = waters.ToHashSet();
+                    cache.Set(Cache.Waters, whs);
+                }
 
-            var services = await graphQLService.GetValuesAsync<IEnumerable<ServiceDto>>(Queries.Services.Item1, Queries.Services.Item2);
-            if (services != null)
+                var slipways = await graphQLService.GetValuesAsync<IEnumerable<SlipwayDto>>(Queries.Slipways.Item1, Queries.Slipways.Item2);
+                if (slipways != null)
+                {
+                    var shs = slipways.ToHashSet();
+                    cache.Set(Cache.Slipways, shs);
+                }
+
+                var services = await graphQLService.GetValuesAsync<IEnumerable<ServiceDto>>(Queries.Services.Item1, Queries.Services.Item2);
+                if (services != null)
+                {
+                    var sehs = services.ToHashSet();
+                    cache.Set(Cache.Services, sehs);
+                }
+            }catch(Exception e)
             {
-                var sehs = services.ToHashSet();
-                cache.Set(Cache.Services, sehs);
+                _logger.LogError(6666, "Error occurred while reload cache", e);
             }
         }
 
