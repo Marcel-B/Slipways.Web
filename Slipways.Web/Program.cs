@@ -13,6 +13,7 @@ namespace com.b_velop.Slipways.Web
 {
     public class Program
     {
+        public static string Env = "";
         public static void Main(string[] args)
         {
             var pusher = new MetricPusher(new MetricPusherOptions
@@ -24,12 +25,10 @@ namespace com.b_velop.Slipways.Web
 
             pusher.Start();
 
-            var file = string.Empty;
-            var hostingEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            if (hostingEnvironment == "Production")
+            var file = "dev-nlog.config";
+            Env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (Env == "Production")
                 file = "nlog.config";
-            else if (hostingEnvironment == "Staging")
-                file = "dev-nlog.config";
 
             var logger = NLogBuilder.ConfigureNLog(file).GetCurrentClassLogger();
             try
@@ -64,9 +63,9 @@ namespace com.b_velop.Slipways.Web
                     var secretProvider = new SecretProvider();
                     var pw = string.Empty;
 
-                    if (!hostingContet.HostingEnvironment.IsProduction())
+                    if (Env != "Production")
                         pw = secretProvider.GetSecret("dev_slipway_db");
-                    else if (hostingContet.HostingEnvironment.IsProduction())
+                    else if (Env == "Production")
                         pw = secretProvider.GetSecret("sqlserver");
                     else
                         pw = "foo123bar!";
