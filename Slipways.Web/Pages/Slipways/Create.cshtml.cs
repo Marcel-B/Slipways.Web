@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Data.Models;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,10 @@ using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Pages.Slipways
 {
+    [IgnoreAntiforgeryToken(Order = 2000)]
     public class CreateModel : PageModel
     {
-        private ISlipwayService _service;
-        private IMemoryCache _cache;
+        private IStoreWrapper _dataStore;
         private ILogger<CreateModel> _logger;
 
         [BindProperty]
@@ -22,45 +23,28 @@ namespace com.b_velop.Slipways.Web.Pages.Slipways
         public SelectList Waters { get; set; }
 
         public CreateModel(
-            ISlipwayService service,
-            IMemoryCache cache,
+            IStoreWrapper dataStore,
             ILogger<CreateModel> logger)
         {
-            _service = service;
-            _cache = cache;
+            _dataStore = dataStore;
             _logger = logger;
         }
 
         public async Task OnGetAsync()
         {
             Slipway = new Slipway();
-            if (!_cache.TryGetValue("waters", out IEnumerable<Water> waters))
+            var waterDtos = await _dataStore.Waters.GetValuesAsync();
+            var waters = new HashSet<Water>();
+            foreach (var waterDto in waterDtos)
             {
-                var result = await _service.GetWatersAsync();
-                _cache.Set("waters", result);
-                waters = result;
-            }
-            Waters = new SelectList(waters, "Id", "Longname");
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _service.InsertSlipway(Slipway);
-                if (result)
+                waters.Add(new Water
                 {
-                    return RedirectToPage("../Index");
-                }
-            }
-            if (!_cache.TryGetValue("waters", out IEnumerable<Water> waters))
-            {
-                var result = await _service.GetWatersAsync();
-                _cache.Set("waters", result);
-                waters = result;
+                    Id = waterDto.Id,
+                    Longname = waterDto.Longname,
+                    Shortname = waterDto.Shortname
+                });
             }
             Waters = new SelectList(waters, "Id", "Longname");
-            return Page();
         }
     }
 }

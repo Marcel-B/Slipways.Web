@@ -6,13 +6,13 @@
     <title>@ViewData["Title"] - Slipways</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
+    <script data-ad-client="ca-pub-7217433489070973" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="~/img/icons8-boat-launch-96.png" /></a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="~/img/icons8-boat-launch-96.png" width="66" height="66" alt="logo" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,21 +20,41 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Slipways/Create"> Hinzufügen</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Slipanlage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Service">Service</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Datenschutz</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="https://data.slipways.de/ui/playground">GraphQL API</a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li>
+                                <div class="dropdown show">
+                                    <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Admin
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Water/Index">Gewässer</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Slipway/Index">Slipanlage</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Service/Index">Service</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
+        <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

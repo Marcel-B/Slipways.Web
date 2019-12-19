@@ -1,0 +1,41 @@
+﻿@page
+@model com.b_velop.Slipways.Web.ServiceModel
+@{
+    ViewData["Title"] = "Service";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Service</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Straße</th>
+            <th>PLZ</th>
+            <th>Ort</th>
+            <th>Telefon</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model.Services)
+        {
+            <tr>
+                @if(!string.IsNullOrEmpty(service.Url))
+                {
+                <td><a href="@service.Url" target="_blank">@service.Name</a></td>
+                }
+                else
+                {
+                    <td>@service.Name</td>
+                }
+                <td>@service.Street</td>
+                <td>@service.Postalcode</td>
+                <td>@service.City</td>
+                <td>@service.Phone</td>
+                <td>@service.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>

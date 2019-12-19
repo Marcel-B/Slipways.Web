@@ -1,10 +1,12 @@
 using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using Prometheus;
 using System;
 
 namespace com.b_velop.Slipways.Web
@@ -13,7 +15,22 @@ namespace com.b_velop.Slipways.Web
     {
         public static void Main(string[] args)
         {
-            var file = "nlog.config";
+            var pusher = new MetricPusher(new MetricPusherOptions
+            {
+                Endpoint = "https://push.qaybe.de/metrics",
+                Job = "SlipwaysWeb",
+                Instance = "SlipwaysWeb"
+            });
+
+            pusher.Start();
+
+            var file = string.Empty;
+            var hostingEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (hostingEnvironment == "Production")
+                file = "nlog.config";
+            else if (hostingEnvironment == "Staging")
+                file = "dev-nlog.config";
+
             var logger = NLogBuilder.ConfigureNLog(file).GetCurrentClassLogger();
             try
             {
@@ -44,11 +61,22 @@ namespace com.b_velop.Slipways.Web
                     webBuilder.UseStartup<Startup>();
                 }).ConfigureServices((hostingContet, services) =>
                 {
-                    var pw = Environment.GetEnvironmentVariable("PASSWORD");
+                    var secretProvider = new SecretProvider();
+                    var pw = string.Empty;
+
+                    if (!hostingContet.HostingEnvironment.IsProduction())
+                        pw = secretProvider.GetSecret("dev_slipway_db");
+                    else if (hostingContet.HostingEnvironment.IsProduction())
+                        pw = secretProvider.GetSecret("sqlserver");
+                    else
+                        pw = "foo123bar!";
+
                     var server = Environment.GetEnvironmentVariable("SERVER");
                     var user = Environment.GetEnvironmentVariable("USER");
                     var db = Environment.GetEnvironmentVariable("DATABASE");
-                    var str = $"Server={server},1433;Database={db};User Id={user};Password={pw}";
+                    var port = Environment.GetEnvironmentVariable("PORT");
+
+                    var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
 #if DEBUG
                     str = "Server=localhost,1433;Database=Slipways;User Id=sa;Password=foo123bar!";
 #endif

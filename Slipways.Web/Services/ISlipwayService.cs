@@ -1,13 +1,8 @@
-﻿using com.b_velop.Slipways.Web.Data.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using com.b_velop.Slipways.Web.Data.Dtos;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public interface ISlipwayService
+    public interface ISlipwayService : ITokenService<SlipwayDto>
     {
-        Task<IEnumerable<Slipway>> GetSlipwaysAsync();
-        Task<IEnumerable<Water>> GetWatersAsync();
-        Task<bool> InsertSlipway(Slipway slipway);
     }
 }
