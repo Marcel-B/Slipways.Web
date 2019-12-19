@@ -75,6 +75,9 @@ namespace com.b_velop.Slipways.Web
                     var db = Environment.GetEnvironmentVariable("DATABASE");
                     var port = Environment.GetEnvironmentVariable("PORT");
 
+
+
+
                     var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
 #if DEBUG
                     str = "Server=localhost,1433;Database=Slipways;User Id=sa;Password=foo123bar!";

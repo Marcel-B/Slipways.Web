@@ -73,11 +73,6 @@ namespace com.b_velop.Slipways.Web.Services
             //}
         }
 
-        private bool WaterDto()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task StopAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Timed Hosted Service is stopping.");
