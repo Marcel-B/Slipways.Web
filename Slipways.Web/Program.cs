@@ -24,7 +24,13 @@ namespace com.b_velop.Slipways.Web
 
             pusher.Start();
 
-            var file = "nlog.config";
+            var file = string.Empty;
+            var hostingEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (hostingEnvironment == "Production")
+                file = "nlog.config";
+            else if (hostingEnvironment == "Staging")
+                file = "dev-nlog.config";
+
             var logger = NLogBuilder.ConfigureNLog(file).GetCurrentClassLogger();
             try
             {
