@@ -181,11 +181,11 @@ namespace com.b_velop.Slipways.Web
 
             app.UseCookiePolicy();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseFacebookMiddleware();
+            //app.UseFacebookMiddleware();
             app.UseAuthentication();
             app.UseAuthorization();
 
