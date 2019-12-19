@@ -73,6 +73,14 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             var waters = await _dataStore.Waters.GetValuesAsync();
             var water = waters.First(_ => _.Id == Guid.Parse(WaterId));
             Slipway.Water = water;
+            foreach (var key in Extras.Keys)
+            {
+                if (Extras[key].Selected)
+                {
+                    var id = Extras[key].Id;
+                    Slipway.Extras.Add(new Data.Models.Extra { Id = id, Name = key });
+                }
+            }
             var slipways = await _dataStore.Slipways.UpdateAsync(Slipway, Slipway.Id);
             if (slipways == null)
             {
