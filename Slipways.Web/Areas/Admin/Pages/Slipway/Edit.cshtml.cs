@@ -15,6 +15,15 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         private IStoreWrapper _dataStore;
         private ILogger<EditModel> _logger;
 
+        public class ExtraSelection
+        {
+            public Guid Id { get; set; }
+            public bool Selected { get; set; }
+        }
+
+        [BindProperty]
+        public Dictionary<string, ExtraSelection> Extras { get; set; }
+
         [TempData]
         public string Message { get; set; }
 
@@ -37,6 +46,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         {
             _dataStore = dataStore;
             _logger = logger;
+            Extras = new Dictionary<string, ExtraSelection>();
         }
 
         public async Task OnGetAsync(
@@ -47,7 +57,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             SelectedWaterId = Slipway.Water.Id.ToString();
             var extras = await _dataStore.Extras.GetValuesAsync();
             Waters = await GetSelectListAsync();
-            Slipway.Extras = extras;
+
+            foreach (var extra in extras)
+                Extras[extra.Name] = new ExtraSelection { Id = extra.Id, Selected = Slipway.Extras.FirstOrDefault(_ => _.Id == extra.Id) != null  };
         }
 
         private async Task<SelectList> GetSelectListAsync()

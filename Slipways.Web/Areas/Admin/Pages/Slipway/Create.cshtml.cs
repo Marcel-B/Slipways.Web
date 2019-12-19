@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
@@ -12,11 +13,20 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 {
     public class CreateModel : PageModel
     {
+        public class ExtraSelection
+        {
+            public Guid Id { get; set; }
+            public bool Selected { get; set; }
+        }
+
         private IStoreWrapper _dataStore;
         private ILogger<CreateModel> _logger;
 
         [TempData]
         public string Message { get; set; }
+
+        [BindProperty]
+        public Dictionary<string, ExtraSelection> Extras { get; set; }
 
         [BindProperty]
         public Data.Models.Slipway Slipway { get; set; }
@@ -41,6 +51,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         {
             _dataStore = dataStore;
             _logger = logger;
+            Extras = new Dictionary<string, ExtraSelection>();
         }
 
         public async Task OnGetAsync()
@@ -48,6 +59,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             Slipway = new Data.Models.Slipway();
             var waters = await _dataStore.Waters.GetValuesAsync();
             Waters = new SelectList(waters, "Id", "Longname");
+            var extras = await _dataStore.Extras.GetValuesAsync();
+            foreach (var extra in extras)
+                Extras[extra.Name] = new ExtraSelection { Id = extra.Id, Selected = false };
         }
 
         public async Task<IActionResult> OnPostAsync()

@@ -105,6 +105,15 @@
         </div>
     </div>
 
+    <span>
+        @foreach (var extra in Model.Extras.Keys)
+        {
+            <input type="checkbox" class="form-check-input" asp-for="@Model.Extras[extra].Selected" id="@extra">
+            <label class="form-check-label" asp-for="@Model.Extras[extra].Selected">@extra</label>
+            <input type="hidden" asp-for="@Model.Extras[extra].Id" value="@Model.Extras[extra].Id" />
+        }
+    </span>
+
     <div class="form-row">
         <button type="submit" class="btn btn-primary">Speichern</button>
     </div>
