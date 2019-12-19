@@ -69,7 +69,7 @@ namespace com.b_velop.Slipways.Web.Services
                 }
             }catch(Exception e)
             {
-                _logger.LogError(6666, "Error occurred while reload cache", e);
+                //_logger.LogError(6666, "Error occurred while reload cache", e);
             }
         }
 
