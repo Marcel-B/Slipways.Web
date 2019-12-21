@@ -111,13 +111,6 @@ namespace com.b_velop.Slipways.Web
                 options.BaseAddress = new Uri("https://data.slipways.de/api/manufacturer");
             });
 
-            //services.AddAuthentication()
-            //    .AddFacebook(facebookOptions =>
-            //    {
-            //        facebookOptions.AppId = appId;
-            //        facebookOptions.AppSecret = appSecret;
-            //    });
-
             if (!Env.IsDevelopment())
                 services.AddDataProtection()
                    .SetApplicationName("slipways-web")
@@ -131,15 +124,13 @@ namespace com.b_velop.Slipways.Web
                     {
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Slipway");
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Water");
+                        options.Conventions.AuthorizeAreaFolder("Admin", "/Service");
                     }
                 });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential 
-                // cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                // requires using Microsoft.AspNetCore.Http;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
@@ -174,10 +165,9 @@ namespace com.b_velop.Slipways.Web
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
-            UpdateDatabase(app);
+            //UpdateDatabase(app);
 
             app.UseCookiePolicy();
 
@@ -185,7 +175,6 @@ namespace com.b_velop.Slipways.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-            //app.UseFacebookMiddleware();
             app.UseAuthentication();
             app.UseAuthorization();
 
