@@ -39,17 +39,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" target="_blank" href="https://data.slipways.de/ui/playground">GraphQL API</a>
                     </li>
-
-                    <li>
-                        <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Suchen" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suchen</button>
-                        </form>
-                    </li>
                 </ul>
 
                 <ul class="navbar-nav">
-
 
                     @if (SignInManager.IsSignedIn(User))
                     {
@@ -94,8 +86,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js"></script>
-
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
