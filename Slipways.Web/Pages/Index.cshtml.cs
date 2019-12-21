@@ -33,7 +33,8 @@ namespace com.b_velop.Slipways.Web.Pages
         {
             Slipways = new SlipwaysModel();
             var slipways = await _dataStore.Slipways.GetValuesAsync();
-            Slipways.Slipways = slipways.OrderBy(_ => _.Name).ToHashSet();
+            if (slipways != null)
+                Slipways.Slipways = slipways.OrderBy(_ => _.Name).ToHashSet();
         }
 
         public async Task<IActionResult> OnGetFilter(

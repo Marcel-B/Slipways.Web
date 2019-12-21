@@ -51,21 +51,6 @@ namespace com.b_velop.Slipways.Web.Services
         //    return new WaterDto[0];
         //}
 
-        //public async Task<IEnumerable<SlipwayDto>> GetSlipwaysAsync()
-        //{
-        //    try
-        //    {
-        //        var query = ;
-        //        var slipwayDtos = await GetAsync<SlipwayDto>(query, "slipways");
-        //        return slipwayDtos.OrderBy(_ => _.Name);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _logger.LogError(2222, $"Error occurred while request Slipways from GraphQL endpoint", e);
-        //    }
-        //    return new SlipwayDto[0];
-        //}
-
         //public async Task<IEnumerable<WaterDto>> GetWatersAsync()
         //{
         //    var query = @"query {
@@ -99,35 +84,9 @@ namespace com.b_velop.Slipways.Web.Services
         //    }
         //}
 
-        //public async Task<IEnumerable<ServiceDto>> GetServicesAsync()
-        //{
-        //    try
-        //    {
-        //        var query = ;
-        //        var services = await GetAsync<ServiceDto>(query, "services");
-        //        return services.OrderBy(_ => _.Name);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _logger.LogError(6666, $"Error occurred while request Services from GraphQL", e);
-        //        return new ServiceDto[0];
-        //    }
-        //}
+ 
 
-        //public async Task<IEnumerable<ManufacturerDto>> GetManufacturersAsync()
-        //{
-        //    try
-        //    {
-        //        var query = ;
-        //        var manufacturerDtos = await GetAsync<ManufacturerDto>(query, "manufacturers");
-        //        return manufacturerDtos.OrderBy(_ => _.Name);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _logger.LogError(6666, $"Error occurred while request Manufacturers from GraphQL", e);
-        //        return new ManufacturerDto[0];
-        //    }
-        //}
+      
 
         public async Task<T> GetValuesAsync<T>(
             string method,
