@@ -38,16 +38,15 @@ namespace com.b_velop.Slipways.Web.Pages
         }
 
         public async Task<IActionResult> OnGetFilter(
-            [FromQuery] string search,
-            [FromQuery] bool onlyFree)
+            [FromQuery] string search)
         {
             Slipways = new SlipwaysModel();
             var slipways = await _dataStore.Slipways.GetValuesAsync();
             IEnumerable<Slipway> cs;
-            if (onlyFree)
-                cs = slipways.Where(_ => _.Costs <= 0);
-            else
-                cs = slipways;
+            //if (onlyFree)
+            //    cs = slipways.Where(_ => _.Costs <= 0);
+            //else
+            cs = slipways;
             if (!string.IsNullOrWhiteSpace(search))
             {
                 search = search.ToLower();
