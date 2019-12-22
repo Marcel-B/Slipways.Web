@@ -12,7 +12,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipways
 
     public class SlipwaysModel
     {
-        public HashSet<Data.Models.Slipway> Slipways { get; set; }
+        public HashSet<b_velop.Slipways.Data.Models.Slipway> Slipways { get; set; }
     }
 
     public class IndexModel : PageModel

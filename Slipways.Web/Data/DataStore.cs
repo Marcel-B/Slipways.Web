@@ -1,4 +1,5 @@
-﻿using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Data.Contracts;
+using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -19,7 +20,7 @@ namespace com.b_velop.Slipways.Web.Data
 
     public abstract class DataStore<T, DTO> : IDataStore<T, DTO>
         where T : class, IEntity
-        where DTO : class, IEntity
+        where DTO : class, IDto
     {
         private IMemoryCache _cache;
         private IGraphQLService _graphQLService;
@@ -59,7 +60,7 @@ namespace com.b_velop.Slipways.Web.Data
         public async Task<HashSet<T>> AddAsync(
             T item)
         {
-            var dto = ToDto(item);
+            var dto = ConvertToDto(item);
             var result = await _service.InsertAsync(dto);
 
             if (result == null)
@@ -72,8 +73,8 @@ namespace com.b_velop.Slipways.Web.Data
             return values;
         }
 
-        public abstract DTO ToDto(T item);
-        public abstract T ToClass(DTO item);
+        public abstract DTO ConvertToDto(T item);
+        public abstract T ConvertToClass(DTO item);
 
         public async Task<HashSet<T>> RemoveAsync(
             Guid id)
@@ -90,7 +91,7 @@ namespace com.b_velop.Slipways.Web.Data
         public async Task<HashSet<T>> UpdateAsync(
             T item, Guid id)
         {
-            var dto = ToDto(item);
+            var dto = ConvertToDto(item);
 
             var result = await _service.UpdateAsync(id, dto);
             if (result == null)

@@ -1,5 +1,5 @@
-﻿using com.b_velop.Slipways.Web.Data.Dtos;
-using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Data.Dtos;
+using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,10 +12,6 @@ namespace com.b_velop.Slipways.Web.ViewModels
     {
         private ISlipwayService _service;
         private ILogger<WaterViewModel> _logger;
-
-        public WaterViewModel()
-        {
-        }
 
         [BindProperty]
         public Water Water { get; set; }

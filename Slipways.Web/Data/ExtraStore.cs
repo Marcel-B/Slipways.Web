@@ -1,5 +1,6 @@
-﻿using com.b_velop.Slipways.Web.Data.Dtos;
-using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Data.Dtos;
+using com.b_velop.Slipways.Data.Models;
+using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,16 +21,12 @@ namespace com.b_velop.Slipways.Web.Data
             Method = Queries.Extras.Item1;
         }
 
-        public override Extra ToClass(
+        public override Extra ConvertToClass(
             ExtraDto item)
-        {
-            return new Extra(item);
-        }
+            => item.ToClass();
 
-        public override ExtraDto ToDto(
+        public override ExtraDto ConvertToDto(
             Extra item)
-        {
-            return new ExtraDto(item);
-        }
+            => item.ToDto();
     }
 }

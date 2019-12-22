@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Web.Data.Dtos;
-using com.b_velop.Slipways.Web.Services;
+using com.b_velop.Slipways.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
@@ -21,7 +18,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public string Message { get; set; }
 
         [BindProperty]
-        public Data.Models.Water Water { get; set; }
+        public b_velop.Slipways.Data.Models.Water Water { get; set; }
 
         public EditModel(
             IStoreWrapper dataStore,

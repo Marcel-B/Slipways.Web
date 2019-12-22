@@ -14,7 +14,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         private IStoreWrapper _dataStore;
 
         [BindProperty]
-        public Data.Models.Water Water { get; set; }
+        public b_velop.Slipways.Data.Models.Water Water { get; set; }
 
         public DetailsModel(
             IStoreWrapper dataStore)

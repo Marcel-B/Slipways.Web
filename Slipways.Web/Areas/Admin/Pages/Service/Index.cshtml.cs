@@ -11,7 +11,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
         private IStoreWrapper _dataStore;
 
         [BindProperty]
-        public HashSet<Data.Models.Service> Services { get; set; }
+        public HashSet<b_velop.Slipways.Data.Models.Service> Services { get; set; }
 
         public IndexModel(
             IStoreWrapper dataStore)
