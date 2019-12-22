@@ -1,5 +1,5 @@
-﻿using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Data.Models;
+using com.b_velop.Slipways.Web.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;

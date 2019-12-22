@@ -12,7 +12,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         private IStoreWrapper _dataStore;
 
         [BindProperty]
-        public Data.Models.Slipway Slipway { get; set; }
+        public b_velop.Slipways.Data.Models.Slipway Slipway { get; set; }
 
         public DetailsModel(
             IStoreWrapper dataStore)

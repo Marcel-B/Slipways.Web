@@ -17,7 +17,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
         public string Message { get; set; }
 
         [BindProperty]
-        public HashSet<Data.Models.Water> Waters { get; set; }
+        public HashSet<b_velop.Slipways.Data.Models.Water> Waters { get; set; }
 
         public IndexModel(
             IStoreWrapper dataStore,

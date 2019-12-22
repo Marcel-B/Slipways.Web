@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Web.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -24,7 +24,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Service
         public string Message { get; set; }
 
         [BindProperty]
-        public Data.Models.Service Service { get; set; }
+        public b_velop.Slipways.Data.Models.Service Service { get; set; }
 
         [BindProperty]
         public Dictionary<string, ManufacturerSelection> Manufacturers { get; set; }

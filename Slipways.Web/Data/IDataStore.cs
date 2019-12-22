@@ -1,11 +1,13 @@
-﻿using com.b_velop.Slipways.Web.Data.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.b_velop.Slipways.Data.Contracts;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public interface IDataStore<T, DTO> where T : class, IEntity where DTO : class, IEntity
+    public interface IDataStore<T, DTO>
+        where T : class, IEntity
+        where DTO : IDto
     {
         Task<HashSet<T>> GetValuesAsync();
         Task<HashSet<T>> AddAsync(T item);

@@ -28,7 +28,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public string Message { get; set; }
 
         [BindProperty]
-        public Data.Models.Slipway Slipway { get; set; }
+        public b_velop.Slipways.Data.Models.Slipway Slipway { get; set; }
 
         [BindProperty]
         public string SelectedWaterId { get; set; }
@@ -78,7 +78,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 if (Extras[key].Selected)
                 {
                     var id = Extras[key].Id;
-                    Slipway.Extras.Add(new Data.Models.Extra { Id = id, Name = key });
+                    Slipway.Extras.Add(new b_velop.Slipways.Data.Models.Extra { Id = id, Name = key });
                 }
             }
             var slipways = await _dataStore.Slipways.UpdateAsync(Slipway, Slipway.Id);

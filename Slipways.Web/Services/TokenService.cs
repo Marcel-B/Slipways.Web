@@ -1,6 +1,6 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Web.Data.Models;
+using com.b_velop.Slipways.Data.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public interface ITokenService<DTO> where DTO : class, IEntity
+    public interface ITokenService<DTO> where DTO : class
     {
         Task<DTO> InsertAsync(DTO item);
         Task<DTO> DeleteAsync(Guid id);
         Task<DTO> UpdateAsync(Guid id, DTO item);
     }
 
-    public abstract class TokenService<DTO> : ITokenService<DTO> where DTO : class, IEntity
+    public abstract class TokenService<DTO> : ITokenService<DTO> where DTO : class
     {
         private IServiceProvider _services;
         private IIdentityProviderService _tokenService;

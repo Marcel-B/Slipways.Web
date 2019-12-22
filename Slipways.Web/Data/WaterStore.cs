@@ -1,5 +1,6 @@
-﻿using com.b_velop.Slipways.Web.Data.Dtos;
-using com.b_velop.Slipways.Web.Data.Models;
+﻿using com.b_velop.Slipways.Data.Dtos;
+using com.b_velop.Slipways.Data.Extensions;
+using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,16 +21,12 @@ namespace com.b_velop.Slipways.Web.Data
             Query = Queries.Waters.Item2;
         }
 
-        public override Water ToClass(
+        public override Water ConvertToClass(
             WaterDto item)
-        {
-            return new Water(item);
-        }
+            => item.ToClass();
 
-        public override WaterDto ToDto(
+        public override WaterDto ConvertToDto(
             Water item)
-        {
-            return new WaterDto(item);
-        }
+            => item.ToDto();
     }
 }
