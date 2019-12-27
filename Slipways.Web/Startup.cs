@@ -38,7 +38,11 @@ namespace com.b_velop.Slipways.Web
         {
             services.AddMemoryCache();
             var cache = Environment.GetEnvironmentVariable("CACHE");
-            services.AddSlipwaysData(cache);
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = cache;
+                options.InstanceName = "Slipways";
+            });
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -1,0 +1,23 @@
+﻿@page
+@model WatersModel
+@{
+}
+
+<h1>Gewässer</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Kurzbezeichnung</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var water in Model.Waters)
+        {
+            <tr>
+                <td>@water.Longname.ToLowerInvariant()</td>
+                <td>@water.Shortname.ToLowerInvariant()</td>
+            </tr>
+        }
+    </tbody>
+</table>
