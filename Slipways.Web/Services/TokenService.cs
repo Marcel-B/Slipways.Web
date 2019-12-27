@@ -1,8 +1,11 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
 using com.b_velop.Slipways.Data.Contracts;
+using com.b_velop.Slipways.Web.Infrastructure;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
@@ -23,6 +26,7 @@ namespace com.b_velop.Slipways.Web.Services
     {
         private IServiceProvider _services;
         private IIdentityProviderService _tokenService;
+        private IWebHostEnvironment _environment;
         private IMemoryCache _cache;
         private ILogger<DTO> _logger;
         protected JsonSerializerOptions _jsonOptions;
@@ -33,12 +37,14 @@ namespace com.b_velop.Slipways.Web.Services
         protected TokenService(
             HttpClient client,
             IIdentityProviderService tokenService,
+            IWebHostEnvironment environment,
             IServiceProvider services,
             IMemoryCache cache,
             ILogger<DTO> logger)
         {
             _client = client;
             _tokenService = tokenService;
+            _environment = environment;
             _services = services;
             _cache = cache;
             _logger = logger;
@@ -54,6 +60,8 @@ namespace com.b_velop.Slipways.Web.Services
         protected async Task<Token> RequestTokenAsync()
         {
             var infoItem = _services.GetRequiredService<InfoItem>();
+            var sp = new SecretProvider();
+            infoItem.Secret = sp.GetSecret("slipways_web");
             var token = await _tokenService.GetTokenAsync(infoItem);
             if (token == null)
             {
@@ -105,13 +113,15 @@ namespace com.b_velop.Slipways.Web.Services
         {
             if (!await SetHeader())
                 return default;
-
+            var url = $"https://data.slipways.de/api/{ApiPath}/{id}";
+            if (_environment.IsDevelopment())
+                url = $"http://slipways-api:80/api/{ApiPath}/{id}";
             try
             {
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Delete,
-                    RequestUri = new Uri($"https://data.slipways.de/api/{ApiPath}/{id}"),
+                    RequestUri = new Uri(url),
                 };
 
                 var result = await _client.SendAsync(request);

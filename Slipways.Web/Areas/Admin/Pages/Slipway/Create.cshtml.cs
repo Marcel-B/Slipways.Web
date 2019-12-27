@@ -69,6 +69,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             var waters = await _dataStore.Waters.GetValuesAsync();
             var water = waters.First(_ => _.Id == WaterId);
             Slipway.Water = water;
+            Slipway.WaterFk = WaterId;
             if (ModelState.IsValid)
             {
                 if (ParkingPlace)

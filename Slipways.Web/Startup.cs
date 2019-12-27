@@ -1,25 +1,24 @@
 using System;
+using com.b_velop.IdentityProvider;
+using com.b_velop.IdentityProvider.Model;
+using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Infrastructure;
+using com.b_velop.Slipways.Web.Middlewares;
+using com.b_velop.Slipways.Web.Services;
+using com.b_velop.Slipways.Web.ViewModels;
+using GraphQL.Client;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using com.b_velop.Slipways.Web.Infrastructure;
-using GraphQL.Client;
-using com.b_velop.Slipways.Web.Services;
-using com.b_velop.Slipways.Web.Data;
-using com.b_velop.IdentityProvider;
-using com.b_velop.IdentityProvider.Model;
-using Microsoft.AspNetCore.HttpOverrides;
 using Prometheus;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
-using com.b_velop.Slipways.Web.Middlewares;
-using com.b_velop.Slipways.Web.ViewModels;
-
 namespace com.b_velop.Slipways.Web
 {
     public class Startup
@@ -35,20 +34,22 @@ namespace com.b_velop.Slipways.Web
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "cache";
+                options.InstanceName = "Slipways";
+            });
             //services.AddHostedService<CacheLoader>();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            var user = Environment.GetEnvironmentVariable("SEND_GRID_USER");
+            var sendGridUser = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
             var authority = Environment.GetEnvironmentVariable("AUTHORITY");
             var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
             var scope = Environment.GetEnvironmentVariable("SCOPE");
-
             var secretProvider = new SecretProvider();
             var clientSecret = secretProvider.GetSecret("slipways_web");
             var key = secretProvider.GetSecret("send_grid_key");
@@ -61,61 +62,52 @@ namespace com.b_velop.Slipways.Web
                 appId = Environment.GetEnvironmentVariable("facebook_app_id");
                 appSecret = Environment.GetEnvironmentVariable("facebook_app_secret");
             }
-
             services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
-
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient(_ => new AuthMessageSenderOptions
             {
                 SendGridKey = key,
-                SendGridUser = user
+                SendGridUser = sendGridUser
             });
-
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddScoped<ISecretProvider, SecretProvider>();
-
             services.AddScoped<IStoreWrapper, StoreWrapper>();
             services.AddScoped<ISlipwayStore, SlipwayStore>();
             services.AddScoped<IExtraStore, ExtraStore>();
             services.AddScoped<IManufacturerStore, ManufacturerStore>();
             services.AddScoped<IWaterStore, WaterStore>();
             services.AddScoped<IServiceStore, ServiceStore>();
-
-
             services.AddScoped<WaterViewModel>();
-
             services.AddScoped<IGraphQLService, GraphQLService>();
-
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
             {
-                options.BaseAddress = new Uri("https://data.slipways.de/api/slipway");
+                options.BaseAddress = new Uri("http://slipways-api:80/api/slipway");
+                if (Env.IsProduction())
+                {
+                    options.BaseAddress = new Uri("https://data.slipways.de/api/slipway");
+                }
             });
             services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
             {
                 options.BaseAddress = new Uri("https://data.slipways.de/api/service");
             });
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
-
             services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>
             {
                 options.BaseAddress = new Uri("https://data.slipways.de/api/extra");
             });
-
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
                 options.BaseAddress = new Uri("https://data.slipways.de/api/water");
             });
-
             services.AddHttpClient<IManufacturerService, ManufacturerService>("manufacturerClient", options =>
             {
                 options.BaseAddress = new Uri("https://data.slipways.de/api/manufacturer");
             });
-
             if (!Env.IsDevelopment())
                 services.AddDataProtection()
-                   .SetApplicationName("slipways-web")
-                   .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/app/keys/"));
-
+                .SetApplicationName("slipways-web")
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/app/keys/"));
             services.AddRazorPages()
                 .AddRazorPagesOptions(options =>
                 {
@@ -127,21 +119,39 @@ namespace com.b_velop.Slipways.Web
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Service");
                     }
                 });
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+
+            var pw = string.Empty;
+
+            if (Env.IsStaging())
+                pw = secretProvider.GetSecret("dev_slipway_db");
+            else if (Env.IsProduction())
+                pw = secretProvider.GetSecret("sqlserver");
+            else
+                pw = "foo123bar!";
+
+            var server = Environment.GetEnvironmentVariable("SERVER");
+            var user = Environment.GetEnvironmentVariable("USER");
+            var db = Environment.GetEnvironmentVariable("DATABASE");
+            var port = Environment.GetEnvironmentVariable("PORT");
+
+            var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
+            //#if DEBUG
+            //            str = "Server=localhost,1433;Database=SlipwaysUsers;User Id=sa;Password=foo123bar!";
+            //#endif
+            Console.WriteLine(str);
+            services.AddDbContext<ApplicationDbContext>(_ => _.UseSqlServer(str));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env)
@@ -167,24 +177,21 @@ namespace com.b_velop.Slipways.Web
                 app.UseExceptionHandler("/Error");
                 //app.UseHsts();
             }
-            //UpdateDatabase(app);
-
+            UpdateDatabase(app);
             app.UseCookiePolicy();
-
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
         }
 
-        private static void UpdateDatabase(IApplicationBuilder app)
+        private static void UpdateDatabase(
+            IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
