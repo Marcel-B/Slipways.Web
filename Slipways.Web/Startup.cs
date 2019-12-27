@@ -37,9 +37,10 @@ namespace com.b_velop.Slipways.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
+            var cache = Environment.GetEnvironmentVariable("CACHE");
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = "cache";
+                options.Configuration = cache;
                 options.InstanceName = "Slipways";
             });
             //services.AddHostedService<CacheLoader>();
@@ -104,10 +105,12 @@ namespace com.b_velop.Slipways.Web
             {
                 options.BaseAddress = new Uri("https://data.slipways.de/api/manufacturer");
             });
+
             if (!Env.IsDevelopment())
                 services.AddDataProtection()
                 .SetApplicationName("slipways-web")
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/app/keys/"));
+
             services.AddRazorPages()
                 .AddRazorPagesOptions(options =>
                 {
@@ -132,10 +135,10 @@ namespace com.b_velop.Slipways.Web
 
             var pw = string.Empty;
 
-            if (Env.IsStaging())
-                pw = secretProvider.GetSecret("dev_slipway_db");
-            else if (Env.IsProduction())
+            if (Env.IsProduction())
                 pw = secretProvider.GetSecret("sqlserver");
+            else if (Env.IsStaging())
+                pw = secretProvider.GetSecret("dev_slipway_db");
             else
                 pw = "foo123bar!";
 
