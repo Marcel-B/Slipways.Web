@@ -1,5 +1,6 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.Slipways.Data.Dtos;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,10 +14,11 @@ namespace com.b_velop.Slipways.Web.Services
     {
         public ExtraService(
             HttpClient client,
-            IIdentityProviderService tokenService, 
+            IIdentityProviderService tokenService,
+            IWebHostEnvironment environment,
             IServiceProvider services, 
             IMemoryCache cache, 
-            ILogger<ExtraDto> logger) : base(client, tokenService, services, cache, logger)
+            ILogger<ExtraDto> logger) : base(client, tokenService, environment, services, cache, logger)
         {
             ApiPath = "extra";
         }

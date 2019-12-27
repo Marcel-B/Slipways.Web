@@ -9,15 +9,6 @@ using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public static class Cache
-    {
-        public const string Waters = "Waters";
-        public const string Slipways = "Slipways";
-        public const string Services = "Services";
-        public const string Manufacturers = "Manufacturers";
-        public const string Extras = "Extras";
-    }
-
     public abstract class DataStore<T, DTO> : IDataStore<T, DTO>
         where T : class, IEntity
         where DTO : class, IDto
@@ -45,11 +36,14 @@ namespace com.b_velop.Slipways.Web.Data
             if (!_cache.TryGetValue(Key, out HashSet<T> entities))
             {
                 var values = await _graphQLService.GetValuesAsync<IEnumerable<T>>(Method, Query);
+
                 if (values == null)
                     return null;
+
                 entities = values.ToHashSet();
                 _cache.Set(Key, entities);
             }
+
             return entities;
         }
 

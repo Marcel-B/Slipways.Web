@@ -1,5 +1,6 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.Slipways.Data.Dtos;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,9 +17,10 @@ namespace com.b_velop.Slipways.Web.Services
         public ManufacturerService(
             HttpClient client,
             IIdentityProviderService tokenService,
+            IWebHostEnvironment environment,
             IServiceProvider services,
             IMemoryCache cache,
-            ILogger<ManufacturerDto> logger) : base(client, tokenService, services, cache, logger)
+            ILogger<ManufacturerDto> logger) : base(client, tokenService, environment, services, cache, logger)
         {
             ApiPath = "manufacturer";
         }

@@ -21,6 +21,7 @@ namespace com.b_velop.Slipways.Web.Infrastructure
                 }
             }
             var secret = System.Environment.GetEnvironmentVariable(key);
+            System.Console.WriteLine($"Got secret '{secret}'");
             return secret;
         }
     }
