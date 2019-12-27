@@ -1,6 +1,5 @@
 ﻿using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Data.Contracts;
 using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
@@ -133,27 +132,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-
+                _logger.LogError(1111, $"Error occurred while deleting '{id}'", e);
             }
             catch (InvalidOperationException e)
             {
-
+                _logger.LogError(2222, $"Error occurred while deleting '{id}'", e);
             }
             catch (UriFormatException e)
             {
-
+                _logger.LogError(3333, $"Error occurred while deleting '{id}'", e);
             }
             catch (HttpRequestException e)
             {
-
+                _logger.LogError(4444, $"Error occurred while deleting '{id}'", e);
             }
             catch (JsonException e)
             {
-
+                _logger.LogError(5555, $"Error occurred while deleting '{id}'", e);
             }
             catch (Exception e)
             {
-
+                _logger.LogError(6666, $"Error occurred while deleting '{id}'", e);
             }
             return null;
         }
@@ -183,27 +182,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-
+                _logger.LogError(1111, $"Error occurred while inserting new item", e);
             }
             catch (InvalidOperationException e)
             {
-
+                _logger.LogError(2222, $"Error occurred while inserting new item", e);
             }
             catch (UriFormatException e)
             {
-
+                _logger.LogError(3333, $"Error occurred while inserting new item", e);
             }
             catch (HttpRequestException e)
             {
-
+                _logger.LogError(4444, $"Error occurred while inserting new item", e);
             }
             catch (JsonException e)
             {
-
+                _logger.LogError(5555, $"Error occurred while inserting new item", e);
             }
             catch (Exception e)
             {
-
+                _logger.LogError(6666, $"Error occurred while inserting new item", e);
             }
             return null;
         }
@@ -234,27 +233,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-
+                _logger.LogError(1111, $"Error occurred while updating '{id}'", e);
             }
             catch (InvalidOperationException e)
             {
-
+                _logger.LogError(2222, $"Error occurred while updating '{id}'", e);
             }
             catch (UriFormatException e)
             {
-
+                _logger.LogError(3333, $"Error occurred while updating '{id}'", e);
             }
             catch (HttpRequestException e)
             {
-
+                _logger.LogError(4444, $"Error occurred while updating '{id}'", e);
             }
             catch (JsonException e)
             {
-
+                _logger.LogError(5555, $"Error occurred while updating '{id}'", e);
             }
             catch (Exception e)
             {
-
+                _logger.LogError(6666, $"Error occurred while updating '{id}'", e);
             }
             return null;
         }
