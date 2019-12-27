@@ -1,9 +1,9 @@
 using System;
 using com.b_velop.IdentityProvider;
 using com.b_velop.IdentityProvider.Model;
+using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Infrastructure;
-using com.b_velop.Slipways.Web.Middlewares;
 using com.b_velop.Slipways.Web.Services;
 using com.b_velop.Slipways.Web.ViewModels;
 using GraphQL.Client;
@@ -38,12 +38,8 @@ namespace com.b_velop.Slipways.Web
         {
             services.AddMemoryCache();
             var cache = Environment.GetEnvironmentVariable("CACHE");
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = cache;
-                options.InstanceName = "Slipways";
-            });
-            //services.AddHostedService<CacheLoader>();
+            services.AddSlipwaysData(cache);
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             var sendGridUser = Environment.GetEnvironmentVariable("SEND_GRID_USER");
@@ -90,7 +86,11 @@ namespace com.b_velop.Slipways.Web
             });
             services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
             {
-                options.BaseAddress = new Uri("https://data.slipways.de/api/service");
+                options.BaseAddress = new Uri("http://slipways-api:80/api/service");
+                if (Env.IsProduction())
+                {
+                    options.BaseAddress = new Uri("https://data.slipways.de/api/service");
+                }
             });
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
             services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>
@@ -148,10 +148,7 @@ namespace com.b_velop.Slipways.Web
             var port = Environment.GetEnvironmentVariable("PORT");
 
             var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
-            //#if DEBUG
-            //            str = "Server=localhost,1433;Database=SlipwaysUsers;User Id=sa;Password=foo123bar!";
-            //#endif
-            Console.WriteLine(str);
+
             services.AddDbContext<ApplicationDbContext>(_ => _.UseSqlServer(str));
         }
 
@@ -190,6 +187,7 @@ namespace com.b_velop.Slipways.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapMetrics();
             });
         }
 
