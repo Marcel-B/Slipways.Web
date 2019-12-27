@@ -76,14 +76,16 @@ namespace com.b_velop.Slipways.Web
             services.AddScoped<IServiceStore, ServiceStore>();
             services.AddScoped<WaterViewModel>();
             services.AddScoped<IGraphQLService, GraphQLService>();
+
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:80/api/slipway");
+                options.BaseAddress = new Uri("http://slipways-api:80/api/slipways");
                 if (Env.IsProduction())
                 {
-                    options.BaseAddress = new Uri("https://data.slipways.de/api/slipway");
+                    options.BaseAddress = new Uri("https://data.slipways.de/api/slipways");
                 }
             });
+
             services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
             {
                 options.BaseAddress = new Uri("http://slipways-api:80/api/service");
@@ -99,7 +101,7 @@ namespace com.b_velop.Slipways.Web
             });
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
-                options.BaseAddress = new Uri("https://data.slipways.de/api/water");
+                options.BaseAddress = new Uri("http://slipway-api/api/water");
             });
             services.AddHttpClient<IManufacturerService, ManufacturerService>("manufacturerClient", options =>
             {
