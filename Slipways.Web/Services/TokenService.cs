@@ -112,7 +112,7 @@ namespace com.b_velop.Slipways.Web.Services
         {
             if (!await SetHeader())
                 return default;
-            var url = $"https://data.slipways.de/api/{ApiPath}/{id}";
+            var url = $"https://api.slipways.de/api/{ApiPath}/{id}";
             if (_environment.IsDevelopment())
                 url = $"http://slipways-api:80/api/{ApiPath}/{id}";
             try
