@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
+using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Distributed;
@@ -25,13 +26,18 @@ namespace com.b_velop.Slipways.Web.Pages
         {
             _cache = cache;
             _logger = logger;
+            Waters = new HashSet<Water>();
         }
 
         public async Task OnGetAsync()
         {
             var watersBytes = await _cache.GetAsync(Cache.Waters);
             var waters = watersBytes.ToObject<IEnumerable<Water>>();
-            Waters = waters.ToHashSet();
+            foreach (var water in waters)
+            {
+                water.Longname = water.Longname.FirstUpper();
+                Waters.Add(water);
+            }
         }
     }
 }

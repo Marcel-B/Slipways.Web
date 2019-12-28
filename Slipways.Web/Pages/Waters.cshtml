@@ -9,14 +9,16 @@
         <tr>
             <th>Name</th>
             <th>Kurzbezeichnung</th>
+            <th>Wiki Link</th>
         </tr>
     </thead>
     <tbody>
         @foreach(var water in Model.Waters)
         {
             <tr>
-                <td>@water.Longname.ToLowerInvariant()</td>
-                <td>@water.Shortname.ToLowerInvariant()</td>
+                <td>@water.Longname</td>
+                <td>@water.Shortname</td>
+                <td><a href="https://de.wikipedia.org/wiki/@water.Longname" target="_blank"> <img src="~/img/wiki-24.png" alt="Wikipedia" /></a></td>
             </tr>
         }
     </tbody>
