@@ -2,6 +2,11 @@
 @model WatersModel
 @{
 }
+@section AdditionalMeta
+{
+    <title>Gewässer, Flüsse, See, Fluss, Meer, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe</title>
+    <meta name="description" content="Auflistung aller relevanten Gewässer." />
+}
 
 <h1>Gewässer</h1>
 <table class="table">
@@ -13,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var water in Model.Waters)
+        @foreach (var water in Model.Waters)
         {
             <tr>
                 <td>@water.Longname</td>
