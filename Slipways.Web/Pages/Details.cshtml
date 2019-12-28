@@ -2,6 +2,13 @@
 @model com.b_velop.Slipways.Web.Pages.DetailsModel
 @{
 }
+
+@section AdditionalMeta
+{
+    <title>@Model.Slipway.Name, @Model.Slipway.City, Slipanlagen, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe</title>
+    <meta name="description" content="Details der Slipanlage @Model.Slipway.Name in @Model.Slipway.City" />
+}
+
 <div class="container align-content-center">
     <div class="row no-gutters">
         <div class="col-md-4">
