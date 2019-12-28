@@ -10,8 +10,8 @@ namespace com.b_velop.Slipways.Web.ViewModels
 {
     public class WaterViewModel
     {
-        private ISlipwayService _service;
-        private ILogger<WaterViewModel> _logger;
+        //private ISlipwayService _service;
+        //private ILogger<WaterViewModel> _logger;
 
         [BindProperty]
         public Water Water { get; set; }

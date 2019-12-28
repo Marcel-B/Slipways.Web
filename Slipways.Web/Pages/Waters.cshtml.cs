@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
+using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,25 +15,24 @@ namespace com.b_velop.Slipways.Web.Pages
 {
     public class WatersModel : PageModel
     {
-        private IDistributedCache _cache;
+        private IStoreWrapper _dataStore;
         private ILogger<WatersModel> _logger;
 
         [BindProperty]
         public HashSet<Water> Waters { get; set; }
 
         public WatersModel(
-            IDistributedCache cache,
+            IStoreWrapper dataStore,
             ILogger<WatersModel> logger)
         {
-            _cache = cache;
+            _dataStore = dataStore;
             _logger = logger;
             Waters = new HashSet<Water>();
         }
 
         public async Task OnGetAsync()
         {
-            var watersBytes = await _cache.GetAsync(Cache.Waters);
-            var waters = watersBytes.ToObject<IEnumerable<Water>>();
+            var waters = await _dataStore.Waters.GetValuesAsync();
             foreach (var water in waters)
             {
                 water.Longname = water.Longname.FirstUpper();
