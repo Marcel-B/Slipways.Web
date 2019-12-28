@@ -86,7 +86,7 @@ namespace com.b_velop.Slipways.Web
                 options.BaseAddress = new Uri("http://slipways-api:80/api/slipways");
                 if (Env.IsProduction())
                 {
-                    options.BaseAddress = new Uri("https://data.slipways.de/api/slipways");
+                    options.BaseAddress = new Uri("http://slipways-api/api/slipways");
                 }
             });
 
