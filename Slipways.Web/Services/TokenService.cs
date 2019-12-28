@@ -112,7 +112,7 @@ namespace com.b_velop.Slipways.Web.Services
         {
             if (!await SetHeader())
                 return default;
-            var url = $"https://api.slipways.de/api/{ApiPath}/{id}";
+            var url = $"http://slipways-api/api/{ApiPath}/{id}";
             if (_environment.IsDevelopment())
                 url = $"http://slipways-api:80/api/{ApiPath}/{id}";
             try
@@ -220,7 +220,7 @@ namespace com.b_velop.Slipways.Web.Services
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Put,
-                    RequestUri = new Uri($"https://data.slipways.de/api/{ApiPath}/{id}"),
+                    RequestUri = new Uri($"http://slipways-api/api/{ApiPath}/{id}"),
                     Content = new StringContent(json, Encoding.UTF8, ApplicationJson),
                 };
 
