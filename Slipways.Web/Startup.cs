@@ -1,7 +1,4 @@
 using System;
-using com.b_velop.IdentityProvider;
-using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
@@ -43,24 +40,15 @@ namespace com.b_velop.Slipways.Web
 
             var sendGridUser = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
-            var authority = Environment.GetEnvironmentVariable("AUTHORITY");
-            var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
-            var scope = Environment.GetEnvironmentVariable("SCOPE");
+
             var secretProvider = new SecretProvider();
-            var clientSecret = secretProvider.GetSecret("slipways_web");
             var key = secretProvider.GetSecret("send_grid_key");
-            var appId = secretProvider.GetSecret("facebook_app_id");
-            var appSecret = secretProvider.GetSecret("facebook_app_secret");
 
             if (Env.IsDevelopment())
             {
                 key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
-                clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
-                appId = Environment.GetEnvironmentVariable("facebook_app_id");
-                appSecret = Environment.GetEnvironmentVariable("facebook_app_secret");
             }
 
-            services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddTransient(_ => new AuthMessageSenderOptions
@@ -80,7 +68,6 @@ namespace com.b_velop.Slipways.Web
             services.AddScoped<WaterViewModel>();
             services.AddScoped<IGraphQLService, GraphQLService>();
 
-            services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
             {
                 options.BaseAddress = new Uri("http://slipways-api:8095/api/slipways");

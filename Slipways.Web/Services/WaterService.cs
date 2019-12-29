@@ -1,7 +1,5 @@
-﻿using com.b_velop.IdentityProvider;
-using com.b_velop.Slipways.Data.Dtos;
+﻿using com.b_velop.Slipways.Data.Dtos;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
@@ -20,11 +18,8 @@ namespace com.b_velop.Slipways.Web.Services
     {
         public WaterService(
             HttpClient client,
-            IIdentityProviderService tokenService,
             IWebHostEnvironment environment,
-            IServiceProvider services,
-            IMemoryCache cache,
-            ILogger<WaterService> logger) : base(client, tokenService, environment, services, cache, logger)
+            ILogger<WaterService> logger) : base(client, environment, logger)
         {
             ApiPath = "water";
         }
@@ -32,18 +27,11 @@ namespace com.b_velop.Slipways.Web.Services
         public async Task<WaterDto> UpdateWaterAsync(
             WaterDto waterDto)
         {
-            var token = await GetTokenAsync();
-            if (token == null)
-                return null;
-
-            _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
             var jsonContent = JsonSerializer.Serialize(waterDto, _jsonOptions);
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                RequestUri = new Uri($"https://data.slipways.de/api/water/{waterDto.Id}"),
+                RequestUri = new Uri($"http://slipways-api:8095/api/water/{waterDto.Id}"),
                 Content = new StringContent(jsonContent, Encoding.UTF8, "application/json")
             };
 

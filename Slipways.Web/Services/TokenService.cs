@@ -1,9 +1,4 @@
-﻿using com.b_velop.IdentityProvider;
-using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Web.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,10 +18,7 @@ namespace com.b_velop.Slipways.Web.Services
 
     public abstract class TokenService<DTO> : ITokenService<DTO> where DTO : class
     {
-        private IServiceProvider _services;
-        private IIdentityProviderService _tokenService;
         private IWebHostEnvironment _environment;
-        private IMemoryCache _cache;
         private ILogger<TokenService<DTO>> _logger;
         protected JsonSerializerOptions _jsonOptions;
         protected HttpClient _client { get; set; }
@@ -35,17 +27,11 @@ namespace com.b_velop.Slipways.Web.Services
 
         protected TokenService(
             HttpClient client,
-            IIdentityProviderService tokenService,
             IWebHostEnvironment environment,
-            IServiceProvider services,
-            IMemoryCache cache,
             ILogger<TokenService<DTO>> logger)
         {
             _client = client;
-            _tokenService = tokenService;
             _environment = environment;
-            _services = services;
-            _cache = cache;
             _logger = logger;
 
             _jsonOptions = new JsonSerializerOptions
@@ -54,57 +40,6 @@ namespace com.b_velop.Slipways.Web.Services
                 WriteIndented = false,
                 IgnoreNullValues = true
             };
-        }
-
-        protected async Task<Token> RequestTokenAsync()
-        {
-            var infoItem = _services.GetRequiredService<InfoItem>();
-            var sp = new SecretProvider();
-            infoItem.Secret = sp.GetSecret("slipways_web");
-            var token = await _tokenService.GetTokenAsync(infoItem);
-            if (token == null)
-            {
-                var info = string.IsNullOrWhiteSpace(infoItem.Secret) ? "No Secret" : "Secret is not null";
-                _logger.LogError(6666, $"Error occurred while request token.\nClientID: '{infoItem.ClientId}'\nScope: '{infoItem.Scope}'\nUrl: '{infoItem.Url}'\nSecret: '{info}'");
-                return null;
-            }
-            return token;
-        }
-
-        protected async Task<string> GetTokenAsync()
-        {
-            Token token = null;
-            if (_cache.TryGetValue("last", out DateTime time))
-            {
-                if (time > DateTime.Now)
-                {
-                    if (_cache.TryGetValue("token", out token))
-                    {
-                        // Valid token
-                        return token.AccessToken;
-                    }
-                }
-            }
-            token = await RequestTokenAsync();
-
-            if (token == null)
-            {
-                return null;
-            }
-
-            _cache.Set("last", DateTime.Now.AddSeconds(token.ExpiresIn));
-            _cache.Set("token", token);
-            return token.AccessToken;
-        }
-
-        public async Task<bool> SetHeader()
-        {
-            var token = await GetTokenAsync();
-            if (token == null)
-                return false;
-            _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            return true;
         }
 
         public async Task<DTO> DeleteAsync(
