@@ -82,25 +82,25 @@ namespace com.b_velop.Slipways.Web
 
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/slipways");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/slipways");
             });
 
             services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/service");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/service");
             });
             services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
             services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/extra");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/extra");
             });
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/water");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/water");
             });
             services.AddHttpClient<IManufacturerService, ManufacturerService>("manufacturerClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/manufacturer");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/manufacturer");
             });
 
             if (!Env.IsDevelopment())

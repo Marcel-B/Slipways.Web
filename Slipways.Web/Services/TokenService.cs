@@ -27,7 +27,7 @@ namespace com.b_velop.Slipways.Web.Services
         private IIdentityProviderService _tokenService;
         private IWebHostEnvironment _environment;
         private IMemoryCache _cache;
-        private ILogger<DTO> _logger;
+        private ILogger<TokenService<DTO>> _logger;
         protected JsonSerializerOptions _jsonOptions;
         protected HttpClient _client { get; set; }
         protected const string ApplicationJson = "application/json";
@@ -39,7 +39,7 @@ namespace com.b_velop.Slipways.Web.Services
             IWebHostEnvironment environment,
             IServiceProvider services,
             IMemoryCache cache,
-            ILogger<DTO> logger)
+            ILogger<TokenService<DTO>> logger)
         {
             _client = client;
             _tokenService = tokenService;
@@ -110,11 +110,9 @@ namespace com.b_velop.Slipways.Web.Services
         public async Task<DTO> DeleteAsync(
             Guid id)
         {
-            if (!await SetHeader())
-                return default;
-            var url = $"http://slipways-api/api/{ApiPath}/{id}";
+            var url = $"http://slipways-api:8095/api/{ApiPath}/{id}";
             if (_environment.IsDevelopment())
-                url = $"http://slipways-api:80/api/{ApiPath}/{id}";
+                url = $"http://slipways-api:8095/api/{ApiPath}/{id}";
             try
             {
                 var request = new HttpRequestMessage
@@ -160,12 +158,12 @@ namespace com.b_velop.Slipways.Web.Services
         public async Task<DTO> InsertAsync(
             DTO item)
         {
-            if (!await SetHeader())
-                return default;
-
+            //if (!await SetHeader())
+            //    return default;
+            string json = string.Empty;
             try
             {
-                var json = JsonSerializer.Serialize(item, _jsonOptions);
+                json = JsonSerializer.Serialize(item, _jsonOptions);
 
                 var content = new StringContent(json, Encoding.UTF8, ApplicationJson);
 
@@ -182,27 +180,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogError(1111, $"Error occurred while inserting new item", e);
+                _logger.LogError(1111, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (InvalidOperationException e)
             {
-                _logger.LogError(2222, $"Error occurred while inserting new item", e);
+                _logger.LogError(2222, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (UriFormatException e)
             {
-                _logger.LogError(3333, $"Error occurred while inserting new item", e);
+                _logger.LogError(3333, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(4444, $"Error occurred while inserting new item", e);
+                _logger.LogError(4444, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (JsonException e)
             {
-                _logger.LogError(5555, $"Error occurred while inserting new item", e);
+                _logger.LogError(5555, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Error occurred while inserting new item", e);
+                _logger.LogError(6666, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             return null;
         }
@@ -211,16 +209,14 @@ namespace com.b_velop.Slipways.Web.Services
             Guid id,
             DTO item)
         {
-            if (!await SetHeader())
-                return default;
-
+            var json = string.Empty;
             try
             {
-                var json = JsonSerializer.Serialize(item, _jsonOptions);
+                json = JsonSerializer.Serialize(item, _jsonOptions);
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Put,
-                    RequestUri = new Uri($"http://slipways-api/api/{ApiPath}/{id}"),
+                    RequestUri = new Uri($"http://slipways-api:8095/api/{ApiPath}/{id}"),
                     Content = new StringContent(json, Encoding.UTF8, ApplicationJson),
                 };
 
@@ -233,27 +229,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogError(1111, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(1111, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (InvalidOperationException e)
             {
-                _logger.LogError(2222, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(2222, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (UriFormatException e)
             {
-                _logger.LogError(3333, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(3333, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(4444, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(4444, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (JsonException e)
             {
-                _logger.LogError(5555, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(5555, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(6666, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             return null;
         }

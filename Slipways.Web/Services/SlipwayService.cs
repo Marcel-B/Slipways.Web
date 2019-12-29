@@ -16,9 +16,9 @@ namespace com.b_velop.Slipways.Web.Services
             IWebHostEnvironment environment,
             IMemoryCache cache,
             IIdentityProviderService tokenService,
-            ILogger<SlipwayDto> logger) : base(httpClient, tokenService, environment, services, cache, logger)
+            ILogger<SlipwayService> logger) : base(httpClient, tokenService, environment, services, cache, logger)
         {
-            ApiPath = "slipway";
+            ApiPath = "slipways";
         }
     }
 }

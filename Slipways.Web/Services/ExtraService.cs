@@ -18,7 +18,7 @@ namespace com.b_velop.Slipways.Web.Services
             IWebHostEnvironment environment,
             IServiceProvider services, 
             IMemoryCache cache, 
-            ILogger<ExtraDto> logger) : base(client, tokenService, environment, services, cache, logger)
+            ILogger<ExtraService> logger) : base(client, tokenService, environment, services, cache, logger)
         {
             ApiPath = "extra";
         }
