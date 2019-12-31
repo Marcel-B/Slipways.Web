@@ -30,7 +30,7 @@ namespace com.b_velop.Slipways.Web.Services
             return Task.CompletedTask;
         }
 
-        private async void DoWork(
+        private void DoWork(
             object state)
         {
             //try

@@ -1,7 +1,4 @@
 using System;
-using com.b_velop.IdentityProvider;
-using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
@@ -37,39 +34,29 @@ namespace com.b_velop.Slipways.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
-            var cache = Environment.GetEnvironmentVariable("CACHE");
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = cache;
-                options.InstanceName = "Slipways";
-            });
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             var sendGridUser = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
-            var authority = Environment.GetEnvironmentVariable("AUTHORITY");
-            var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
-            var scope = Environment.GetEnvironmentVariable("SCOPE");
+
             var secretProvider = new SecretProvider();
-            var clientSecret = secretProvider.GetSecret("slipways_web");
             var key = secretProvider.GetSecret("send_grid_key");
-            var appId = secretProvider.GetSecret("facebook_app_id");
-            var appSecret = secretProvider.GetSecret("facebook_app_secret");
+
             if (Env.IsDevelopment())
             {
                 key = Environment.GetEnvironmentVariable("SEND_GRID_KEY");
-                clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
-                appId = Environment.GetEnvironmentVariable("facebook_app_id");
-                appSecret = Environment.GetEnvironmentVariable("facebook_app_secret");
             }
-            services.AddSingleton(_ => new InfoItem(clientId, clientSecret, scope, authority));
+
             services.AddTransient<IEmailSender, EmailSender>();
+
             services.AddTransient(_ => new AuthMessageSenderOptions
             {
                 SendGridKey = key,
                 SendGridUser = sendGridUser
             });
+
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddScoped<ISecretProvider, SecretProvider>();
             services.AddScoped<IStoreWrapper, StoreWrapper>();
@@ -83,33 +70,23 @@ namespace com.b_velop.Slipways.Web
 
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:80/api/slipways");
-                if (Env.IsProduction())
-                {
-                    options.BaseAddress = new Uri("http://slipways-api/api/slipways");
-                }
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/slipways");
             });
-
             services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:80/api/service");
-                if (Env.IsProduction())
-                {
-                    options.BaseAddress = new Uri("http://slipways-api/api/service");
-                }
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/service");
             });
-            services.AddHttpClient<IIdentityProviderService, IdentityProviderService>();
             services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/extra");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/extra");
             });
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/water");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/water");
             });
             services.AddHttpClient<IManufacturerService, ManufacturerService>("manufacturerClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api/api/manufacturer");
+                options.BaseAddress = new Uri("http://slipways-api:8095/api/manufacturer");
             });
 
             if (!Env.IsDevelopment())

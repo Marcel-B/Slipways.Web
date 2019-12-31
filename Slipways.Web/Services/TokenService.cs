@@ -1,9 +1,4 @@
-﻿using com.b_velop.IdentityProvider;
-using com.b_velop.IdentityProvider.Model;
-using com.b_velop.Slipways.Web.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,11 +18,8 @@ namespace com.b_velop.Slipways.Web.Services
 
     public abstract class TokenService<DTO> : ITokenService<DTO> where DTO : class
     {
-        private IServiceProvider _services;
-        private IIdentityProviderService _tokenService;
         private IWebHostEnvironment _environment;
-        private IMemoryCache _cache;
-        private ILogger<DTO> _logger;
+        private ILogger<TokenService<DTO>> _logger;
         protected JsonSerializerOptions _jsonOptions;
         protected HttpClient _client { get; set; }
         protected const string ApplicationJson = "application/json";
@@ -35,17 +27,11 @@ namespace com.b_velop.Slipways.Web.Services
 
         protected TokenService(
             HttpClient client,
-            IIdentityProviderService tokenService,
             IWebHostEnvironment environment,
-            IServiceProvider services,
-            IMemoryCache cache,
-            ILogger<DTO> logger)
+            ILogger<TokenService<DTO>> logger)
         {
             _client = client;
-            _tokenService = tokenService;
             _environment = environment;
-            _services = services;
-            _cache = cache;
             _logger = logger;
 
             _jsonOptions = new JsonSerializerOptions
@@ -56,65 +42,12 @@ namespace com.b_velop.Slipways.Web.Services
             };
         }
 
-        protected async Task<Token> RequestTokenAsync()
-        {
-            var infoItem = _services.GetRequiredService<InfoItem>();
-            var sp = new SecretProvider();
-            infoItem.Secret = sp.GetSecret("slipways_web");
-            var token = await _tokenService.GetTokenAsync(infoItem);
-            if (token == null)
-            {
-                var info = string.IsNullOrWhiteSpace(infoItem.Secret) ? "No Secret" : "Secret is not null";
-                _logger.LogError(6666, $"Error occurred while request token.\nClientID: '{infoItem.ClientId}'\nScope: '{infoItem.Scope}'\nUrl: '{infoItem.Url}'\nSecret: '{info}'");
-                return null;
-            }
-            return token;
-        }
-
-        protected async Task<string> GetTokenAsync()
-        {
-            Token token = null;
-            if (_cache.TryGetValue("last", out DateTime time))
-            {
-                if (time > DateTime.Now)
-                {
-                    if (_cache.TryGetValue("token", out token))
-                    {
-                        // Valid token
-                        return token.AccessToken;
-                    }
-                }
-            }
-            token = await RequestTokenAsync();
-
-            if (token == null)
-            {
-                return null;
-            }
-
-            _cache.Set("last", DateTime.Now.AddSeconds(token.ExpiresIn));
-            _cache.Set("token", token);
-            return token.AccessToken;
-        }
-
-        public async Task<bool> SetHeader()
-        {
-            var token = await GetTokenAsync();
-            if (token == null)
-                return false;
-            _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            return true;
-        }
-
         public async Task<DTO> DeleteAsync(
             Guid id)
         {
-            if (!await SetHeader())
-                return default;
-            var url = $"http://slipways-api/api/{ApiPath}/{id}";
+            var url = $"http://slipways-api:8095/api/{ApiPath}/{id}";
             if (_environment.IsDevelopment())
-                url = $"http://slipways-api:80/api/{ApiPath}/{id}";
+                url = $"http://slipways-api:8095/api/{ApiPath}/{id}";
             try
             {
                 var request = new HttpRequestMessage
@@ -160,12 +93,12 @@ namespace com.b_velop.Slipways.Web.Services
         public async Task<DTO> InsertAsync(
             DTO item)
         {
-            if (!await SetHeader())
-                return default;
-
+            //if (!await SetHeader())
+            //    return default;
+            string json = string.Empty;
             try
             {
-                var json = JsonSerializer.Serialize(item, _jsonOptions);
+                json = JsonSerializer.Serialize(item, _jsonOptions);
 
                 var content = new StringContent(json, Encoding.UTF8, ApplicationJson);
 
@@ -182,27 +115,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogError(1111, $"Error occurred while inserting new item", e);
+                _logger.LogError(1111, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (InvalidOperationException e)
             {
-                _logger.LogError(2222, $"Error occurred while inserting new item", e);
+                _logger.LogError(2222, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (UriFormatException e)
             {
-                _logger.LogError(3333, $"Error occurred while inserting new item", e);
+                _logger.LogError(3333, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(4444, $"Error occurred while inserting new item", e);
+                _logger.LogError(4444, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (JsonException e)
             {
-                _logger.LogError(5555, $"Error occurred while inserting new item", e);
+                _logger.LogError(5555, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Error occurred while inserting new item", e);
+                _logger.LogError(6666, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             return null;
         }
@@ -211,16 +144,14 @@ namespace com.b_velop.Slipways.Web.Services
             Guid id,
             DTO item)
         {
-            if (!await SetHeader())
-                return default;
-
+            var json = string.Empty;
             try
             {
-                var json = JsonSerializer.Serialize(item, _jsonOptions);
+                json = JsonSerializer.Serialize(item, _jsonOptions);
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Put,
-                    RequestUri = new Uri($"http://slipways-api/api/{ApiPath}/{id}"),
+                    RequestUri = new Uri($"http://slipways-api:8095/api/{ApiPath}/{id}"),
                     Content = new StringContent(json, Encoding.UTF8, ApplicationJson),
                 };
 
@@ -233,27 +164,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogError(1111, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(1111, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (InvalidOperationException e)
             {
-                _logger.LogError(2222, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(2222, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (UriFormatException e)
             {
-                _logger.LogError(3333, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(3333, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(4444, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(4444, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (JsonException e)
             {
-                _logger.LogError(5555, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(5555, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Error occurred while updating '{id}'", e);
+                _logger.LogError(6666, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
             }
             return null;
         }

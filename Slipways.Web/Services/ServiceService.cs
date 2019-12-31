@@ -1,9 +1,6 @@
-﻿using com.b_velop.IdentityProvider;
-using com.b_velop.Slipways.Data.Dtos;
+﻿using com.b_velop.Slipways.Data.Dtos;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Net.Http;
 
 namespace com.b_velop.Slipways.Web.Services
@@ -11,12 +8,9 @@ namespace com.b_velop.Slipways.Web.Services
     public class ServiceService : TokenService<ServiceDto>, IServiceService
     {
         public ServiceService(
-            HttpClient httpClient,
-            IServiceProvider services,
+            HttpClient client,
             IWebHostEnvironment environment,
-            IMemoryCache cache,
-            IIdentityProviderService tokenService,
-            ILogger<ServiceDto> logger) : base(httpClient, tokenService, environment, services, cache, logger)
+            ILogger<ServiceService> logger) : base(client, environment, logger)
         {
             ApiPath = "service";
         }
