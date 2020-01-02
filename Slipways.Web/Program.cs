@@ -16,17 +16,6 @@ namespace com.b_velop.Slipways.Web
         public static void Main(string[] args)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var job = env == "Production" ? "SlipwaysWebsite" : "DevSlipwaysWebsite";
-
-            var pusher = new MetricPusher(new MetricPusherOptions
-            {
-                Endpoint = "https://push.qaybe.de/metrics",
-                Job = job,
-                Instance = job
-            });
-
-            pusher.Start();
-
             var file = "dev-nlog.config";
             if (env == "Production")
                 file = "nlog.config";
