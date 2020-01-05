@@ -7,8 +7,9 @@
 
 @section AdditionalMeta
 {
-    <title>Außenborder, Schiffsmotor, Werkstatt, Service, Boote, Boot, Schlauchboot</title>
+    <title>Service</title>
     <meta name="description" content="Auflistung von Werkstätten welche Schiffsmotoren warten und reparieren." />
+    <meta name="keywords" content="Außenborder, Schiffsmotor, Werkstatt, Service, Boote, Boot, Schlauchboot" />
 }
 
 <h1>Service</h1>
@@ -28,9 +29,9 @@
         @foreach (var service in Model.Services)
         {
             <tr>
-                @if(!string.IsNullOrEmpty(service.Url))
+                @if (!string.IsNullOrEmpty(service.Url))
                 {
-                <td><a href="@service.Url" target="_blank">@service.Name</a></td>
+                    <td><a href="@service.Url" target="_blank">@service.Name</a></td>
                 }
                 else
                 {
