@@ -78,28 +78,15 @@
         </div>
     </div>
 
-    <div class="form-row">
-        <div class="form-check col">
-            <input type="checkbox" class="form-check-input" asp-for="Steg" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Steg</label>
-        </div>
-        <div class="form-check col">
-            <input type="checkbox" class="form-check-input" asp-for="CampingArea" id="exampleCheck2">
-            <label class="form-check-label" for="exampleCheck2">Campingplatz</label>
-        </div>
-        <div class="form-check col">
-            <input type="checkbox" class="form-check-input" asp-for="ParkingPlace" id="exampleCheck3">
-            <label class="form-check-label" for="exampleCheck3">Parkplatz</label>
-        </div>
-    </div>
-      <span>
-        @foreach (var extra in Model.Extras.Keys)
-        {
+    @foreach (var extra in Model.Extras.Keys)
+    {
+        <div class="form-check form-check-inline">
             <input type="checkbox" class="form-check-input" asp-for="@Model.Extras[extra].Selected" id="@extra">
-            <label class="form-check-label" asp-for="@Model.Extras[extra].Selected">@extra</label>
+            <label class="form-check-label" asp-for="@extra">@extra</label>
             <input type="hidden" asp-for="@Model.Extras[extra].Id" value="@Model.Extras[extra].Id" />
-        }
-    </span>
+        </div>
+    }
+
     <div class="form-row">
         <div class="form-group dropdown">
             <label>Gewässer</label>
@@ -114,5 +101,6 @@
         <button type="submit" class="btn btn-primary">Speichern</button>
         <a class="btn btn-warning" asp-page="./Index">Zurück</a>
     </span>
+
 </form>
 

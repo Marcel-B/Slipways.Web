@@ -1,4 +1,5 @@
 using System;
+using com.b_velop.Slipways.Web.Contracts;
 using com.b_velop.Slipways.Web.Data;
 using com.b_velop.Slipways.Web.Infrastructure;
 using com.b_velop.Slipways.Web.Services;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Prometheus;
+
 namespace com.b_velop.Slipways.Web
 {
     public class Startup
@@ -40,6 +42,8 @@ namespace com.b_velop.Slipways.Web
 
             var sendGridUser = Environment.GetEnvironmentVariable("SEND_GRID_USER");
             var graphQLEndpoint = Environment.GetEnvironmentVariable("GRAPH_QL_ENDPOINT");
+            var apiEndpoint = Environment.GetEnvironmentVariable("API_ENDPOINT");
+            var apiPort = Environment.GetEnvironmentVariable("API_PORT");
 
             var secretProvider = new SecretProvider();
             var key = secretProvider.GetSecret("send_grid_key");
@@ -67,26 +71,31 @@ namespace com.b_velop.Slipways.Web
             services.AddScoped<IServiceStore, ServiceStore>();
             services.AddScoped<WaterViewModel>();
             services.AddScoped<IGraphQLService, GraphQLService>();
+            services.AddTransient(_ => new ApplicationInfo { ApiEndpoint = $"{apiEndpoint}:{apiPort}", GraphQlEndpoint = graphQLEndpoint });
 
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:8095/api/slipways");
+                options.BaseAddress = new Uri($"{apiEndpoint}:{apiPort}");
             });
             services.AddHttpClient<IServiceService, ServiceService>("serviceClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:8095/api/service");
+                options.BaseAddress = new Uri($"{apiEndpoint}:{apiPort}");
             });
             services.AddHttpClient<IExtraService, ExtraService>("extraClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:8095/api/extra");
+                options.BaseAddress = new Uri($"{apiEndpoint}:{apiPort}");
             });
             services.AddHttpClient<IWaterService, WaterService>("waterClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:8095/api/water");
+                options.BaseAddress = new Uri($"{apiEndpoint}:{apiPort}");
             });
             services.AddHttpClient<IManufacturerService, ManufacturerService>("manufacturerClient", options =>
             {
-                options.BaseAddress = new Uri("http://slipways-api:8095/api/manufacturer");
+                options.BaseAddress = new Uri($"{apiEndpoint}:{apiPort}");
+            });
+            services.AddHttpClient<IPortService, PortService>("portClient", options =>
+            {
+                options.BaseAddress = new Uri($"{apiEndpoint}:{apiPort}");
             });
 
             if (!Env.IsDevelopment())

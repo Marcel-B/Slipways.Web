@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace com.b_velop.Slipways.Web.Services
+namespace com.b_velop.Slipways.Web.Contracts
 {
     public interface IGraphQLService
     {
