@@ -93,9 +93,7 @@ namespace com.b_velop.Slipways.Web.Services
         public async Task<DTO> InsertAsync(
             DTO item)
         {
-            //if (!await SetHeader())
-            //    return default;
-            string json = string.Empty;
+            var json = string.Empty;
             try
             {
                 json = JsonSerializer.Serialize(item, _jsonOptions);
