@@ -1,12 +1,7 @@
-using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
-using Prometheus;
 using System;
 
 namespace com.b_velop.Slipways.Web
@@ -16,6 +11,7 @@ namespace com.b_velop.Slipways.Web
         public static void Main(string[] args)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             var file = "dev-nlog.config";
             if (env == "Production")
                 file = "nlog.config";

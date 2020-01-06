@@ -1,4 +1,5 @@
-﻿using GraphQL.Client;
+﻿using com.b_velop.Slipways.Web.Contracts;
+using GraphQL.Client;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;

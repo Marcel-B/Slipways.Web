@@ -1,25 +1,24 @@
 ﻿using com.b_velop.Slipways.Data.Dtos;
+using com.b_velop.Slipways.Web.Contracts;
+using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public interface IWaterService: ITokenService<WaterDto>
-    {
-    }
 
     public class WaterService : TokenService<WaterDto>, IWaterService
     {
         public WaterService(
             HttpClient client,
+            ApplicationInfo applicationInfo,
             IWebHostEnvironment environment,
-            ILogger<WaterService> logger) : base(client, environment, logger)
+            ILogger<WaterService> logger) : base(client, applicationInfo, environment, logger)
         {
             ApiPath = "water";
         }

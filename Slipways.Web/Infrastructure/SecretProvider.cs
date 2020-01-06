@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using com.b_velop.Slipways.Web.Contracts;
+using Microsoft.Extensions.FileProviders;
 using System.IO;
 
 namespace com.b_velop.Slipways.Web.Infrastructure

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     @RenderSection("AdditionalMeta", false)
+    @RenderSection("AdditionalMeta", false)
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script data-ad-client="ca-pub-7217433489070973" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -23,13 +23,16 @@
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Slipanlage</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Slipanlagen</a>
                     </li>
-                         <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Ports">Marinas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Waters">Gewässer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Service">Service</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Service">Werkstätten</a>
                     </li>
 
                     <li class="nav-item">
@@ -37,7 +40,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-dark" target="_blank" href="https://data.slipways.de/ui/playground"><span>GraphQL API &nbsp;<img src="~/img/graphql-48.png" alt="GraphQL API" width="21"/></span></a>
+                        <a class="nav-link text-dark" target="_blank" href="https://data.slipways.de/ui/playground"><span>GraphQL API &nbsp;<img src="~/img/graphql-48.png" alt="GraphQL API" width="21" /></span></a>
                     </li>
                 </ul>
 
