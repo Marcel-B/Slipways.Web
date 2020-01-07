@@ -41,10 +41,12 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     let i = document.getElementById("slipwayTable");
-                    i.innerHTML = xhttp.responseText;
+                    const resp = xhttp.responseText;
+                    i.value = resp;
                 }
             };
             xhttp.open("GET", `/?handler=Filter&search=${searchField}`, true);
             xhttp.send();
-        };</script>
+        };
+    </script>
 }
