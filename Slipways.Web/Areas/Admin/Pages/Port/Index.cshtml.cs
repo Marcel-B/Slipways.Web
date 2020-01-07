@@ -9,6 +9,12 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Port
 {
     public class IndexModel : PageModel
     {
+        [TempData]
+        public string Message { get; set; }
+
+        [BindProperty]
+        public HashSet<b_velop.Slipways.Data.Models.Port> Ports { get; set; }
+
         public void OnGet()
         {
         }
