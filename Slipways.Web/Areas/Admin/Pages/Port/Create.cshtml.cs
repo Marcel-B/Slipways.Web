@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -71,6 +72,17 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Port
             }
             try
             {
+                Port.WaterFk = WaterId;
+
+                if (SlipwayId != Guid.Empty)
+                {
+                    var tmp = new List<b_velop.Slipways.Data.Models.Slipway>
+                    {
+                        slipways.First(_ => _.Id == SlipwayId)
+                    };
+                    Port.Slipways = tmp;
+                }
+
                 var result = await _dataStore.Ports.AddAsync(Port);
                 if (result != null)
                 {
