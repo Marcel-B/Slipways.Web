@@ -7,15 +7,15 @@ using System.Net.Http;
 
 namespace com.b_velop.Slipways.Web.Services
 {
-    public class SlipwayService : TokenService<SlipwayDto>, ISlipwayService
+    public class PortService : TokenService<PortDto>, IPortService
     {
-        public SlipwayService(
-            HttpClient client,
+        public PortService(
+            HttpClient client, 
             ApplicationInfo applicationInfo,
-            IWebHostEnvironment environment,
-            ILogger<SlipwayService> logger) : base(client, applicationInfo, environment, logger)
+            IWebHostEnvironment environment, 
+            ILogger<PortService> logger) : base(client, applicationInfo, environment, logger)
         {
-            ApiPath = "slipways";
+            ApiPath = "port";
         }
     }
 }

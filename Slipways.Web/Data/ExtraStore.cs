@@ -2,14 +2,12 @@
 using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Web.Infrastructure;
-using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 using com.b_velop.Slipways.Data.Helper;
+using com.b_velop.Slipways.Web.Contracts;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public interface IExtraStore : IDataStore<Extra, ExtraDto> { }
-
     public class ExtraStore : DataStore<Extra, ExtraDto>, IExtraStore
     {
         public ExtraStore(

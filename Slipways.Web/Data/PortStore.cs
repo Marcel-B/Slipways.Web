@@ -8,24 +8,24 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public class WaterStore : DataStore<Water, WaterDto>, IWaterStore
+    public class PortStore : DataStore<Port, PortDto>, IPortStore
     {
-        public WaterStore(
+        public PortStore(
             IMemoryCache cache,
-            IWaterService service,
+            IPortService service,
             IGraphQLService graphQLService) : base(cache, service, graphQLService)
         {
-            Key = Cache.Waters;
-            Method = Queries.Waters.Item1;
-            Query = Queries.Waters.Item2;
+            Key = Cache.Ports;
+            Method = Queries.Ports.Item1;
+            Query = Queries.Ports.Item2;
         }
 
-        public override Water ConvertToClass(
-            WaterDto item)
+        public override Port ConvertToClass(
+            PortDto item)
             => item.ToClass();
 
-        public override WaterDto ConvertToDto(
-            Water item)
+        public override PortDto ConvertToDto(
+            Port item)
             => item.ToDto();
     }
 }

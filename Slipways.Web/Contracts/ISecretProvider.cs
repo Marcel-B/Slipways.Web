@@ -1,4 +1,4 @@
-﻿namespace com.b_velop.Slipways.Web.Infrastructure
+﻿namespace com.b_velop.Slipways.Web.Contracts
 {
     public interface ISecretProvider
     {

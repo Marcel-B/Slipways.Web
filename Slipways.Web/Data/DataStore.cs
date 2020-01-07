@@ -1,6 +1,5 @@
 ﻿using com.b_velop.Slipways.Data.Contracts;
-using com.b_velop.Slipways.Data.Models;
-using com.b_velop.Slipways.Web.Services;
+using com.b_velop.Slipways.Web.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;

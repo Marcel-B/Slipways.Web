@@ -1,0 +1,34 @@
+﻿@page
+@model com.b_velop.Slipways.Web.PortsModel
+@{
+    ViewData["Title"] = "Ports";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@section AdditionalMeta
+{
+    <title>Marinas</title>
+    <meta name="description" content="Auflistung aller Marina." />
+    <meta name="keywords" content="Marina, Marinas, Hafen, Häfen, Gewässer, Flüsse, See, Fluss, Meer, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe" />
+}
+
+<h1>Marinas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Straße</th>
+            <th>PLZ / Ort</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var port in Model.Ports)
+        {
+            <tr>
+                <td>@port.Name</td>
+                <td>@port.Street</td>
+                <td>@port.Postalcode @port.City</td>
+            </tr>
+        }
+    </tbody>
+</table>

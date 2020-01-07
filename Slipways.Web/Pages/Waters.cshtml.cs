@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using com.b_velop.Slipways.Data.Extensions;
-using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
-using com.b_velop.Slipways.Web.Data;
+using com.b_velop.Slipways.Web.Contracts;
 using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Pages
