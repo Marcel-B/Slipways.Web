@@ -22,7 +22,7 @@
     </thead>
     <tbody>
 
-        @foreach (var slipway in Model.Slipways)
+        @foreach (var slipway in Model?.Slipways)
         {
             <tr>
                 <td>
@@ -32,7 +32,7 @@
                     @slipway.City
                 </td>
                 <td>
-                    @slipway.Water.Longname
+                    @slipway.Water?.Longname
                 </td>
                 <td>
                     @if (slipway.Costs > 0)
