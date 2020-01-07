@@ -69,8 +69,10 @@ namespace com.b_velop.Slipways.Web
             services.AddScoped<IManufacturerStore, ManufacturerStore>();
             services.AddScoped<IWaterStore, WaterStore>();
             services.AddScoped<IServiceStore, ServiceStore>();
+            services.AddScoped<IPortStore, PortStore>();
             services.AddScoped<WaterViewModel>();
             services.AddScoped<IGraphQLService, GraphQLService>();
+
             services.AddTransient(_ => new ApplicationInfo { ApiEndpoint = $"{apiEndpoint}:{apiPort}", GraphQlEndpoint = graphQLEndpoint });
 
             services.AddHttpClient<ISlipwayService, SlipwayService>("slipwayClient", options =>
@@ -112,6 +114,7 @@ namespace com.b_velop.Slipways.Web
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Slipway");
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Water");
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Service");
+                        options.Conventions.AuthorizeAreaFolder("Admin", "/Port");
                     }
                 });
             services.Configure<CookiePolicyOptions>(options =>

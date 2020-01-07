@@ -13,3 +13,22 @@
 }
 
 <h1>Marinas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Straße</th>
+            <th>PLZ / Ort</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var port in Model.Ports)
+        {
+            <tr>
+                <td>@port.Name</td>
+                <td>@port.Street</td>
+                <td>@port.Postalcode @port.City</td>
+            </tr>
+        }
+    </tbody>
+</table>

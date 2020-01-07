@@ -1,0 +1,67 @@
+﻿@page
+@model CreateModel
+@{
+}
+<h1>Hinzufügen</h1>
+
+<div class="row">
+    @if (!String.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="alert alert-primary" role="alert">
+            @Model.Message
+        </div>
+    }
+</div>
+
+<form method="post">
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="Port.Name">@Html.DisplayNameFor(model => Model.Port.Name)</label>
+            <input class="form-control" placeholder="Name" asp-for="Port.Name">
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Port.City">@Html.DisplayNameFor(model => Model.Port.City)</label>
+            <input class="form-control" placeholder="Stadt / Ort" asp-for="Port.City">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="Port.Street">@Html.DisplayNameFor(model => Model.Port.Street)</label>
+            <input class="form-control" placeholder="Straße" asp-for="Port.Street">
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Port.Postalcode">@Html.DisplayNameFor(model => Model.Port.Postalcode)</label>
+            <input class="form-control" placeholder="Postleitzahl" asp-for="Port.Postalcode">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-Port col-md-6">
+            <label asp-for="Port.Longitude">@Html.DisplayNameFor(model => Model.Port.Longitude)</label>
+            <input class="form-control" placeholder="Längengrad" asp-for="Port.Longitude">
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Port.Latitude">@Html.DisplayNameFor(model => Model.Port.Latitude)</label>
+            <input class="form-control" placeholder="Breitengrad" asp-for="Port.Latitude">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group dropdown">
+            <label>Gewässer</label>
+            <select asp-for="@Model.WaterId" class="control-label"
+                    asp-items="@Model.Waters">
+                <option value="">Gewässer wählen</option>
+            </select>
+        </div>
+    </div>
+
+    <span>
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        <a class="btn btn-warning" asp-page="./Index">Zurück</a>
+    </span>
+
+</form>
+

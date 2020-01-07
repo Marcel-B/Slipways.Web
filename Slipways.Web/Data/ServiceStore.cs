@@ -9,8 +9,6 @@ using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public interface IServiceStore : IDataStore<Service, ServiceDto> { }
-
     public class ServiceStore : DataStore<Service, ServiceDto>, IServiceStore
     {
         public ServiceStore(

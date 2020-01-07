@@ -4,13 +4,10 @@ using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Contracts;
 using com.b_velop.Slipways.Web.Infrastructure;
-using com.b_velop.Slipways.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public interface ISlipwayStore : IDataStore<Slipway, SlipwayDto> { }
-
     public class SlipwayStore : DataStore<Slipway, SlipwayDto>, ISlipwayStore
     {
         public SlipwayStore(

@@ -1,11 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using com.b_velop.Slipways.Web.Data;
-using com.b_velop.Slipways.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using com.b_velop.Slipways.Web.Contracts;
 
 namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Water
 {

@@ -71,5 +71,23 @@ namespace com.b_velop.Slipways.Web.Infrastructure
                                 }
                               }
                            }");
+
+        public static Tuple<string, string> Ports = new Tuple<string, string>("ports",
+                    @"query {
+                              ports {
+                                id
+                                city
+                                name
+                                longitude
+                                latitude
+                                street
+                                postalcode
+                                water {
+                                  id
+                                  longname
+                                  shortname
+                                }
+                              }
+                           }");
     }
 }

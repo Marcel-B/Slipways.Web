@@ -25,6 +25,9 @@
     <PackageReference Include="prometheus-net.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Sendgrid" Version="9.12.0" />
     <PackageReference Include="IdentityProvider" Version="3.0.6" />
-    <PackageReference Include="Slipways.Data" Version="2.1.51" />
+    <PackageReference Include="Slipways.Data" Version="2.1.52" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Pages\Port\" />
   </ItemGroup>
 </Project>

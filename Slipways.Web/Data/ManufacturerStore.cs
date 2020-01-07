@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 
 namespace com.b_velop.Slipways.Web.Data
 {
-    public interface IManufacturerStore : IDataStore<Manufacturer, ManufacturerDto> { }
 
     public class ManufacturerStore : DataStore<Manufacturer, ManufacturerDto>, IManufacturerStore
     {
