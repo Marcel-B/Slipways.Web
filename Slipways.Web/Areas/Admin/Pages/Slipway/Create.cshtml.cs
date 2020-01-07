@@ -57,7 +57,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 
         public async Task OnGetAsync()
         {
-            Slipway = new b_velop.Slipways.Data.Models.Slipway();
+            //Slipway = new b_velop.Slipways.Data.Models.Slipway();
             var waters = await _dataStore.Waters.GetValuesAsync();
             Waters = new SelectList(waters, "Id", "Longname");
             var extras = await _dataStore.Extras.GetValuesAsync();

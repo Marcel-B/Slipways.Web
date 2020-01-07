@@ -51,6 +51,16 @@
     <div class="form-row">
         <div class="form-group dropdown">
             <label>Gewässer</label>
+            <select asp-for="@Model.SlipwayId" class="control-label"
+                    asp-items="@Model.Slipways">
+                <option value="">Slipanlage wählen</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group dropdown">
+            <label>Gewässer</label>
             <select asp-for="@Model.WaterId" class="control-label"
                     asp-items="@Model.Waters">
                 <option value="">Gewässer wählen</option>
