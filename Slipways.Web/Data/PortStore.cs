@@ -12,7 +12,7 @@ namespace com.b_velop.Slipways.Web.Data
     {
         public PortStore(
             IMemoryCache cache,
-            ITokenService<PortDto> service,
+            IPortService service,
             IGraphQLService graphQLService) : base(cache, service, graphQLService)
         {
             Key = Cache.Ports;
