@@ -53,19 +53,19 @@ namespace com.b_velop.Slipways.Web.Pages
         {
             Slipways = new SlipwaysModel();
             var slipways = await _dataStore.Slipways.GetValuesAsync();
-            if (slipways == null) return Page();
-            IEnumerable<Slipway> cs;
-            //if (onlyFree)
-            //    cs = slipways.Where(_ => _.Costs <= 0);
-            //else
-            cs = slipways;
+
+            if (slipways == null)
+                return Page();
+
+            IEnumerable<Slipway> searchResult;
+            searchResult = slipways;
             if (!string.IsNullOrWhiteSpace(search))
             {
                 search = search.ToLower();
-                cs = cs.Where(_ => _.Name.ToLower().Contains(search) || _.City.ToLower().Contains(search) || _.Water.Longname.ToLower().Contains(search)).Distinct();
+                searchResult = searchResult.Where(_ => _.Name.ToLower().Contains(search) || _.City.ToLower().Contains(search) || _.Water.Longname.ToLower().Contains(search)).Distinct();
             }
-            cs = cs.OrderBy(_ => _.Name);
-            Slipways.Slipways = new HashSet<Slipway>(cs);
+            searchResult = searchResult.OrderBy(_ => _.Name);
+            Slipways.Slipways = new HashSet<Slipway>(searchResult);
             var partial = Partial("_SlipwayTable", Slipways);
             return partial;
         }
