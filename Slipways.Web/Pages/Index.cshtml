@@ -10,22 +10,38 @@
     <meta name="description" content="Eine kleine Sammlung von Slipanlagen die ständig erweitert wird." />
     <meta name="keywords" content="Slipanlagen, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe" />
 }
+<div class="row">
+    <h1 class="display-5 offset-md-2">Slipanlagen</h1>
+</div>
 
-<div class="form-group row">
-    <h1 class="display-3">Slipanlagen</h1>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1"><img src="~/img/search-24.png" alt="search icon" /></span>
+<div class="form-group row justify-content-md-center">
+    <div class="col-md-8">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><img src="~/img/search-24.png" alt="search icon" /></span>
+            </div>
+            <input type="search" id="searchField" class="form-control" placeholder="Name - Ort - Gewässer" aria-label="Suche" aria-describedby="basic-addon1" onkeyup="filterTable()">
         </div>
-        <input type="search" id="searchField" class="form-control" placeholder="Name - Ort - Gewässer" aria-label="Suche" aria-describedby="basic-addon1" onkeyup="filterTable()">
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-2" style="width:160px;height:600px">
+        <!-- BEGIN ADKLICK CODE -->
+        <script src="https://ssl.adklick.de/adclick.php?id=2385&amp;user=91944&amp;banner=16196&amp;site=0&amp;data=0&amp;width=728&amp;height=90&amp;subid=0" type="text/javascript"></script><!-- END ADKLICK CODE -->
+    </div>
+
+    <div id="slipwayTable" class="col-md-6 offset-md-1">
+        <partial name="Shared/_SlipwayTable" for="Slipways" />
+    </div>
+
+    <div class="col-md-2 offset-md-1" style="width:300px;height:250px">
+        <!-- BEGIN ADKLICK CODE -->
+        <script src="https://ssl.adklick.de/adclick.php?id=2472&amp;user=91944&amp;banner=17099&amp;site=0&amp;data=0&amp;width=300&amp;height=250&amp;subid=0" type="text/javascript"></script>
+        <!-- END ADKLICK CODE -->
     </div>
 </div>
-
-<div id="slipwayTable">
-    <partial name="Shared/_SlipwayTable" for="Slipways" />
-</div>
-
-
 
 @section Scripts{
     <script>$(function () {
@@ -48,8 +64,4 @@
             xhttp.open("GET", `/?handler=Filter&search=${searchField}`, true);
             xhttp.send();
         };</script>
-
-    <!-- BEGIN ADKLICK CODE -->
-    <script src="https://ssl.adklick.de/adclick.php?id=2385&amp;user=91944&amp;banner=16231&amp;site=0&amp;data=0&amp;width=160&amp;height=600&amp;subid=0" type="text/javascript"></script>
-    <!-- END ADKLICK CODE -->
 }
