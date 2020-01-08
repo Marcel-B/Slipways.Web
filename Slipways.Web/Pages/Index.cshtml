@@ -8,7 +8,7 @@
 {
     <title>Slipanlagen</title>
     <meta name="description" content="Eine kleine Sammlung von Slipanlagen die ständig erweitert wird." />
-    <meta name="keywords" content="Slipanlagen, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe"/>
+    <meta name="keywords" content="Slipanlagen, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe" />
 }
 
 <div class="form-group row">
@@ -25,30 +25,31 @@
     <partial name="Shared/_SlipwayTable" for="Slipways" />
 </div>
 
-<!-- BEGIN ADKLICK CODE -->
-<script src="https://ssl.adklick.de/adclick.php?id=2385&amp;user=91944&amp;banner=16231&amp;site=0&amp;data=0&amp;width=160&amp;height=600&amp;subid=0" type="text/javascript"></script>
-    <!-- END ADKLICK CODE -->
+
 
 @section Scripts{
     <script>$(function () {
-        $('[data-toggle="popover"]').popover()
-    })
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+            $('[data-toggle="popover"]').popover()
+        })
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
-    const filterTable = () => {
-        const searchField = document.getElementById("searchField").value;
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const responseText = xhttp.responseText;
-                let slipwayTable = document.getElementById("slipwayTable");
-                slipwayTable.innerHTML = responseText;
-            }
-        };
-        xhttp.open("GET", `/?handler=Filter&search=${searchField}`, true);
-        xhttp.send();
-    };
-    </script>
+        const filterTable = () => {
+            const searchField = document.getElementById("searchField").value;
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const responseText = xhttp.responseText;
+                    let slipwayTable = document.getElementById("slipwayTable");
+                    slipwayTable.innerHTML = responseText;
+                }
+            };
+            xhttp.open("GET", `/?handler=Filter&search=${searchField}`, true);
+            xhttp.send();
+        };</script>
+
+    <!-- BEGIN ADKLICK CODE -->
+    <script src="https://ssl.adklick.de/adclick.php?id=2385&amp;user=91944&amp;banner=16231&amp;site=0&amp;data=0&amp;width=160&amp;height=600&amp;subid=0" type="text/javascript"></script>
+    <!-- END ADKLICK CODE -->
 }
