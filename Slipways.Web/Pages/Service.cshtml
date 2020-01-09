@@ -12,37 +12,41 @@
     <meta name="keywords" content="Außenborder, Schiffsmotor, Werkstatt, Service, Boote, Boot, Schlauchboot" />
 }
 
-<h1>Service</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Straße</th>
-            <th>PLZ</th>
-            <th>Ort</th>
-            <th>Telefon</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var service in Model.Services)
-        {
+<div class="float-right">
+    <!-- BEGIN ADKLICK CODE --><script src="https://ssl.adklick.de/adclick.php?id=2339&amp;user=91944&amp;banner=15810&amp;site=0&amp;data=0&amp;width=120&amp;height=600&amp;subid=0" type="text/javascript"></script><!-- END ADKLICK CODE -->
+</div>
+<div class="container">
+    <h1>Service</h1>
+    <table class="table">
+        <thead>
             <tr>
-                @if (!string.IsNullOrEmpty(service.Url))
-                {
-                    <td><a href="@service.Url" target="_blank">@service.Name</a></td>
-                }
-                else
-                {
-                    <td>@service.Name</td>
-                }
-                <td>@service.Street</td>
-                <td>@service.Postalcode</td>
-                <td>@service.City</td>
-                <td>@service.Phone</td>
-                <td>@service.Email</td>
+                <th>Name</th>
+                <th>Straße</th>
+                <th>PLZ</th>
+                <th>Ort</th>
+                <th>Telefon</th>
+                <th>Email</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var service in Model.Services)
+            {
+                <tr>
+                    @if (!string.IsNullOrEmpty(service.Url))
+                    {
+                        <td><a href="@service.Url" target="_blank">@service.Name</a></td>
+                    }
+                    else
+                    {
+                        <td>@service.Name</td>
+                    }
+                    <td>@service.Street</td>
+                    <td>@service.Postalcode</td>
+                    <td>@service.City</td>
+                    <td>@service.Phone</td>
+                    <td>@service.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
