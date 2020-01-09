@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Contracts;
@@ -29,6 +30,7 @@ namespace com.b_velop.Slipways.Web.Pages
         public async Task OnGetAsync()
         {
             var waters = await _dataStore.Waters.GetValuesAsync();
+
             foreach (var water in waters)
             {
                 water.Longname = water.Longname.FirstUpper();

@@ -5,6 +5,8 @@ using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Contracts;
 using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace com.b_velop.Slipways.Web.Data
 {
@@ -27,5 +29,9 @@ namespace com.b_velop.Slipways.Web.Data
         public override PortDto ConvertToDto(
             Port item)
             => item.ToDto();
+
+        public override IEnumerable<Port> Sort(IEnumerable<Port> set)
+            => set.OrderBy(_ => _.Name);
+
     }
 }
