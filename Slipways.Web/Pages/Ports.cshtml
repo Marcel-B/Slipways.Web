@@ -12,23 +12,25 @@
     <meta name="keywords" content="Marina, Marinas, Hafen, Häfen, Gewässer, Flüsse, See, Fluss, Meer, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe" />
 }
 
-<h1>Marinas</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Straße</th>
-            <th>PLZ / Ort</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var port in Model.Ports)
-        {
+<div class="container">
+    <h1>Marinas</h1>
+    <table class="table">
+        <thead>
             <tr>
-                <td>@port.Name</td>
-                <td>@port.Street</td>
-                <td>@port.Postalcode @port.City</td>
+                <th>Name</th>
+                <th>Straße</th>
+                <th>PLZ / Ort</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var port in Model.Ports)
+            {
+                <tr>
+                    <td>@port.Name</td>
+                    <td>@port.Street</td>
+                    <td>@port.Postalcode @port.City</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
