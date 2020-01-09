@@ -27,6 +27,23 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Port
             _dataStore = dataStore;
             _logger = logger;
         }
+
+        public async Task OnGetDeleteAsync(
+            Guid id)
+        {
+            var ports = await _dataStore.Ports.RemoveAsync(id);
+            if (ports == null)
+            {
+                _logger.LogWarning($"RemoveAsync return null value");
+            }
+            else
+            {
+                Ports = ports;
+                var port = ports.FirstOrDefault(_ => _.Id == id);
+                Message = $"Marina {port?.Name} gelöscht";
+            }
+        }
+
         public async Task OnGetAsync()
         {
             var ports = await _dataStore.Ports.GetValuesAsync();
