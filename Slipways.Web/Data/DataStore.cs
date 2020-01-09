@@ -30,15 +30,16 @@ namespace com.b_velop.Slipways.Web.Data
             _graphQLService = graphQLService;
         }
 
+        public abstract IEnumerable<T> Sort(IEnumerable<T> set);
+
         public async Task<HashSet<T>> GetValuesAsync()
         {
             if (!_cache.TryGetValue(Key, out HashSet<T> entities))
             {
                 var values = await _graphQLService.GetValuesAsync<IEnumerable<T>>(Method, Query);
-
                 if (values == null)
                     return null;
-
+                values = Sort(values);
                 entities = values.ToHashSet();
                 _cache.Set(Key, entities);
             }

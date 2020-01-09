@@ -6,6 +6,8 @@ using com.b_velop.Slipways.Web.Contracts;
 using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace com.b_velop.Slipways.Web.Data
 {
@@ -33,5 +35,8 @@ namespace com.b_velop.Slipways.Web.Data
         public override ManufacturerDto ConvertToDto(
             Manufacturer item)
             => item.ToDto();
+
+        public override IEnumerable<Manufacturer> Sort(IEnumerable<Manufacturer> set)
+            => set.OrderBy(_ => _.Name);
     }
 }
