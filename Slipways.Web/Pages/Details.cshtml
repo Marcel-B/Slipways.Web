@@ -52,8 +52,12 @@
                     {
                         @foreach (var extra in Model.Slipway.Extras)
                         {
-                            <img src="~/img/@extra.GetImage()" />
+                            <img src="~/img/@extra.GetImage()" alt="Extra" />
                         }
+                    }
+                    @if (Model.Slipway.Port != null)
+                    {
+                        <a asp-page="/PortDetails" asp-route-id="@Model.Slipway.Port.Id"><img src="~/img/anchor-24.png" alt="Hafen" /></a>
                     }
                 </span>
                 <p class="card-text">@Model.Slipway.Street - @Model.Slipway.Postalcode @Model.Slipway.City</p>

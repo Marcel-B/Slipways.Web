@@ -59,6 +59,9 @@ namespace com.b_velop.Slipways.Web.Infrastructure
                                 latitude
                                 costs
                                 street
+                                port {
+                                  id
+                                }
                                 postalcode
                                 water {
                                   id
