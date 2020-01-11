@@ -143,7 +143,6 @@ namespace com.b_velop.Slipways.Web
             var port = Environment.GetEnvironmentVariable("PORT");
 
             var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
-            Console.WriteLine(str);
             services.AddDbContext<ApplicationDbContext>(_ => _.UseSqlServer(str));
         }
 
