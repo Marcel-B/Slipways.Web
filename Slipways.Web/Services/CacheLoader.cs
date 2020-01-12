@@ -48,6 +48,7 @@ namespace com.b_velop.Slipways.Web.Services
                 var graphQLService = scope.ServiceProvider.GetRequiredService<IGraphQLService>();
 
                 var waters = await graphQLService.GetValuesAsync<IEnumerable<WaterDto>>(Queries.Waters.Item1, Queries.Waters.Item2);
+
                 if (waters != null)
                 {
                     var whs = waters.ToHashSet();
@@ -55,6 +56,7 @@ namespace com.b_velop.Slipways.Web.Services
                 }
 
                 var slipways = await graphQLService.GetValuesAsync<IEnumerable<SlipwayDto>>(Queries.Slipways.Item1, Queries.Slipways.Item2);
+
                 if (slipways != null)
                 {
                     var shs = slipways.ToHashSet();
@@ -62,6 +64,7 @@ namespace com.b_velop.Slipways.Web.Services
                 }
 
                 var services = await graphQLService.GetValuesAsync<IEnumerable<ServiceDto>>(Queries.Services.Item1, Queries.Services.Item2);
+
                 if (services != null)
                 {
                     var sehs = services.ToHashSet();
@@ -69,6 +72,7 @@ namespace com.b_velop.Slipways.Web.Services
                 }
 
                 var ports = await graphQLService.GetValuesAsync<IEnumerable<PortDto>>(Queries.Ports.Item1, Queries.Ports.Item2);
+
                 if (ports != null)
                 {
                     var sehs = ports.ToHashSet();
@@ -77,7 +81,7 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, "Error occurred while reload cache", e);
+                _logger.LogError(6666, "Unexpected error occurred while reload cache", e);
             }
         }
 
