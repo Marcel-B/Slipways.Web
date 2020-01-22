@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using com.b_velop.Slipways.Web.Contracts;
+using com.b_velop.Slipways.Web.Infrastructure;
 
 namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
 {
@@ -59,7 +60,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         {
             //Slipway = new b_velop.Slipways.Data.Models.Slipway();
             var waters = await _dataStore.Waters.GetValuesAsync();
-            Waters = new SelectList(waters, "Id", "Longname");
+            Waters = new SelectList(waters.OrderBy(_ => _.Longname).Select(_ => new { Id = _.Id, Name = _.Longname.FirstUpper() }), "Id", "Name");
             var extras = await _dataStore.Extras.GetValuesAsync();
             foreach (var extra in extras)
                 Extras[extra.Name] = new ExtraSelection { Id = extra.Id, Selected = false };
