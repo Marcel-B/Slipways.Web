@@ -44,7 +44,7 @@ namespace com.b_velop.Slipways.Web.Infrastructure
             {
                 result += FirstUp(str) + "-";
             }
-            result = result.Substring(0, result.Length - 1);
+            result = result[0..^1];
             return result;
         }
     }

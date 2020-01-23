@@ -21,8 +21,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             public bool Selected { get; set; }
         }
 
-        private IStoreWrapper _dataStore;
-        private ILogger<CreateModel> _logger;
+        private readonly IStoreWrapper _dataStore;
 
         [TempData]
         public string Message { get; set; }
@@ -48,11 +47,9 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         public SelectList Waters { get; set; }
 
         public CreateModel(
-            IStoreWrapper dataStore,
-            ILogger<CreateModel> logger)
+            IStoreWrapper dataStore)
         {
             _dataStore = dataStore;
-            _logger = logger;
             Extras = new Dictionary<string, ExtraSelection>();
         }
 
@@ -60,7 +57,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
         {
             //Slipway = new b_velop.Slipways.Data.Models.Slipway();
             var waters = await _dataStore.Waters.GetValuesAsync();
-            Waters = new SelectList(waters.OrderBy(_ => _.Longname).Select(_ => new { Id = _.Id, Name = _.Longname.FirstUpper() }), "Id", "Name");
+            Waters = new SelectList(waters.OrderBy(_ => _.Longname).Select(_ => new { _.Id, Name = _.Longname.FirstUpper() }), "Id", "Name");
             var extras = await _dataStore.Extras.GetValuesAsync();
             foreach (var extra in extras)
                 Extras[extra.Name] = new ExtraSelection { Id = extra.Id, Selected = false };
