@@ -23,8 +23,8 @@
     <PackageReference Include="NLog.StructuredLogging.Json" Version="4.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="3.4.0" />
-    <PackageReference Include="Sendgrid" Version="9.12.5" />
-    <PackageReference Include="Slipways.Data" Version="2.1.61" />
+    <PackageReference Include="Sendgrid" Version="9.12.6" />
+    <PackageReference Include="Slipways.Data" Version="2.1.62" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Pages\Port\" />

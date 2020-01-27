@@ -12,8 +12,8 @@ namespace com.b_velop.Slipways.Web.Data
         where T : class, IEntity
         where DTO : class, IDto
     {
-        private IMemoryCache _cache;
-        private IGraphQLService _graphQLService;
+        protected IMemoryCache _cache;
+        protected IGraphQLService _graphQLService;
         private ITokenService<DTO> _service;
 
         protected string Key { get; set; }
@@ -32,7 +32,7 @@ namespace com.b_velop.Slipways.Web.Data
 
         public abstract IEnumerable<T> Sort(IEnumerable<T> set);
 
-        public async Task<HashSet<T>> GetValuesAsync()
+        public virtual async Task<HashSet<T>> GetValuesAsync()
         {
             if (!_cache.TryGetValue(Key, out HashSet<T> entities))
             {
