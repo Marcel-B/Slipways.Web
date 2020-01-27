@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 using Prometheus;
 
 namespace com.b_velop.Slipways.Web
@@ -33,7 +35,8 @@ namespace com.b_velop.Slipways.Web
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(
+            IServiceCollection services)
         {
             services.AddMemoryCache();
             services.AddHostedService<CacheLoader>();
@@ -129,21 +132,21 @@ namespace com.b_velop.Slipways.Web
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            var pw = string.Empty;
+            var password = string.Empty;
 
             if (Env.IsProduction())
-                pw = secretProvider.GetSecret("sqlserver");
+                password = secretProvider.GetSecret("sqlserver");
             else if (Env.IsStaging())
-                pw = secretProvider.GetSecret("dev_slipway_db");
+                password = secretProvider.GetSecret("dev_slipway_db");
             else
-                pw = "foo123bar!";
+                password = "foo123bar!";
 
             var server = Environment.GetEnvironmentVariable("SERVER");
             var user = Environment.GetEnvironmentVariable("USER");
             var db = Environment.GetEnvironmentVariable("DATABASE");
             var port = Environment.GetEnvironmentVariable("PORT");
 
-            var str = $"Server={server},{port};Database={db};User Id={user};Password={pw}";
+            var str = $"Server={server},{port};Database={db};User Id={user};Password={password}";
             services.AddDbContext<ApplicationDbContext>(_ => _.UseSqlServer(str));
         }
 
@@ -174,7 +177,6 @@ namespace com.b_velop.Slipways.Web
             }
             UpdateDatabase(app);
             app.UseCookiePolicy();
-            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
@@ -186,14 +188,27 @@ namespace com.b_velop.Slipways.Web
             });
         }
 
-        private static void UpdateDatabase(
+        private void UpdateDatabase(
             IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope();
             using var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-            context.Database.Migrate();
+            try
+            {
+                context.Database.Migrate();
+            }
+            catch (Exception e)
+            {
+                var file = "dev-nlog.config";
+
+                if (Env.IsProduction())
+                    file = "nlog.config";
+
+                var logger = NLogBuilder.ConfigureNLog(file).GetCurrentClassLogger();
+                logger.Fatal(e, $"Error occurred while migrating Database", 6666);
+            }
         }
     }
 }

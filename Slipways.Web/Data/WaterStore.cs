@@ -7,6 +7,7 @@ using com.b_velop.Slipways.Web.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web.Data
 {
@@ -29,6 +30,24 @@ namespace com.b_velop.Slipways.Web.Data
         public override WaterDto ConvertToDto(
             Water item)
             => item.ToDto();
+
+        public override async Task<HashSet<Water>> GetValuesAsync()
+        {
+            if (!_cache.TryGetValue(Key, out HashSet<Water> entities))
+            {
+                var values = await _graphQLService.GetValuesAsync<IEnumerable<Water>>(Method, Query);
+                if (values == null)
+                    return null;
+                values = Sort(values);
+
+                foreach (var value in values)
+                    value.Longname = value.Longname.FirstUpper();
+
+                entities = values.ToHashSet();
+                _cache.Set(Key, entities);
+            }
+            return entities;
+        }
 
         public override IEnumerable<Water> Sort(IEnumerable<Water> set)
             => set.OrderBy(_ => _.Longname);

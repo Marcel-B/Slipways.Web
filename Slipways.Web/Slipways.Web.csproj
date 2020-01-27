@@ -10,21 +10,21 @@
 
   <ItemGroup>
     <PackageReference Include="GraphQL.Client" Version="1.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
     <PackageReference Include="NLog.StructuredLogging.Json" Version="4.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="3.4.0" />
-    <PackageReference Include="Sendgrid" Version="9.12.0" />
-    <PackageReference Include="Slipways.Data" Version="2.1.60" />
+    <PackageReference Include="Sendgrid" Version="9.12.6" />
+    <PackageReference Include="Slipways.Data" Version="2.1.62" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Pages\Port\" />

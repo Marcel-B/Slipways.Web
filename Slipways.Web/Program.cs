@@ -24,7 +24,7 @@ namespace com.b_velop.Slipways.Web
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Stopped program because of exception");
+                logger.Fatal(ex, "Stopped program because of exception");
                 throw;
             }
             finally
