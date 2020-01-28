@@ -113,27 +113,27 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogError(6661, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6661, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (InvalidOperationException e)
             {
-                _logger.LogError(6662, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6662, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (UriFormatException e)
             {
-                _logger.LogError(6663, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6663, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(6664, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6664, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (JsonException e)
             {
-                _logger.LogError(6665, $"Error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6665, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Unexpected error occurred while inserting new item\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6666, $"Unexpected error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             return null;
         }
@@ -162,23 +162,23 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogError(6661, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6661, $"Error occurred while updating '{id}'\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (InvalidOperationException e)
             {
-                _logger.LogError(6662, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6662, $"Error occurred while updating '{id}'\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (UriFormatException e)
             {
-                _logger.LogError(6663, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6663, $"Error occurred while updating '{id}'\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(6664, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6664, $"Error occurred while updating '{id}'\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (JsonException e)
             {
-                _logger.LogError(6665, $"Error occurred while updating '{id}'\nItem: '{json}'\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6665, $"Error occurred while updating '{id}'\nItem: ''\nUrl: {_client.BaseAddress}", e);
             }
             catch (Exception e)
             {
