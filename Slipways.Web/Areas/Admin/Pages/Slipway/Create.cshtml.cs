@@ -83,7 +83,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 }
 
                 var slipways = await _dataStore.Slipways.AddAsync(Slipway);
-                
+
                 if (slipways != null)
                     return RedirectToPage("./Index");
 
