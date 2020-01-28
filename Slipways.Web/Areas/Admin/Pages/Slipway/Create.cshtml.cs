@@ -73,6 +73,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
             var water = waters.First(_ => _.Id == WaterId);
             Slipway.Water = water;
             Slipway.WaterFk = WaterId;
+            Slipway.Country = Country.Germany;
 
             if (ModelState.IsValid)
             {
@@ -83,7 +84,7 @@ namespace com.b_velop.Slipways.Web.Areas.Admin.Pages.Slipway
                 }
 
                 var slipways = await _dataStore.Slipways.AddAsync(Slipway);
-                
+
                 if (slipways != null)
                     return RedirectToPage("./Index");
 
