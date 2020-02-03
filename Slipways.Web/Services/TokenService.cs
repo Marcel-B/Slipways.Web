@@ -125,7 +125,7 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (HttpRequestException e)
             {
-                _logger.LogError(6664, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}", e);
+                _logger.LogError(6664, $"Error occurred while inserting new item\nItem: ''\nUrl: {_client.BaseAddress}\nMaybe API is not running", e);
             }
             catch (JsonException e)
             {
