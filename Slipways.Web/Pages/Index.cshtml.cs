@@ -48,37 +48,44 @@ namespace com.b_velop.Slipways.Web.Pages
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error");
-                Console.WriteLine(e.StackTrace);
+                _logger.LogError(6666, $"Error occurred while GET index page", e);
+                Redirect("/Error");
             }
         }
 
         public async Task<IActionResult> OnGetFilter(
             [FromQuery] string search)
         {
-            Slipways = new SlipwaysModel();
-            var slipways = await _dataStore.Slipways.GetValuesAsync();
-
-            if (slipways == null)
-                return Page();
-
-      
-
-            IEnumerable<Slipway> searchResult;
-            searchResult = slipways;
-            if (!string.IsNullOrWhiteSpace(search))
+            try
             {
-                search = search.ToLower();
-                searchResult = searchResult.Where(_ => _.Name.ToLower().Contains(search) || _.City.ToLower().Contains(search) || _.Water.Longname.ToLower().Contains(search)).Distinct();
+                Slipways = new SlipwaysModel();
+                var slipways = await _dataStore.Slipways.GetValuesAsync();
+
+                if (slipways == null)
+                    return Page();
+
+
+                IEnumerable<Slipway> searchResult;
+                searchResult = slipways;
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    search = search.ToLower();
+                    searchResult = searchResult.Where(_ => _.Name.ToLower().Contains(search) || _.City.ToLower().Contains(search) || _.Water.Longname.ToLower().Contains(search)).Distinct();
+                }
+                searchResult = searchResult.OrderBy(_ => _.Name);
+                foreach (var slipway in searchResult)
+                {
+                    slipway.Water.Longname = slipway.Water.Longname.FirstUpper();
+                }
+                Slipways.Slipways = new HashSet<Slipway>(searchResult);
+                var partial = Partial("_SlipwayTable", Slipways);
+                return partial;
             }
-            searchResult = searchResult.OrderBy(_ => _.Name);
-            foreach (var slipway in searchResult)
+            catch (Exception e)
             {
-                slipway.Water.Longname = slipway.Water.Longname.FirstUpper();
+                _logger.LogError(6666, $"Error occurred while GET filter index page", e);
+                return Redirect("/Error");
             }
-            Slipways.Slipways = new HashSet<Slipway>(searchResult);
-            var partial = Partial("_SlipwayTable", Slipways);
-            return partial;
         }
     }
 }
