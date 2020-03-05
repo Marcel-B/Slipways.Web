@@ -15,9 +15,33 @@
 
 
 <div class="container">
-    <h1 class="display-4">Marina</h1>
-    <p>@Model.Port.Name</p>
-    <p>@Model.Port.Street</p>
-    <p>@Model.Port.Postalcode - @Model.Port.City</p>
+    <h1 class="display-4 mt-2">Marina</h1>
+
+    <div class="card">
+        <div class="row no-gutters">
+
+            <div class="col-md-4">
+                <iframe width="500"
+                        class="card-img"
+                        height="500"
+                        frameborder="1"
+                        style="border:0"
+                        src="https://www.google.com/maps/embed/v1/view?key=@Model.ApiKey&center=@Model.Port.Latitude,@Model.Port.Longitude&zoom=18&maptype=satellite">
+                </iframe>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Port.Name</h5>
+                    <p class="card-text">@Model.Port.Street</p>
+                    <p class="card-text">@Model.Port.Postalcode - @Model.Port.City</p>
+                    <p class="card-text"><i class="fas fa-phone-alt"></i> @Model.Port.Phone </p>
+                    <div class="card-text"><i class="fas fa-at"></i> @Model.Port.Email</div>
+                    <p class="card-text"><i class="fas fa-at">@Model.Port.Url</i> </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
