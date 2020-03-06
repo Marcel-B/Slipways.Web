@@ -81,7 +81,7 @@ namespace com.b_velop.Slipways.Web.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, "Unexpected error occurred while reload cache", e);
+                _logger.LogError(6666, e, "Unexpected error occurred while reload cache");
             }
         }
 

@@ -17,8 +17,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 using NLog.Web;
 using Prometheus;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -64,6 +67,8 @@ namespace com.b_velop.Slipways.Web
                 SendGridKey = key,
                 SendGridUser = sendGridUser
             });
+
+            services.AddAutoMapper(typeof(Program).Assembly);
 
             services.AddScoped(_ => new GraphQLClient(graphQLEndpoint));
             services.AddScoped<ISecretProvider, SecretProvider>();
@@ -120,6 +125,10 @@ namespace com.b_velop.Slipways.Web
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Service");
                         options.Conventions.AuthorizeAreaFolder("Admin", "/Port");
                     }
+                }).AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ss";
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -154,6 +163,7 @@ namespace com.b_velop.Slipways.Web
             IApplicationBuilder app,
             IWebHostEnvironment env)
         {
+            UpdateDatabase(app);
             app.UseForwardedHeaders();
             app.UseHttpMetrics(options =>
             {
@@ -175,7 +185,6 @@ namespace com.b_velop.Slipways.Web
                 app.UseExceptionHandler("/Error");
                 //app.UseHsts();
             }
-            UpdateDatabase(app);
             app.UseCookiePolicy();
             app.UseStaticFiles();
             app.UseRouting();

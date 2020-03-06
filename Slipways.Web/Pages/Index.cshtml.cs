@@ -48,7 +48,7 @@ namespace com.b_velop.Slipways.Web.Pages
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Error occurred while GET index page", e);
+                _logger.LogError(6666, e, $"Error occurred while GET index page");
                 Redirect("/Error");
             }
         }
@@ -83,7 +83,7 @@ namespace com.b_velop.Slipways.Web.Pages
             }
             catch (Exception e)
             {
-                _logger.LogError(6666, $"Error occurred while GET filter index page", e);
+                _logger.LogError(6666, e, $"Error occurred while GET filter index page");
                 return Redirect("/Error");
             }
         }
