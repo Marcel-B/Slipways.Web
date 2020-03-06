@@ -7,9 +7,7 @@
 
 @section AdditionalMeta
 {
-    <link rel="stylesheet" href="~/lib/css/fontawesome.min.css" />
-
- <title>Marina @Model.Port.Name</title>
+    <title>Marina @Model.Port.Name</title>
     <meta name="description" content="Detailansicht der Marina @Model.Port.Name in @Model.Port.Postalcode - @Model.Port.City" />
     <meta name="keywords" content="Marina, Hafen, @Model.Port.Name, Slipanlagen, Slipways, Slipway, Boote, Boot, Schlauchboot, Camping, Trailering, Sliprampe" />
 }
@@ -33,9 +31,9 @@
                     <h5 class="card-title">@Model.Port.Name</h5>
                     <p class="card-text">@Model.Port.Street</p>
                     <p class="card-text">@Model.Port.Postalcode - @Model.Port.City</p>
-                    <p class="card-text"><i class="fas fas-phone-alt"></i> @Model.Port.Phone </p>
-                    <div class="card-text"><i class="fas fa-at"></i> @Model.Port.Email</div>
-                    <p class="card-text"><i class="fa fa-at">@Model.Port.Url</i> </p>
+                    <p class="card-text"><i class="fa fa-phone-alt"></i> @Model.Port.Phone </p>
+                    <div class="card-text"><i class="fa fa-at"></i> @Model.Port.Email</div>
+                    <p class="card-text">@Model.Port.Url</p>
                 </div>
             </div>
 
