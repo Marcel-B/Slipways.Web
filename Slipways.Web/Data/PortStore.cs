@@ -1,5 +1,5 @@
-﻿using com.b_velop.Slipways.Data.Dtos;
-using com.b_velop.Slipways.Data.Extensions;
+﻿using AutoMapper;
+using com.b_velop.Slipways.Data.Dtos;
 using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
 using com.b_velop.Slipways.Web.Contracts;
@@ -14,21 +14,14 @@ namespace com.b_velop.Slipways.Web.Data
     {
         public PortStore(
             IMemoryCache cache,
+            IMapper mapper,
             IPortService service,
-            IGraphQLService graphQLService) : base(cache, service, graphQLService)
+            IGraphQLService graphQLService) : base(cache, mapper, service, graphQLService)
         {
             Key = Cache.Ports;
             Method = Queries.Ports.Item1;
             Query = Queries.Ports.Item2;
         }
-
-        public override Port ConvertToClass(
-            PortDto item)
-            => item.ToClass();
-
-        public override PortDto ConvertToDto(
-            Port item)
-            => item.ToDto();
 
         public override IEnumerable<Port> Sort(IEnumerable<Port> set)
             => set.OrderBy(_ => _.Name);

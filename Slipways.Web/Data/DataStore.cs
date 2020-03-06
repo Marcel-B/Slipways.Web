@@ -1,4 +1,5 @@
-﻿using com.b_velop.Slipways.Data.Contracts;
+﻿using AutoMapper;
+using com.b_velop.Slipways.Data.Contracts;
 using com.b_velop.Slipways.Web.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -13,6 +14,7 @@ namespace com.b_velop.Slipways.Web.Data
         where DTO : class, IDto
     {
         protected IMemoryCache _cache;
+        private IMapper _mapper;
         protected IGraphQLService _graphQLService;
         private ITokenService<DTO> _service;
 
@@ -22,10 +24,12 @@ namespace com.b_velop.Slipways.Web.Data
 
         public DataStore(
             IMemoryCache cache,
+            IMapper mapper,
             ITokenService<DTO> service,
             IGraphQLService graphQLService)
         {
             _cache = cache;
+            _mapper = mapper;
             _service = service;
             _graphQLService = graphQLService;
         }
@@ -67,8 +71,11 @@ namespace com.b_velop.Slipways.Web.Data
             return values;
         }
 
-        public abstract DTO ConvertToDto(T item);
-        public abstract T ConvertToClass(DTO item);
+        public DTO ConvertToDto(T item)
+            => _mapper.Map<DTO>(item);
+
+        public T ConvertToClass(DTO item)
+            => _mapper.Map<T>(item);
 
         public async Task<HashSet<T>> RemoveAsync(
             Guid id)

@@ -1,4 +1,5 @@
-﻿using com.b_velop.Slipways.Data.Dtos;
+﻿using AutoMapper;
+using com.b_velop.Slipways.Data.Dtos;
 using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
@@ -14,21 +15,14 @@ namespace com.b_velop.Slipways.Web.Data
     {
         public SlipwayStore(
             IMemoryCache cache,
+            IMapper mapper,
             ISlipwayService service,
-            IGraphQLService graphQLService) : base(cache, service, graphQLService)
+            IGraphQLService graphQLService) : base(cache, mapper, service, graphQLService)
         {
             Key = Cache.Slipways;
             Method = Queries.Slipways.Item1;
             Query = Queries.Slipways.Item2;
         }
-
-        public override Slipway ConvertToClass(
-            SlipwayDto item)
-            => item.ToClass();
-
-        public override SlipwayDto ConvertToDto(
-            Slipway item)
-            => item.ToDto();
 
         public override IEnumerable<Slipway> Sort(IEnumerable<Slipway> set)
             => set.OrderBy(_ => _.Name);

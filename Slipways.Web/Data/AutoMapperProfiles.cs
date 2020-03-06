@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using com.b_velop.Slipways.Data.Dtos;
+using com.b_velop.Slipways.Data.Models;
 
 namespace com.b_velop.Slipways.Web.Data
 {
@@ -10,8 +8,11 @@ namespace com.b_velop.Slipways.Web.Data
     {
         public AutoMapperProfiles()
         {
+            CreateMap<Slipway, SlipwayDto>();
+            CreateMap<SlipwayDto, Slipway>();
 
-
+            CreateMap<Water, WaterDto>();
+            CreateMap<WaterDto, Water>();
         }
     }
 }

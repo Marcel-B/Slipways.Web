@@ -64,7 +64,6 @@ namespace com.b_velop.Slipways.Web.Pages
                 if (slipways == null)
                     return Page();
 
-
                 IEnumerable<Slipway> searchResult;
                 searchResult = slipways;
                 if (!string.IsNullOrWhiteSpace(search))

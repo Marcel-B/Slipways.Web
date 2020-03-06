@@ -1,4 +1,5 @@
-﻿using com.b_velop.Slipways.Data.Dtos;
+﻿using AutoMapper;
+using com.b_velop.Slipways.Data.Dtos;
 using com.b_velop.Slipways.Data.Extensions;
 using com.b_velop.Slipways.Data.Helper;
 using com.b_velop.Slipways.Data.Models;
@@ -15,21 +16,14 @@ namespace com.b_velop.Slipways.Web.Data
     {
         public WaterStore(
             IMemoryCache cache,
+            IMapper mapper,
             IWaterService service,
-            IGraphQLService graphQLService) : base(cache, service, graphQLService)
+            IGraphQLService graphQLService) : base(cache, mapper, service, graphQLService)
         {
             Key = Cache.Waters;
             Method = Queries.Waters.Item1;
             Query = Queries.Waters.Item2;
         }
-
-        public override Water ConvertToClass(
-            WaterDto item)
-            => item.ToClass();
-
-        public override WaterDto ConvertToDto(
-            Water item)
-            => item.ToDto();
 
         public override async Task<HashSet<Water>> GetValuesAsync()
         {
