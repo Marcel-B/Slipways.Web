@@ -85,6 +85,9 @@ namespace com.b_velop.Slipways.Web.Infrastructure
                                 latitude
                                 street
                                 postalcode
+                                phone
+                                email
+                                url
                                 water {
                                   id
                                   longname

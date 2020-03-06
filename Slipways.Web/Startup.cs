@@ -22,6 +22,9 @@ using NLog.Web;
 using Prometheus;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Diagnostics;
+using com.b_velop.Utilities.Extensions;
+using System.Threading.Tasks;
 
 namespace com.b_velop.Slipways.Web
 {
@@ -161,7 +164,8 @@ namespace com.b_velop.Slipways.Web
 
         public void Configure(
             IApplicationBuilder app,
-            IWebHostEnvironment env)
+            IWebHostEnvironment env,
+            ILogger<Startup> logger)
         {
             UpdateDatabase(app);
             app.UseForwardedHeaders();
@@ -182,8 +186,21 @@ namespace com.b_velop.Slipways.Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                //app.UseHsts();
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            Metrics.CreateCounter("slipways_web_exceptions_unexpected_total", "Some help text");
+                            logger.LogError(6767, error.Error, $"Unexpected error");
+                            context.Response.AddApplicationError(error.Error.Message);
+                            context.Response.Redirect("/Error");
+                        }
+                    });
+                });
+                app.UseHsts();
             }
             app.UseCookiePolicy();
             app.UseStaticFiles();

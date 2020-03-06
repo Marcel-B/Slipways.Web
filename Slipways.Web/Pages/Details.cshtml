@@ -27,31 +27,33 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">@Model.Slipway.Name</h5>
-                    <span>
-                        @if (Model.Slipway.Costs > 0)
-                        {
-                            <img src="~/img/euro-24.png" alt="Kostenpflichtig" />
-                        }
-                        else if (Model.Slipway.Costs < 0)
-                        {
-                            <img src="~/img/sad-24.png" alt="Keine Angaben" />
-                        }
-                        else
-                        {
-                            <img src="~/img/happy-24.png" alt="Kostenlos" />
-                        }
-                        @if (Model.Slipway.Extras.Count > 0)
-                        {
-                            @foreach (var extra in Model.Slipway.Extras)
+                    <div class="mb-2">
+                        <span>
+                            @if (Model.Slipway.Costs > 0)
                             {
-                                <img src="~/img/@extra.GetImage()" alt="Extra" />
+                                <img src="~/img/euro-24.png" alt="Kostenpflichtig" class="mr-2" />
                             }
-                        }
-                        @if (Model.Slipway.Port != null)
-                        {
-                            <a asp-page="/PortDetails" asp-route-id="@Model.Slipway.Port.Id"><img src="~/img/anchor-24.png" alt="Hafen" /></a>
-                        }
-                    </span>
+                            else if (Model.Slipway.Costs < 0)
+                            {
+                                <img src="~/img/sad-24.png" alt="Keine Angaben" class="mr-2" />
+                            }
+                            else
+                            {
+                                <img src="~/img/happy-24.png" alt="Kostenlos" class="mr-2" />
+                            }
+                            @if (Model.Slipway.Extras.Count > 0)
+                            {
+                                @foreach (var extra in Model.Slipway.Extras)
+                                {
+                                    <img src="~/img/@extra.GetImage()" alt="Extra" class="mr-2" />
+                                }
+                            }
+                            @if (Model.Slipway.Port != null)
+                            {
+                                <a asp-page="/PortDetails" asp-route-id="@Model.Slipway.Port.Id"><img src="~/img/anchor-24.png" alt="Hafen" /></a>
+                            }
+                        </span>
+                    </div>
                     <p class="card-text">@Model.Slipway.Street - @Model.Slipway.Postalcode @Model.Slipway.City</p>
                     <p class="card-text">Gewässer: @Model.Slipway.Water.Longname.FirstUpper() <a href="https://de.wikipedia.org/wiki/@Model.Slipway.Water.Longname.FirstUpper()" target="_blank"> <img src="~/img/wiki-24.png" alt="Wikipedia" /></a></p>
                     @if (Model.Slipway.Costs > 0)
@@ -59,8 +61,8 @@
                         <p>Kosten: @Model.Slipway.Costs.ToString("C", CultureInfo.CreateSpecificCulture("de-DE"))</p>
                     }
                     <span>
-                        <a asp-page="/Index" class="btn btn-warning">Zurück</a>
-                        <a href="https://www.google.com/maps/place/@Model.Slipway.Latitude,@Model.Slipway.Longitude" class="btn btn-success"><img src="~/img/route-24.png" alt="route" /></a>
+                        <a asp-page="/Index" class="btn btn-warning w-25">Zurück</a>
+                        <a href="https://www.google.com/maps/place/@Model.Slipway.Latitude,@Model.Slipway.Longitude" class="btn btn-success w-25"><img src="~/img/route-24.png" alt="route" /></a>
                     </span>
                 </div>
             </div>

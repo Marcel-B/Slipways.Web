@@ -32,8 +32,16 @@
                     <p class="card-text">@Model.Port.Street</p>
                     <p class="card-text">@Model.Port.Postalcode - @Model.Port.City</p>
                     <p class="card-text"><i class="fa fa-phone-alt"></i> @Model.Port.Phone </p>
-                    <div class="card-text"><i class="fa fa-at"></i> @Model.Port.Email</div>
-                    <p class="card-text">@Model.Port.Url</p>
+                    <p class="card-text"><i class="fa fa-at"></i> @Model.Port.Email</p>
+                    <br />
+                    <span>
+                        <a asp-page="/Ports" class="btn btn-warning w-25">Zurück</a>
+                        @if (Model.Port.Url != null)
+                        {
+                            <a class="btn btn-primary w-25" target="_blank" href="@Model.Port.Url">Webseite</a>
+                        }
+                        <a href="https://www.google.com/maps/place/@Model.Port.Latitude,@Model.Port.Longitude" class="btn btn-success w-25"><img src="~/img/route-24.png" alt="route" /></a>
+                    </span>
                 </div>
             </div>
 
